@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ======================================================
-     1. VARIABLES DE MARCA — AutomizeAI (idénticas al CRM)
+     1. VARIABLES DE MARCA — AutomizeAI
      ====================================================== */
   :root{
     --black: #080c12;
@@ -23,9 +23,6 @@
     --border: rgba(30,143,225,0.10);
     --border-strong: rgba(30,143,225,0.22);
     --card-bg: #ffffff;
-
-    --sidebar-w-collapsed: 76px;
-    --sidebar-w-expanded: 240px;
     --radius: 14px;
     --radius-sm: 8px;
     --transition: 0.28s cubic-bezier(.4,0,.2,1);
@@ -38,7 +35,6 @@
     background:var(--off-white);
     color:var(--black);
     font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
   }
 
   h1,h2,h3,h4{ font-family:'Syne',sans-serif; letter-spacing:-0.02em; color:var(--black); }
@@ -63,15 +59,12 @@
   .fade-up:nth-child(4){ animation-delay:.2s; }
 
   /* ======================================================
-     2. PANTALLA DE ACCESO (misma contraseña que el CRM)
+     2. PANTALLA DE ACCESO
      ====================================================== */
   #login-screen{
     position:fixed; inset:0; z-index:999;
     display:flex; align-items:center; justify-content:center;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(30,143,225,0.18), transparent 45%),
-      radial-gradient(circle at 80% 80%, rgba(30,143,225,0.12), transparent 45%),
-      var(--black);
+    background: radial-gradient(circle at 20% 20%, rgba(30,143,225,0.18), transparent 45%), radial-gradient(circle at 80% 80%, rgba(30,143,225,0.12), transparent 45%), var(--black);
   }
   .login-card{
     width:100%; max-width:380px; margin:20px;
@@ -109,18 +102,18 @@
   #login-error.show{ opacity:1; }
 
   /* ======================================================
-     3. LAYOUT PRINCIPAL (idéntico al CRM)
+     3. LAYOUT PRINCIPAL
      ====================================================== */
   #app{ display:none; min-height:100vh; }
   #app.active{ display:flex; }
 
   .sidebar{
-    width:var(--sidebar-w-collapsed); background:var(--black); height:100vh;
+    width:76px; background:var(--black); height:100vh;
     position:fixed; left:0; top:0; z-index:100;
     display:flex; flex-direction:column; transition:width var(--transition); overflow:hidden;
     border-right:1px solid rgba(245,248,252,0.06);
   }
-  .sidebar:hover{ width:var(--sidebar-w-expanded); }
+  .sidebar:hover{ width:240px; }
 
   .sidebar-logo{
     display:flex; align-items:center; gap:12px; padding:24px 22px; white-space:nowrap;
@@ -146,7 +139,6 @@
   .sidebar:hover .nav-item span.label{ opacity:1; }
   .nav-item:hover{ background:rgba(245,248,252,0.06); color:var(--white); }
   .nav-item.active{ background:var(--accent); color:var(--white); }
-  .nav-divider{ height:1px; background:rgba(245,248,252,0.08); margin:10px 4px; }
 
   .sidebar-footer{ padding:16px 12px; border-top:1px solid rgba(245,248,252,0.06); }
   .user-chip{ display:flex; align-items:center; gap:12px; padding:10px; border-radius:var(--radius-sm); white-space:nowrap; }
@@ -169,7 +161,7 @@
   .logout-btn span{ opacity:0; transition:opacity var(--transition); white-space:nowrap; }
   .sidebar:hover .logout-btn span{ opacity:1; }
 
-  .main{ margin-left:var(--sidebar-w-collapsed); flex:1; min-height:100vh; padding:32px 40px 60px; transition:margin-left var(--transition); }
+  .main{ margin-left:76px; flex:1; min-height:100vh; padding:32px 40px 60px; transition:margin-left var(--transition); }
 
   .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
   .topbar h1{ font-size:26px; }
@@ -202,23 +194,20 @@
     content:''; position:absolute; top:0; left:0; width:100%; height:3px;
     background:linear-gradient(90deg,var(--accent),var(--accent-light));
   }
-  .metric-card.negativo::before{ background:linear-gradient(90deg,#e05252,#ff8787); }
   .metric-card .label{ font-size:12.5px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
   .metric-card .value{ font-family:'Syne',sans-serif; font-size:30px; font-weight:700; margin-top:10px; }
-  .metric-card .delta{ font-size:12px; color:var(--accent-dark); margin-top:6px; font-weight:600; }
 
-  .dash-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:20px; margin-bottom:20px; }
   .panel{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
   .panel h3{ font-size:16px; margin-bottom:20px; }
 
-  /* Gráfico de barras dobles (ingresos vs gastos) */
+  .dash-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:20px; margin-bottom:20px; }
+
   .chart-wrap{ display:flex; align-items:flex-end; gap:14px; height:190px; padding-top:10px; }
   .chart-bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:8px; }
   .chart-bars-pair{ display:flex; align-items:flex-end; gap:4px; height:100%; width:100%; justify-content:center; }
   .chart-bar{ width:16px; border-radius:5px 5px 0 0; transition:transform var(--transition); }
   .chart-bar.ingreso{ background:linear-gradient(180deg,var(--accent-light),var(--accent)); }
   .chart-bar.gasto{ background:linear-gradient(180deg,#ffb199,#e05252); }
-  .chart-bar:hover{ transform:scaleY(1.03); filter:brightness(1.05); }
   .chart-bar-col .month-label{ font-size:11.5px; color:var(--text-light); font-weight:600; }
   .chart-legend{ display:flex; gap:18px; margin-top:16px; justify-content:center; }
   .chart-legend span{ font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:6px; font-weight:600; }
@@ -226,7 +215,6 @@
   .legend-dot.ingreso{ background:var(--accent); }
   .legend-dot.gasto{ background:#e05252; }
 
-  /* Donut chart */
   .donut-wrap{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center; }
   .donut-legend{ display:flex; flex-direction:column; gap:9px; flex:1; min-width:160px; }
   .donut-legend-item{ display:flex; align-items:center; gap:9px; font-size:12px; color:var(--text-muted); }
@@ -243,7 +231,7 @@
   .recent-item .amount.gasto{ color:#e05252; }
 
   /* ======================================================
-     5. CLASIFICACIÓN AUTOMÁTICA
+     5. CLASIFICACIÓN
      ====================================================== */
   .classify-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
   .classify-textarea{
@@ -252,57 +240,28 @@
     resize:vertical; line-height:1.6; font-family:'Inter',sans-serif;
   }
   .classify-textarea:focus{ border-color:var(--accent); }
-  .hint-box{
-    margin-top:14px; padding:14px 16px; background:var(--off-white); border-radius:var(--radius-sm);
-    font-size:12px; color:var(--text-muted); line-height:1.6; border:1px solid var(--border);
-  }
-  .hint-box b{ color:var(--black); }
-
   .result-panel{
     background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px;
     display:none;
   }
   .result-panel.show{ display:block; animation:fadeUp .4s ease both; }
-  .result-badge{
-    display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:20px;
-    background:rgba(30,143,225,0.1); color:var(--accent-dark); font-weight:700; font-size:13px; margin-bottom:18px;
-  }
-  .result-badge svg{ width:15px; height:15px; }
 
   .totales-preview{
     display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0 20px;
     background:var(--off-white); border-radius:var(--radius-sm); padding:14px; border:1px solid var(--border);
   }
-  .totales-preview div{ text-align:center; }
   .totales-preview .tp-label{ font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase; }
   .totales-preview .tp-value{ font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-top:4px; }
 
-  /* ======================================================
-     6. FACTURAS (TABLA)
-     ====================================================== */
   .filters-row{ display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
   .search-input{
     flex:1; min-width:200px; padding:11px 16px; border-radius:var(--radius-sm);
     border:1px solid var(--border-strong); background:var(--card-bg); font-size:13.5px;
   }
-  .search-input:focus{ border-color:var(--accent); }
   .filter-select{
     padding:11px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
     background:var(--card-bg); font-size:13.5px; color:var(--black);
   }
-
-  .totales-bar{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;
-  }
-  .totales-bar .tb-card{
-    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-sm);
-    padding:16px; text-align:center;
-  }
-  .totales-bar .tb-card .num{ font-family:'Syne',sans-serif; font-size:20px; font-weight:700; }
-  .totales-bar .tb-card .num.ingreso{ color:#1a8f5e; }
-  .totales-bar .tb-card .num.gasto{ color:#e05252; }
-  .totales-bar .tb-card .num.beneficio{ color:var(--accent-dark); }
-  .totales-bar .tb-card .lbl{ font-size:11.5px; color:var(--text-muted); font-weight:600; margin-top:4px; }
 
   .table-wrap{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); overflow-x:auto; }
   table{ width:100%; border-collapse:collapse; min-width:900px; }
@@ -314,38 +273,34 @@
   tbody td{ padding:14px 16px; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
   tbody tr:last-child td{ border-bottom:none; }
   tbody tr:hover{ background:var(--off-white); }
-  .cell-name{ font-weight:600; }
-  .cell-muted{ color:var(--text-muted); }
 
   .tipo-pill{ display:inline-block; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; }
   .tipo-Ingreso{ background:rgba(46,196,131,0.15); color:#1a8f5e; }
   .tipo-Gasto{ background:rgba(224,82,82,0.12); color:#c23a3a; }
 
-  .grupo-pill{
-    display:inline-block; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:600;
-    background:rgba(30,143,225,0.08); color:var(--accent-dark);
-  }
-
-  .row-actions{ display:flex; gap:8px; }
   .icon-btn{
     width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center;
     color:var(--text-muted); transition:background var(--transition), color var(--transition);
   }
-  .icon-btn svg{ width:15px; height:15px; }
   .icon-btn:hover{ background:var(--off-white); color:var(--accent); }
   .icon-btn.danger:hover{ color:#e05252; }
-  .empty-state{ text-align:center; padding:50px 20px; color:var(--text-light); font-size:13.5px; }
 
-  /* ======================================================
-     7. INFORMES
-     ====================================================== */
-  .informe-selectores{ display:flex; gap:12px; align-items:flex-end; margin-bottom:24px; flex-wrap:wrap; }
-  .informe-selectores .form-group{ margin-bottom:0; }
-  .informe-resumen{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+  .totales-bar{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+  .totales-bar .tb-card{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; text-align:center; }
+  .totales-bar .tb-card .num{ font-family:'Syne',sans-serif; font-size:20px; font-weight:700; }
+  .totales-bar .tb-card .num.ingreso{ color:#1a8f5e; }
+  .totales-bar .tb-card .num.gasto{ color:#e05252; }
+  .totales-bar .tb-card .num.beneficio{ color:var(--accent-dark); }
+  .totales-bar .tb-card .lbl{ font-size:11.5px; color:var(--text-muted); font-weight:600; margin-top:4px; }
 
-  /* ======================================================
-     8. MODAL
-     ====================================================== */
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .form-group{ margin-bottom:16px; }
+  .form-group label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:7px; color:var(--text-muted); }
+  .form-group input, .form-group select{
+    width:100%; padding:11px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
+    font-size:13.5px; background:var(--white);
+  }
+
   .modal-overlay{
     position:fixed; inset:0; background:rgba(8,12,18,0.55); backdrop-filter:blur(3px);
     display:none; align-items:center; justify-content:center; z-index:500; padding:20px;
@@ -359,14 +314,6 @@
   .modal-header h3{ font-size:18px; }
   .modal-close{ width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); }
   .modal-close:hover{ background:var(--off-white); color:var(--black); }
-  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-  .form-group{ margin-bottom:16px; }
-  .form-group label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:7px; color:var(--text-muted); }
-  .form-group input, .form-group select{
-    width:100%; padding:11px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
-    font-size:13.5px; background:var(--white);
-  }
-  .form-group input:focus, .form-group select:focus{ border-color:var(--accent); }
   .modal-actions{ display:flex; gap:10px; margin-top:22px; }
   .modal-actions .btn{ flex:1; justify-content:center; }
 
@@ -377,39 +324,32 @@
     transition:opacity var(--transition), transform var(--transition); display:flex; align-items:center; gap:10px;
   }
   #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-  #toast .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent-light); }
 
-  /* ======================================================
-     9. RESPONSIVE
-     ====================================================== */
+  .empty-state{ text-align:center; padding:50px 20px; color:var(--text-light); font-size:13.5px; }
+
   @media (max-width: 1100px){
     .metrics-grid{ grid-template-columns:repeat(2,1fr); }
     .dash-grid{ grid-template-columns:1fr; }
     .classify-grid{ grid-template-columns:1fr; }
-    .informe-resumen{ grid-template-columns:1fr; }
-    .totales-bar{ grid-template-columns:1fr; }
   }
   @media (max-width: 720px){
     .sidebar{ width:100%; height:64px; top:auto; bottom:0; flex-direction:row; }
     .sidebar:hover{ width:100%; }
     .sidebar-logo{ display:none; }
     .sidebar-nav{ flex-direction:row; padding:8px; width:100%; justify-content:space-around; }
-    .nav-divider{ display:none; }
     .nav-item{ flex-direction:column; gap:4px; padding:8px 6px; }
     .nav-item span.label{ opacity:1; font-size:9.5px; }
     .sidebar-footer{ display:none; }
     .main{ margin-left:0; padding:24px 18px 90px; }
     .metrics-grid{ grid-template-columns:1fr 1fr; gap:12px; }
     .form-row{ grid-template-columns:1fr; }
-    .informe-selectores{ flex-direction:column; align-items:stretch; }
-    .topbar{ flex-direction:column; align-items:flex-start; }
   }
 </style>
 </head>
 <body>
 
 <!-- ============================================================
-     PANTALLA DE LOGIN (misma contraseña que el CRM)
+     PANTALLA DE LOGIN
      ============================================================ -->
 <div id="login-screen">
   <div class="login-card">
@@ -422,7 +362,7 @@
     <form id="login-form" autocomplete="off">
       <input type="password" id="password-input" placeholder="Contraseña" autofocus>
       <button type="submit">Entrar</button>
-      <div id="login-error">Contraseña incorrecta. Inténtalo de nuevo.</div>
+      <div id="login-error">Contraseña incorrecta.</div>
     </form>
   </div>
 </div>
@@ -431,40 +371,33 @@
      APLICACIÓN PRINCIPAL
      ============================================================ -->
 <div id="app">
-
-  <!-- ---------- SIDEBAR ---------- -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="mark">A</div>
       <span>AutomizeAI</span>
     </div>
-
     <nav class="sidebar-nav">
       <a href="#" class="nav-item active" data-section="dashboard">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
         <span class="label">Dashboard</span>
       </a>
       <a href="#" class="nav-item" data-section="clasificar">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></span>
         <span class="label">Clasificar factura</span>
       </a>
       <a href="#" class="nav-item" data-section="facturas">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
         <span class="label">Facturas</span>
       </a>
       <a href="#" class="nav-item" data-section="informes">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
         <span class="label">Informes</span>
       </a>
-
-      <div class="nav-divider"></div>
-
-      <a href="index.html" class="nav-item">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/></svg></span>
-        <span class="label">Volver al CRM</span>
+      <a href="index.html" class="nav-item" style="color:var(--accent-light);">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/></svg></span>
+        <span class="label">← Volver al CRM</span>
       </a>
     </nav>
-
     <div class="sidebar-footer">
       <div class="user-chip">
         <div class="avatar">M</div>
@@ -474,16 +407,15 @@
         </div>
       </div>
       <button class="logout-btn" id="logout-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         <span>Cerrar sesión</span>
       </button>
     </div>
   </aside>
 
-  <!-- ---------- CONTENIDO PRINCIPAL ---------- -->
   <main class="main">
 
-    <!-- ============ DASHBOARD ============ -->
+    <!-- DASHBOARD -->
     <section class="section active" id="section-dashboard">
       <div class="topbar">
         <div>
@@ -491,9 +423,7 @@
           <p>Resumen financiero del mes en curso</p>
         </div>
       </div>
-
       <div class="metrics-grid" id="metrics-grid"></div>
-
       <div class="dash-grid">
         <div class="panel fade-up">
           <h3>Ingresos vs Gastos (últimos 6 meses)</h3>
@@ -508,53 +438,31 @@
           <div class="donut-wrap" id="donut-wrap"></div>
         </div>
       </div>
-
       <div class="panel fade-up">
         <h3>Últimas facturas registradas</h3>
         <div class="recent-list" id="recent-list"></div>
       </div>
     </section>
 
-    <!-- ============ CLASIFICACIÓN AUTOMÁTICA ============ -->
+    <!-- CLASIFICAR FACTURA -->
     <section class="section" id="section-clasificar">
       <div class="topbar">
         <div>
           <h1>Clasificación automática</h1>
-          <p>Pega el texto de una factura y deja que el sistema la clasifique por ti</p>
+          <p>Pega el texto de una factura y el sistema la clasificará por ti</p>
         </div>
       </div>
-
       <div class="classify-grid">
         <div class="panel fade-up">
           <h3>Texto de la factura</h3>
-          <textarea class="classify-textarea" id="factura-texto" placeholder="Pega aquí el texto completo de la factura...
-
-Ejemplo:
-Factura número: 2025-001
-Fecha: 15/03/2025
-Emisor: Endesa Energía
-Concepto: Suministro eléctrico periodo febrero-marzo
-Base imponible: 95,00€
-IVA 21%: 19,95€
-Total: 114,95€"></textarea>
-          <div class="hint-box">
-            <b>Cómo funciona:</b> el sistema busca palabras clave (luz, nómina, asesoría, software, cliente...) para asignar el grupo contable, detecta el porcentaje de IVA indicado (o aplica 21% por defecto) y extrae fecha, emisor, base imponible y total si están presentes en el texto.
-          </div>
+          <textarea class="classify-textarea" id="factura-texto" placeholder="Pega aquí el texto completo de la factura..."></textarea>
           <div class="modal-actions" style="margin-top:16px;">
             <button class="btn btn-secondary" id="btn-limpiar-texto">Limpiar</button>
-            <button class="btn btn-primary" id="btn-clasificar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-              Clasificar automáticamente
-            </button>
+            <button class="btn btn-primary" id="btn-clasificar">Clasificar automáticamente</button>
           </div>
         </div>
-
         <div class="result-panel" id="result-panel">
-          <div class="result-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Resultado de la clasificación
-          </div>
-
+          <h3 style="margin-bottom:16px;">Resultado de la clasificación</h3>
           <form id="form-resultado">
             <div class="form-row">
               <div class="form-group">
@@ -583,7 +491,7 @@ Total: 114,95€"></textarea>
                 <select id="res-grupo"></select>
               </div>
               <div class="form-group">
-                <label>IVA aplicado</label>
+                <label>IVA</label>
                 <select id="res-iva-pct">
                   <option value="21">21%</option>
                   <option value="10">10%</option>
@@ -596,15 +504,12 @@ Total: 114,95€"></textarea>
               <label>Base imponible (€)</label>
               <input type="number" step="0.01" id="res-base" placeholder="0,00">
             </div>
-
-            <div class="totales-preview" id="totales-preview">
+            <div class="totales-preview">
               <div><div class="tp-label">Base</div><div class="tp-value" id="tp-base">0,00€</div></div>
               <div><div class="tp-label">IVA</div><div class="tp-value" id="tp-iva">0,00€</div></div>
               <div><div class="tp-label">Total</div><div class="tp-value" id="tp-total">0,00€</div></div>
             </div>
-
             <div class="modal-actions">
-              <button type="button" class="btn btn-secondary" id="btn-corregir">Corregir y guardar</button>
               <button type="submit" class="btn btn-primary">Guardar factura</button>
             </div>
           </form>
@@ -612,23 +517,19 @@ Total: 114,95€"></textarea>
       </div>
     </section>
 
-    <!-- ============ FACTURAS (TABLA) ============ -->
+    <!-- FACTURAS -->
     <section class="section" id="section-facturas">
       <div class="topbar">
         <div>
           <h1>Listado de facturas</h1>
-          <p>Todas las facturas registradas, gastos e ingresos</p>
+          <p>Todas las facturas registradas</p>
         </div>
         <div class="topbar-actions">
-          <button class="btn btn-primary" id="btn-nueva-manual">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Añadir manualmente
-          </button>
+          <button class="btn btn-primary" id="btn-nueva-manual">+ Añadir manualmente</button>
         </div>
       </div>
-
       <div class="filters-row">
-        <input type="text" class="search-input" id="search-input" placeholder="Buscar por emisor o concepto...">
+        <input type="text" class="search-input" id="search-input" placeholder="Buscar...">
         <select class="filter-select" id="filter-tipo">
           <option value="todos">Todos los tipos</option>
           <option value="Ingreso">Ingreso</option>
@@ -637,26 +538,18 @@ Total: 114,95€"></textarea>
         <select class="filter-select" id="filter-grupo">
           <option value="todos">Todos los grupos</option>
         </select>
-        <select class="filter-select" id="filter-mes">
-          <option value="todos">Todos los meses</option>
-        </select>
-        <select class="filter-select" id="filter-anio">
-          <option value="todos">Todos los años</option>
-        </select>
       </div>
-
       <div class="totales-bar">
         <div class="tb-card"><div class="num ingreso" id="tb-ingresos">0€</div><div class="lbl">Total ingresos</div></div>
         <div class="tb-card"><div class="num gasto" id="tb-gastos">0€</div><div class="lbl">Total gastos</div></div>
         <div class="tb-card"><div class="num beneficio" id="tb-beneficio">0€</div><div class="lbl">Beneficio</div></div>
       </div>
-
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
               <th>Fecha</th><th>Emisor</th><th>Concepto</th><th>Base</th><th>IVA</th><th>Total</th>
-              <th>Tipo</th><th>Grupo</th><th>Mes</th><th>Año</th><th></th>
+              <th>Tipo</th><th>Grupo</th><th></th>
             </tr>
           </thead>
           <tbody id="facturas-tbody"></tbody>
@@ -664,39 +557,33 @@ Total: 114,95€"></textarea>
       </div>
     </section>
 
-    <!-- ============ INFORMES ============ -->
+    <!-- INFORMES -->
     <section class="section" id="section-informes">
       <div class="topbar">
         <div>
           <h1>Informes</h1>
-          <p>Consulta el resumen financiero de cualquier periodo</p>
+          <p>Resumen financiero por periodo</p>
         </div>
         <div class="topbar-actions">
-          <button class="btn btn-secondary" id="btn-exportar-csv">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Exportar a CSV
-          </button>
+          <button class="btn btn-secondary" id="btn-exportar-csv">Exportar a CSV</button>
         </div>
       </div>
-
       <div class="panel fade-up">
-        <div class="informe-selectores">
-          <div class="form-group">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+          <div class="form-group" style="margin-bottom:0;">
             <label>Mes</label>
             <select class="filter-select" id="informe-mes"></select>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom:0;">
             <label>Año</label>
             <select class="filter-select" id="informe-anio"></select>
           </div>
         </div>
-
-        <div class="informe-resumen">
+        <div class="totales-bar" style="margin-bottom:20px;">
           <div class="tb-card"><div class="num ingreso" id="inf-ingresos">0€</div><div class="lbl">Total ingresos</div></div>
           <div class="tb-card"><div class="num gasto" id="inf-gastos">0€</div><div class="lbl">Total gastos</div></div>
           <div class="tb-card"><div class="num beneficio" id="inf-beneficio">0€</div><div class="lbl">Beneficio</div></div>
         </div>
-
         <h3 style="margin-bottom:14px;">Detalle por grupo contable</h3>
         <div class="table-wrap">
           <table>
@@ -706,17 +593,14 @@ Total: 114,95€"></textarea>
         </div>
       </div>
     </section>
-
   </main>
 </div>
 
-<!-- ============================================================
-     MODAL: AÑADIR / EDITAR FACTURA MANUALMENTE
-     ============================================================ -->
+<!-- MODAL: AÑADIR FACTURA -->
 <div class="modal-overlay" id="modal-manual">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="modal-manual-title">Añadir factura manualmente</h3>
+      <h3>Añadir factura manualmente</h3>
       <button class="modal-close" data-close="modal-manual">✕</button>
     </div>
     <form id="form-manual">
@@ -748,7 +632,7 @@ Total: 114,95€"></textarea>
           <select id="manual-grupo"></select>
         </div>
         <div class="form-group">
-          <label>IVA aplicado</label>
+          <label>IVA</label>
           <select id="manual-iva-pct">
             <option value="21">21%</option>
             <option value="10">10%</option>
@@ -773,71 +657,61 @@ Total: 114,95€"></textarea>
 
 <script>
 /* ================================================================
-   AutomizeAI · Contabilidad automatizada — JavaScript vanilla
+   AutomizeAI · Contabilidad — JavaScript
    ================================================================ */
 
-/* ---------- 1. CONFIGURACIÓN ---------- */
 const APP_PASSWORD = "automize2025";
 const STORAGE_KEY = "automizeai_facturas";
 
-const MESES_NOMBRE = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-/* ---------- 2. GRUPOS CONTABLES Y REGLAS DE CLASIFICACIÓN ---------- */
-// El orden importa: se evalúan de arriba a abajo y gana la primera coincidencia
 const GRUPOS_CONFIG = [
-  { grupo: 'Gastos de personal',       tipo: 'Gasto',   keywords: ['nómina','nomina','salario','sueldo','seguridad social','nominas'] },
+  { grupo: 'Gastos de personal',       tipo: 'Gasto',   keywords: ['nómina','nomina','salario','sueldo','seguridad social'] },
   { grupo: 'Suministros',              tipo: 'Gasto',   keywords: ['luz','agua','gas','teléfono','telefono','internet','electricidad'] },
-  { grupo: 'Servicios profesionales',  tipo: 'Gasto',   keywords: ['asesoría','asesoria','gestoría','gestoria','abogado','consultoría','consultoria','auditoría','auditoria'] },
+  { grupo: 'Servicios profesionales',  tipo: 'Gasto',   keywords: ['asesoría','asesoria','gestoría','gestoria','abogado','consultoría','consultoria'] },
   { grupo: 'Material de oficina',      tipo: 'Gasto',   keywords: ['material','oficina','papel','tinta','impresora'] },
   { grupo: 'Gastos de software',       tipo: 'Gasto',   keywords: ['software','licencia','suscripción','suscripcion','cloud','hosting'] },
   { grupo: 'Formación',                tipo: 'Gasto',   keywords: ['curso','formación','formacion','congreso'] },
   { grupo: 'Viajes y dietas',          tipo: 'Gasto',   keywords: ['viaje','dieta','kilómetro','kilometro','combustible'] },
   { grupo: 'Ingresos',                 tipo: 'Ingreso', keywords: ['cliente','facturación','facturacion','honorarios','proyecto'] },
-  { grupo: 'Otros',                    tipo: 'Gasto',   keywords: [] } // Grupo por defecto si no hay coincidencias
+  { grupo: 'Otros',                    tipo: 'Gasto',   keywords: [] }
 ];
 
-function listaGrupos(){ return GRUPOS_CONFIG.map(g => g.grupo); }
-function tipoDeGrupo(grupo){
-  const cfg = GRUPOS_CONFIG.find(g => g.grupo === grupo);
-  return cfg ? cfg.tipo : 'Gasto';
-}
-
-/* ---------- 3. DATOS DE EJEMPLO ---------- */
-const SEED_FACTURAS = [
-  { id:1, fecha:'2025-01-15', emisor:'Endesa',         concepto:'Factura luz enero',            base:85.50,  ivaPct:21, tipo:'Gasto',   grupo:'Suministros' },
-  { id:2, fecha:'2025-01-20', emisor:'Gestoría Ruiz',  concepto:'Asesoría mensual',              base:200.00, ivaPct:21, tipo:'Gasto',   grupo:'Servicios profesionales' },
-  { id:3, fecha:'2025-01-25', emisor:'Microsoft',      concepto:'Licencia Office 365',           base:60.00,  ivaPct:21, tipo:'Gasto',   grupo:'Gastos de software' },
-  { id:4, fecha:'2025-01-30', emisor:'Cliente A',      concepto:'Proyecto automatización',       base:1000.00,ivaPct:21, tipo:'Ingreso', grupo:'Ingresos' }
-];
-
-/* ---------- 4. ESTADO Y PERSISTENCIA ---------- */
 let facturas = [];
+
+function euros(n){ return (Math.round(n*100)/100).toFixed(2).replace('.',',') + '€'; }
 
 function calcularFactura(base, ivaPct){
   const ivaAmount = Math.round(base * ivaPct) / 100;
   const total = Math.round((base + ivaAmount) * 100) / 100;
-  return { ivaAmount: Math.round(ivaAmount*100)/100, total };
+  return { ivaAmount, total };
 }
 
 function enriquecerFactura(f){
-  const { ivaAmount, total } = calcularFactura(f.base, f.ivaPct);
   const d = new Date(f.fecha + 'T00:00:00');
-  return { ...f, ivaAmount, total, mes: d.getMonth()+1, anio: d.getFullYear() };
+  return { ...f, mes: d.getMonth()+1, anio: d.getFullYear(), ...calcularFactura(f.base, f.ivaPct) };
 }
 
 function cargarDatos(){
   const saved = localStorage.getItem(STORAGE_KEY);
-  const base = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(SEED_FACTURAS));
-  facturas = base.map(enriquecerFactura);
-  if(!saved) guardarDatos();
+  if(saved){ facturas = JSON.parse(saved).map(enriquecerFactura); }
+  else{
+    const semilla = [
+      { id:1, fecha:'2025-01-15', emisor:'Endesa', concepto:'Factura luz enero', base:85.50, ivaPct:21, tipo:'Gasto', grupo:'Suministros' },
+      { id:2, fecha:'2025-01-20', emisor:'Gestoría Ruiz', concepto:'Asesoría mensual', base:200, ivaPct:21, tipo:'Gasto', grupo:'Servicios profesionales' },
+      { id:3, fecha:'2025-01-30', emisor:'Cliente A', concepto:'Proyecto automatización', base:1000, ivaPct:21, tipo:'Ingreso', grupo:'Ingresos' }
+    ];
+    facturas = semilla.map(enriquecerFactura);
+    guardarDatos();
+  }
 }
+
 function guardarDatos(){
-  // Guardamos solo los campos base; mes/año/iva/total se recalculan al cargar
   const paraGuardar = facturas.map(f => ({ id:f.id, fecha:f.fecha, emisor:f.emisor, concepto:f.concepto, base:f.base, ivaPct:f.ivaPct, tipo:f.tipo, grupo:f.grupo }));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(paraGuardar));
 }
 
-/* ---------- 5. LOGIN ---------- */
+// ---------- LOGIN ----------
 const loginScreen = document.getElementById('login-screen');
 const loginForm = document.getElementById('login-form');
 const passwordInput = document.getElementById('password-input');
@@ -848,27 +722,32 @@ loginForm.addEventListener('submit', function(e){
   e.preventDefault();
   if(passwordInput.value === APP_PASSWORD){
     sessionStorage.setItem('automizeai_auth', '1');
-    entrarEnApp();
+    loginScreen.style.display = 'none';
+    appEl.classList.add('active');
+    cargarDatos();
+    inicializarSelectores();
+    renderTodo();
   } else {
     loginError.classList.add('show');
     passwordInput.value = '';
     passwordInput.focus();
   }
 });
+
 document.getElementById('logout-btn').addEventListener('click', function(){
   sessionStorage.removeItem('automizeai_auth');
   location.reload();
 });
-function entrarEnApp(){
+
+if(sessionStorage.getItem('automizeai_auth') === '1'){
   loginScreen.style.display = 'none';
   appEl.classList.add('active');
   cargarDatos();
   inicializarSelectores();
   renderTodo();
 }
-if(sessionStorage.getItem('automizeai_auth') === '1'){ entrarEnApp(); }
 
-/* ---------- 6. NAVEGACIÓN ---------- */
+// ---------- NAVEGACIÓN ----------
 document.querySelectorAll('.nav-item[data-section]').forEach(item => {
   item.addEventListener('click', function(e){
     e.preventDefault();
@@ -881,141 +760,162 @@ document.querySelectorAll('.nav-item[data-section]').forEach(item => {
   });
 });
 
-/* ---------- 7. UTILIDADES ---------- */
-function euros(n){ return (Math.round(n*100)/100).toLocaleString('es-ES',{minimumFractionDigits:2, maximumFractionDigits:2}) + '€'; }
-function formatearFecha(fechaStr){
-  const d = new Date(fechaStr + 'T00:00:00');
-  return d.toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' });
-}
-function mostrarToast(texto){
-  const toast = document.getElementById('toast');
-  document.getElementById('toast-text').textContent = texto;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2400);
-}
-function abrirModal(id){ document.getElementById(id).classList.add('active'); }
-function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
-document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => cerrarModal(btn.dataset.close)));
-document.querySelectorAll('.modal-overlay').forEach(overlay => overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); }));
-
-/* Rellena los <select> de grupo contable, mes y año dinámicamente */
+// ---------- SELECTORES ----------
 function inicializarSelectores(){
-  ['res-grupo','manual-grupo'].forEach(id => {
+  const grupos = GRUPOS_CONFIG.map(g => g.grupo);
+  ['res-grupo','manual-grupo','filter-grupo'].forEach(id => {
     const sel = document.getElementById(id);
-    sel.innerHTML = listaGrupos().map(g => `<option value="${g}">${g}</option>`).join('');
+    if(!sel) return;
+    sel.innerHTML = id === 'filter-grupo' ? '<option value="todos">Todos los grupos</option>' : '';
+    grupos.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g;
+      opt.textContent = g;
+      sel.appendChild(opt);
+    });
   });
 
-  const filtroGrupo = document.getElementById('filter-grupo');
-  filtroGrupo.innerHTML = '<option value="todos">Todos los grupos</option>' + listaGrupos().map(g => `<option value="${g}">${g}</option>`).join('');
+  const meses = ['todos', ...MESES];
+  ['filter-mes','informe-mes'].forEach(id => {
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    sel.innerHTML = meses.map((m,i) => `<option value="${i===0?'todos':i}">${m}</option>`).join('');
+  });
+  document.getElementById('informe-mes').value = new Date().getMonth()+1;
 
-  const filtroMes = document.getElementById('filter-mes');
-  filtroMes.innerHTML = '<option value="todos">Todos los meses</option>' + MESES_NOMBRE.map((m,i) => `<option value="${i+1}">${m}</option>`).join('');
+  ['filter-anio','informe-anio'].forEach(id => {
+    const sel = document.getElementById(id);
+    if(!sel) return;
+    const anios = [...new Set(facturas.map(f => f.anio))].sort((a,b) => b-a);
+    const actual = new Date().getFullYear();
+    if(anios.length === 0) anios.push(actual);
+    if(!anios.includes(actual)) anios.unshift(actual);
+    sel.innerHTML = '<option value="todos">Todos los años</option>' + anios.map(a => `<option value="${a}">${a}</option>`).join('');
+  });
+}
 
-  // Selectores de informe y filtro de año se recalculan según los años presentes en los datos
-  actualizarSelectorAnios();
+// ---------- RENDER ----------
+function renderTodo(){
+  renderDashboard();
+  renderFacturas();
+}
 
-  const informeMes = document.getElementById('informe-mes');
-  informeMes.innerHTML = MESES_NOMBRE.map((m,i) => `<option value="${i+1}">${m}</option>`).join('');
+// ---------- DASHBOARD ----------
+function renderDashboard(){
   const hoy = new Date();
-  informeMes.value = hoy.getMonth()+1;
+  const mesActual = hoy.getMonth()+1, anioActual = hoy.getFullYear();
+  const delMes = facturas.filter(f => f.mes === mesActual && f.anio === anioActual);
+  const ingresos = delMes.filter(f => f.tipo === 'Ingreso').reduce((s,f) => s+f.total, 0);
+  const gastos = delMes.filter(f => f.tipo === 'Gasto').reduce((s,f) => s+f.total, 0);
 
-  document.getElementById('informe-mes').addEventListener('change', renderInforme);
-  document.getElementById('informe-anio').addEventListener('change', renderInforme);
-}
+  document.getElementById('metrics-grid').innerHTML = `
+    <div class="metric-card"><div class="label">Ingresos del mes</div><div class="value">${euros(ingresos)}</div></div>
+    <div class="metric-card"><div class="label">Gastos del mes</div><div class="value">${euros(gastos)}</div></div>
+    <div class="metric-card"><div class="label">Beneficio</div><div class="value">${euros(ingresos-gastos)}</div></div>
+    <div class="metric-card"><div class="label">Nº facturas</div><div class="value">${facturas.length}</div></div>
+  `;
 
-function actualizarSelectorAnios(){
-  const anios = [...new Set(facturas.map(f => f.anio))].sort((a,b) => b-a);
-  const hoy = new Date().getFullYear();
-  if(!anios.includes(hoy)) anios.unshift(hoy);
-
-  const filtroAnio = document.getElementById('filter-anio');
-  const valorPrevio = filtroAnio.value;
-  filtroAnio.innerHTML = '<option value="todos">Todos los años</option>' + anios.map(a => `<option value="${a}">${a}</option>`).join('');
-  if([...filtroAnio.options].some(o => o.value === valorPrevio)) filtroAnio.value = valorPrevio;
-
-  const informeAnio = document.getElementById('informe-anio');
-  const valorPrevioInf = informeAnio.value;
-  informeAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
-  if([...informeAnio.options].some(o => o.value === valorPrevioInf)) informeAnio.value = valorPrevioInf;
-}
-
-/* ---------- 8. MOTOR DE CLASIFICACIÓN AUTOMÁTICA ---------- */
-// Convierte un importe en formato español ("1.234,56" o "95,00" o "95.00") a número JS
-function parseImporteEsp(str){
-  let s = str.trim();
-  if(s.includes(',')){
-    // Coma decimal: elimina los puntos de miles y sustituye la coma por punto
-    s = s.replace(/\./g,'').replace(',', '.');
+  // Gráfico
+  const meses = [];
+  for(let i=5; i>=0; i--){
+    const d = new Date(hoy.getFullYear(), hoy.getMonth()-i, 1);
+    meses.push({ mes: d.getMonth()+1, anio: d.getFullYear(), label: MESES[d.getMonth()].slice(0,3) });
   }
-  const n = parseFloat(s);
-  return isNaN(n) ? 0 : n;
+  const datos = meses.map(m => {
+    const del = facturas.filter(f => f.mes === m.mes && f.anio === m.anio);
+    return {
+      label: m.label,
+      ingresos: del.filter(f => f.tipo === 'Ingreso').reduce((s,f) => s+f.total, 0),
+      gastos: del.filter(f => f.tipo === 'Gasto').reduce((s,f) => s+f.total, 0)
+    };
+  });
+  const maxValor = Math.max(1, ...datos.map(d => Math.max(d.ingresos, d.gastos)));
+
+  document.getElementById('chart-wrap').innerHTML = datos.map(d => `
+    <div class="chart-bar-col">
+      <div class="chart-bars-pair">
+        <div class="chart-bar ingreso" style="height:${(d.ingresos/maxValor*100)}%"></div>
+        <div class="chart-bar gasto" style="height:${(d.gastos/maxValor*100)}%"></div>
+      </div>
+      <div class="month-label">${d.label}</div>
+    </div>
+  `).join('');
+
+  // Donut
+  const gastosGroup = facturas.filter(f => f.tipo === 'Gasto');
+  const porGrupo = {};
+  gastosGroup.forEach(f => { porGrupo[f.grupo] = (porGrupo[f.grupo]||0) + f.total; });
+  const totalGastos = Object.values(porGrupo).reduce((a,b) => a+b, 0);
+  const colores = ['#1E8FE1','#5ab4f0','#e05252','#ffb199','#f0a500','#8a96a6','#1a8f5e','#7b61ff'];
+
+  const wrap = document.getElementById('donut-wrap');
+  if(Object.keys(porGrupo).length === 0 || totalGastos === 0){
+    wrap.innerHTML = '<div class="empty-state">No hay gastos registrados.</div>';
+  } else {
+    const leyenda = Object.entries(porGrupo).sort((a,b) => b[1]-a[1]).map(([g,t],i) =>
+      `<div class="donut-legend-item"><span class="sw" style="background:${colores[i%colores.length]}"></span>${g}: <b>${euros(t)}</b></div>`
+    ).join('');
+    wrap.innerHTML = `<div class="donut-legend">${leyenda}</div>`;
+  }
+
+  // Últimas facturas
+  const ultimas = [...facturas].sort((a,b) => b.id - a.id).slice(0,5);
+  const list = document.getElementById('recent-list');
+  if(ultimas.length === 0){
+    list.innerHTML = '<div class="empty-state">No hay facturas registradas.</div>';
+  } else {
+    list.innerHTML = ultimas.map(f => `
+      <div class="recent-item">
+        <div class="info"><b>${f.emisor}</b><span>${f.concepto} · ${f.grupo}</span></div>
+        <div class="amount ${f.tipo === 'Ingreso' ? 'ingreso' : 'gasto'}">${f.tipo === 'Ingreso' ? '+' : '-'}${euros(f.total)}</div>
+      </div>
+    `).join('');
+  }
 }
 
+// ---------- CLASIFICAR ----------
 function clasificarTexto(texto){
-  const textoLower = texto.toLowerCase();
-
-  // 1. Grupo contable: primera coincidencia de palabra clave
-  let grupoDetectado = 'Otros';
+  const lower = texto.toLowerCase();
+  let grupo = 'Otros';
   for(const cfg of GRUPOS_CONFIG){
-    if(cfg.keywords.some(k => textoLower.includes(k))){
-      grupoDetectado = cfg.grupo;
-      break;
-    }
+    if(cfg.keywords.some(k => lower.includes(k))){ grupo = cfg.grupo; break; }
   }
-  const tipoDetectado = tipoDeGrupo(grupoDetectado);
+  const tipo = GRUPOS_CONFIG.find(g => g.grupo === grupo)?.tipo || 'Gasto';
 
-  // 2. IVA: busca "IVA 10%", "IVA 4%", "exento"; por defecto 21%
   let ivaPct = 21;
-  if(/exento/.test(textoLower)){
-    ivaPct = 0;
-  } else {
-    const matchIva = textoLower.match(/iva\s*(?:del)?\s*(\d{1,2})\s*%/);
-    if(matchIva) ivaPct = parseInt(matchIva[1], 10);
-  }
+  if(/exento/.test(lower)) ivaPct = 0;
+  else { const m = lower.match(/iva\s*(\d{1,2})\s*%/); if(m) ivaPct = parseInt(m[1]); }
 
-  // 3. Fecha (formato dd/mm/yyyy)
   let fecha = new Date().toISOString().split('T')[0];
-  const matchFecha = texto.match(/fecha[:\s]*([0-3]?\d)[\/\-]([01]?\d)[\/\-](\d{4})/i);
-  if(matchFecha){
-    const dd = matchFecha[1].padStart(2,'0');
-    const mm = matchFecha[2].padStart(2,'0');
-    fecha = `${matchFecha[3]}-${mm}-${dd}`;
-  }
+  const mFecha = texto.match(/fecha[:\s]*([0-3]?\d)[\/\-]([01]?\d)[\/\-](\d{4})/i);
+  if(mFecha) fecha = `${mFecha[3]}-${mFecha[2].padStart(2,'0')}-${mFecha[1].padStart(2,'0')}`;
 
-  // 4. Emisor
-  let emisor = '';
-  const matchEmisor = texto.match(/emisor[:\s]*([^\n\r]+)/i);
-  if(matchEmisor) emisor = matchEmisor[1].trim();
+  let emisor = '', concepto = '';
+  const mEmisor = texto.match(/emisor[:\s]*([^\n\r]+)/i);
+  if(mEmisor) emisor = mEmisor[1].trim();
+  const mConcepto = texto.match(/concepto[:\s]*([^\n\r]+)/i);
+  if(mConcepto) concepto = mConcepto[1].trim();
 
-  // 5. Concepto
-  let concepto = '';
-  const matchConcepto = texto.match(/concepto[:\s]*([^\n\r]+)/i);
-  if(matchConcepto) concepto = matchConcepto[1].trim();
-
-  // 6. Base imponible (acepta formato español: coma decimal y punto de miles)
   let base = 0;
-  const matchBase = texto.match(/base\s*imponible[:\s]*([\d.,]+)\s*€?/i);
-  if(matchBase){
-    base = parseImporteEsp(matchBase[1]);
+  const mBase = texto.match(/base\s*imponible[:\s]*([\d.,]+)/i);
+  if(mBase) {
+    let s = mBase[1].replace(/\./g,'').replace(',','.');
+    base = parseFloat(s) || 0;
   } else {
-    // Si no hay "base imponible" pero sí un "total", estimamos la base a partir del IVA detectado
-    const matchTotal = texto.match(/total[:\s]*([\d.,]+)\s*€?/i);
-    if(matchTotal){
-      const totalDetectado = parseImporteEsp(matchTotal[1]);
-      if(!isNaN(totalDetectado)) base = Math.round((totalDetectado / (1 + ivaPct/100)) * 100) / 100;
+    const mTotal = texto.match(/total[:\s]*([\d.,]+)/i);
+    if(mTotal) {
+      let s = mTotal[1].replace(/\./g,'').replace(',','.');
+      const total = parseFloat(s) || 0;
+      base = Math.round((total / (1 + ivaPct/100)) * 100) / 100;
     }
   }
-  if(isNaN(base)) base = 0;
 
-  return { fecha, emisor, concepto, grupo: grupoDetectado, tipo: tipoDetectado, ivaPct, base };
+  return { fecha, emisor, concepto, grupo, tipo, ivaPct, base };
 }
 
 document.getElementById('btn-clasificar').addEventListener('click', function(){
   const texto = document.getElementById('factura-texto').value.trim();
-  if(!texto){
-    mostrarToast('Pega primero el texto de una factura');
-    return;
-  }
+  if(!texto){ mostrarToast('Pega primero el texto de una factura'); return; }
   const r = clasificarTexto(texto);
   document.getElementById('res-fecha').value = r.fecha;
   document.getElementById('res-tipo').value = r.tipo;
@@ -1024,7 +924,7 @@ document.getElementById('btn-clasificar').addEventListener('click', function(){
   document.getElementById('res-grupo').value = r.grupo;
   document.getElementById('res-iva-pct').value = r.ivaPct;
   document.getElementById('res-base').value = r.base.toFixed(2);
-  actualizarPreviewTotales();
+  actualizarPreview();
   document.getElementById('result-panel').classList.add('show');
   mostrarToast('Factura clasificada — revisa los datos antes de guardar');
 });
@@ -1034,13 +934,11 @@ document.getElementById('btn-limpiar-texto').addEventListener('click', function(
   document.getElementById('result-panel').classList.remove('show');
 });
 
-// El grupo contable determina automáticamente el tipo (gasto/ingreso) al cambiarlo
-document.getElementById('res-grupo').addEventListener('change', function(){
-  document.getElementById('res-tipo').value = tipoDeGrupo(this.value);
+['res-base','res-iva-pct'].forEach(id => {
+  document.getElementById(id).addEventListener('input', actualizarPreview);
 });
-['res-base','res-iva-pct'].forEach(id => document.getElementById(id).addEventListener('input', actualizarPreviewTotales));
 
-function actualizarPreviewTotales(){
+function actualizarPreview(){
   const base = parseFloat(document.getElementById('res-base').value) || 0;
   const ivaPct = parseFloat(document.getElementById('res-iva-pct').value) || 0;
   const { ivaAmount, total } = calcularFactura(base, ivaPct);
@@ -1048,12 +946,6 @@ function actualizarPreviewTotales(){
   document.getElementById('tp-iva').textContent = euros(ivaAmount);
   document.getElementById('tp-total').textContent = euros(total);
 }
-
-// "Corregir y guardar" simplemente enfoca el primer campo para editar antes de guardar
-document.getElementById('btn-corregir').addEventListener('click', function(){
-  document.getElementById('res-emisor').focus();
-  mostrarToast('Corrige los campos necesarios y pulsa "Guardar factura"');
-});
 
 document.getElementById('form-resultado').addEventListener('submit', function(e){
   e.preventDefault();
@@ -1069,200 +961,57 @@ document.getElementById('form-resultado').addEventListener('submit', function(e)
   };
   facturas.unshift(enriquecerFactura(nueva));
   guardarDatos();
-  actualizarSelectorAnios();
+  inicializarSelectores();
   renderTodo();
   document.getElementById('factura-texto').value = '';
   document.getElementById('result-panel').classList.remove('show');
   mostrarToast('Factura guardada correctamente');
 });
 
-/* ---------- 9. RENDER GENERAL ---------- */
-function renderTodo(){
-  renderDashboard();
-  renderFacturas();
-}
-
-/* ---------- 10. DASHBOARD ---------- */
-function renderDashboard(){
-  const hoy = new Date();
-  const mesActual = hoy.getMonth()+1, anioActual = hoy.getFullYear();
-  const delMes = facturas.filter(f => f.mes === mesActual && f.anio === anioActual);
-
-  const ingresosMes = delMes.filter(f => f.tipo === 'Ingreso').reduce((s,f) => s+f.total, 0);
-  const gastosMes = delMes.filter(f => f.tipo === 'Gasto').reduce((s,f) => s+f.total, 0);
-  const beneficioMes = ingresosMes - gastosMes;
-
-  document.getElementById('metrics-grid').innerHTML = `
-    <div class="metric-card fade-up">
-      <div class="label">Ingresos del mes</div>
-      <div class="value">${euros(ingresosMes)}</div>
-      <div class="delta">${MESES_NOMBRE[mesActual-1]} ${anioActual}</div>
-    </div>
-    <div class="metric-card fade-up">
-      <div class="label">Gastos del mes</div>
-      <div class="value">${euros(gastosMes)}</div>
-      <div class="delta">${MESES_NOMBRE[mesActual-1]} ${anioActual}</div>
-    </div>
-    <div class="metric-card fade-up ${beneficioMes < 0 ? 'negativo' : ''}">
-      <div class="label">Beneficio del mes</div>
-      <div class="value">${euros(beneficioMes)}</div>
-      <div class="delta">${beneficioMes >= 0 ? 'Resultado positivo' : 'Resultado negativo'}</div>
-    </div>
-    <div class="metric-card fade-up">
-      <div class="label">Nº de facturas</div>
-      <div class="value">${facturas.length}</div>
-      <div class="delta">Total histórico</div>
-    </div>
-  `;
-
-  renderGraficoBarras();
-  renderDonut();
-  renderUltimasFacturas();
-}
-
-function ultimos6Meses(){
-  const hoy = new Date();
-  const arr = [];
-  for(let i=5; i>=0; i--){
-    const d = new Date(hoy.getFullYear(), hoy.getMonth()-i, 1);
-    arr.push({ mes: d.getMonth()+1, anio: d.getFullYear(), label: MESES_NOMBRE[d.getMonth()].slice(0,3) });
-  }
-  return arr;
-}
-
-function renderGraficoBarras(){
-  const meses = ultimos6Meses();
-  const datos = meses.map(m => {
-    const del = facturas.filter(f => f.mes === m.mes && f.anio === m.anio);
-    return {
-      label: m.label,
-      ingresos: del.filter(f => f.tipo === 'Ingreso').reduce((s,f) => s+f.total, 0),
-      gastos: del.filter(f => f.tipo === 'Gasto').reduce((s,f) => s+f.total, 0)
-    };
-  });
-  const maxValor = Math.max(1, ...datos.map(d => Math.max(d.ingresos, d.gastos)));
-
-  document.getElementById('chart-wrap').innerHTML = datos.map(d => `
-    <div class="chart-bar-col">
-      <div class="chart-bars-pair">
-        <div class="chart-bar ingreso" style="height:${(d.ingresos/maxValor*100)}%" title="Ingresos: ${euros(d.ingresos)}"></div>
-        <div class="chart-bar gasto" style="height:${(d.gastos/maxValor*100)}%" title="Gastos: ${euros(d.gastos)}"></div>
-      </div>
-      <div class="month-label">${d.label}</div>
-    </div>
-  `).join('');
-}
-
-const DONUT_COLORES = ['#1E8FE1','#5ab4f0','#e05252','#ffb199','#f0a500','#8a96a6','#1a8f5e','#7b61ff','#5a6474'];
-
-function renderDonut(){
-  const gastos = facturas.filter(f => f.tipo === 'Gasto');
-  const totalGastos = gastos.reduce((s,f) => s+f.total, 0);
-  const porGrupo = {};
-  gastos.forEach(f => { porGrupo[f.grupo] = (porGrupo[f.grupo]||0) + f.total; });
-  const entradas = Object.entries(porGrupo).sort((a,b) => b[1]-a[1]);
-
-  const wrap = document.getElementById('donut-wrap');
-  if(entradas.length === 0 || totalGastos === 0){
-    wrap.innerHTML = `<div class="empty-state">Todavía no hay gastos registrados para mostrar la distribución.</div>`;
-    return;
-  }
-
-  const radio = 60, circunferencia = 2 * Math.PI * radio;
-  let acumulado = 0;
-  let segmentos = '';
-  entradas.forEach(([grupo, total], i) => {
-    const frac = total / totalGastos;
-    const largo = frac * circunferencia;
-    const color = DONUT_COLORES[i % DONUT_COLORES.length];
-    segmentos += `<circle cx="80" cy="80" r="${radio}" fill="none" stroke="${color}" stroke-width="22"
-      stroke-dasharray="${largo} ${circunferencia-largo}" stroke-dashoffset="${-acumulado}" transform="rotate(-90 80 80)"/>`;
-    acumulado += largo;
-  });
-
-  const svg = `<svg width="160" height="160" viewBox="0 0 160 160">${segmentos}<circle cx="80" cy="80" r="40" fill="var(--card-bg)"/></svg>`;
-  const leyenda = entradas.map(([grupo,total],i) => `
-    <div class="donut-legend-item">
-      <span class="sw" style="background:${DONUT_COLORES[i % DONUT_COLORES.length]}"></span>
-      ${grupo}: <b>${euros(total)}</b>
-    </div>
-  `).join('');
-
-  wrap.innerHTML = `${svg}<div class="donut-legend">${leyenda}</div>`;
-}
-
-function renderUltimasFacturas(){
-  const ultimas = [...facturas].sort((a,b) => b.id - a.id).slice(0,5);
-  const list = document.getElementById('recent-list');
-  if(ultimas.length === 0){
-    list.innerHTML = `<div class="empty-state">Todavía no hay facturas registradas.</div>`;
-    return;
-  }
-  list.innerHTML = ultimas.map(f => `
-    <div class="recent-item">
-      <div class="info">
-        <b>${f.emisor}</b>
-        <span>${f.concepto} · ${f.grupo} · ${formatearFecha(f.fecha)}</span>
-      </div>
-      <div class="amount ${f.tipo === 'Ingreso' ? 'ingreso' : 'gasto'}">${f.tipo === 'Ingreso' ? '+' : '-'}${euros(f.total)}</div>
-    </div>
-  `).join('');
-}
-
-/* ---------- 11. FACTURAS (TABLA + FILTROS) ---------- */
+// ---------- FACTURAS ----------
 const searchInput = document.getElementById('search-input');
-[searchInput, document.getElementById('filter-tipo'), document.getElementById('filter-grupo'), document.getElementById('filter-mes'), document.getElementById('filter-anio')]
-  .forEach(el => el.addEventListener('input', renderFacturas) & el.addEventListener('change', renderFacturas));
+document.querySelectorAll('#filter-tipo, #filter-grupo').forEach(el => {
+  el.addEventListener('change', renderFacturas);
+});
+searchInput.addEventListener('input', renderFacturas);
 
 function renderFacturas(){
   const query = searchInput.value.trim().toLowerCase();
   const fTipo = document.getElementById('filter-tipo').value;
   const fGrupo = document.getElementById('filter-grupo').value;
-  const fMes = document.getElementById('filter-mes').value;
-  const fAnio = document.getElementById('filter-anio').value;
 
   const filtradas = facturas.filter(f => {
     const okTexto = f.emisor.toLowerCase().includes(query) || f.concepto.toLowerCase().includes(query);
     const okTipo = fTipo === 'todos' || f.tipo === fTipo;
     const okGrupo = fGrupo === 'todos' || f.grupo === fGrupo;
-    const okMes = fMes === 'todos' || f.mes === parseInt(fMes,10);
-    const okAnio = fAnio === 'todos' || f.anio === parseInt(fAnio,10);
-    return okTexto && okTipo && okGrupo && okMes && okAnio;
+    return okTexto && okTipo && okGrupo;
   }).sort((a,b) => b.fecha.localeCompare(a.fecha));
 
-  const totalIngresos = filtradas.filter(f => f.tipo==='Ingreso').reduce((s,f)=>s+f.total,0);
-  const totalGastos = filtradas.filter(f => f.tipo==='Gasto').reduce((s,f)=>s+f.total,0);
+  const totalIngresos = filtradas.filter(f => f.tipo==='Ingreso').reduce((s,f) => s+f.total, 0);
+  const totalGastos = filtradas.filter(f => f.tipo==='Gasto').reduce((s,f) => s+f.total, 0);
   document.getElementById('tb-ingresos').textContent = euros(totalIngresos);
   document.getElementById('tb-gastos').textContent = euros(totalGastos);
   document.getElementById('tb-beneficio').textContent = euros(totalIngresos-totalGastos);
 
   const tbody = document.getElementById('facturas-tbody');
   if(filtradas.length === 0){
-    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state">No se han encontrado facturas con esos criterios.</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">No se encontraron facturas.</div></td></tr>`;
     return;
   }
-
   tbody.innerHTML = filtradas.map(f => `
     <tr>
-      <td class="cell-muted">${formatearFecha(f.fecha)}</td>
-      <td class="cell-name">${f.emisor}</td>
-      <td class="cell-muted">${f.concepto}</td>
+      <td>${f.fecha}</td>
+      <td><b>${f.emisor}</b></td>
+      <td>${f.concepto}</td>
       <td>${euros(f.base)}</td>
-      <td class="cell-muted">${euros(f.ivaAmount)} (${f.ivaPct}%)</td>
-      <td class="cell-name">${euros(f.total)}</td>
+      <td>${euros(f.ivaAmount)} (${f.ivaPct}%)</td>
+      <td><b>${euros(f.total)}</b></td>
       <td><span class="tipo-pill tipo-${f.tipo}">${f.tipo}</span></td>
-      <td><span class="grupo-pill">${f.grupo}</span></td>
-      <td class="cell-muted">${MESES_NOMBRE[f.mes-1]}</td>
-      <td class="cell-muted">${f.anio}</td>
+      <td><span style="font-size:12px;color:var(--text-muted);">${f.grupo}</span></td>
       <td>
-        <div class="row-actions">
-          <button class="icon-btn" title="Editar" onclick="editarFactura(${f.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          </button>
-          <button class="icon-btn danger" title="Eliminar" onclick="eliminarFactura(${f.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-          </button>
-        </div>
+        <button class="icon-btn danger" onclick="eliminarFactura(${f.id})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
       </td>
     </tr>
   `).join('');
@@ -1272,73 +1021,51 @@ function eliminarFactura(id){
   if(!confirm('¿Eliminar esta factura?')) return;
   facturas = facturas.filter(f => f.id !== id);
   guardarDatos();
-  actualizarSelectorAnios();
+  inicializarSelectores();
   renderTodo();
   mostrarToast('Factura eliminada');
 }
 
-function editarFactura(id){
-  const f = facturas.find(x => x.id === id);
-  if(!f) return;
-  document.getElementById('modal-manual-title').textContent = 'Editar factura';
-  document.getElementById('manual-id').value = f.id;
-  document.getElementById('manual-fecha').value = f.fecha;
-  document.getElementById('manual-tipo').value = f.tipo;
-  document.getElementById('manual-emisor').value = f.emisor;
-  document.getElementById('manual-concepto').value = f.concepto;
-  document.getElementById('manual-grupo').value = f.grupo;
-  document.getElementById('manual-iva-pct').value = f.ivaPct;
-  document.getElementById('manual-base').value = f.base;
-  abrirModal('modal-manual');
-}
-
 document.getElementById('btn-nueva-manual').addEventListener('click', function(){
-  document.getElementById('modal-manual-title').textContent = 'Añadir factura manualmente';
-  document.getElementById('form-manual').reset();
   document.getElementById('manual-id').value = '';
   document.getElementById('manual-fecha').valueAsDate = new Date();
+  document.getElementById('manual-emisor').value = '';
+  document.getElementById('manual-concepto').value = '';
+  document.getElementById('manual-base').value = '';
   abrirModal('modal-manual');
-});
-
-document.getElementById('manual-grupo').addEventListener('change', function(){
-  document.getElementById('manual-tipo').value = tipoDeGrupo(this.value);
 });
 
 document.getElementById('form-manual').addEventListener('submit', function(e){
   e.preventDefault();
-  const idExistente = document.getElementById('manual-id').value;
-  const datos = {
-    id: idExistente ? parseInt(idExistente,10) : Date.now(),
+  const nueva = {
+    id: Date.now(),
     fecha: document.getElementById('manual-fecha').value,
     emisor: document.getElementById('manual-emisor').value.trim(),
     concepto: document.getElementById('manual-concepto').value.trim(),
-    grupo: document.getElementById('manual-grupo').value,
-    ivaPct: parseFloat(document.getElementById('manual-iva-pct').value),
+    base: parseFloat(document.getElementById('manual-base').value) || 0,
+    ivaPct: parseFloat(document.getElementById('manual-iva-pct').value) || 0,
     tipo: document.getElementById('manual-tipo').value,
-    base: parseFloat(document.getElementById('manual-base').value) || 0
+    grupo: document.getElementById('manual-grupo').value
   };
-
-  if(idExistente){
-    facturas = facturas.map(f => f.id === datos.id ? enriquecerFactura(datos) : f);
-    mostrarToast('Factura actualizada');
-  } else {
-    facturas.unshift(enriquecerFactura(datos));
-    mostrarToast('Factura añadida correctamente');
-  }
+  facturas.unshift(enriquecerFactura(nueva));
   guardarDatos();
-  actualizarSelectorAnios();
+  inicializarSelectores();
   renderTodo();
   cerrarModal('modal-manual');
+  mostrarToast('Factura añadida');
 });
 
-/* ---------- 12. INFORMES ---------- */
+// ---------- INFORMES ----------
+document.getElementById('informe-mes').addEventListener('change', renderInforme);
+document.getElementById('informe-anio').addEventListener('change', renderInforme);
+
 function renderInforme(){
-  const mes = parseInt(document.getElementById('informe-mes').value, 10);
-  const anio = parseInt(document.getElementById('informe-anio').value, 10);
+  const mes = parseInt(document.getElementById('informe-mes').value);
+  const anio = parseInt(document.getElementById('informe-anio').value);
   const delPeriodo = facturas.filter(f => f.mes === mes && f.anio === anio);
 
-  const totalIngresos = delPeriodo.filter(f => f.tipo==='Ingreso').reduce((s,f)=>s+f.total,0);
-  const totalGastos = delPeriodo.filter(f => f.tipo==='Gasto').reduce((s,f)=>s+f.total,0);
+  const totalIngresos = delPeriodo.filter(f => f.tipo==='Ingreso').reduce((s,f) => s+f.total, 0);
+  const totalGastos = delPeriodo.filter(f => f.tipo==='Gasto').reduce((s,f) => s+f.total, 0);
   document.getElementById('inf-ingresos').textContent = euros(totalIngresos);
   document.getElementById('inf-gastos').textContent = euros(totalGastos);
   document.getElementById('inf-beneficio').textContent = euros(totalIngresos-totalGastos);
@@ -1353,41 +1080,54 @@ function renderInforme(){
   const tbody = document.getElementById('informe-tbody');
   const entradas = Object.entries(porGrupo).sort((a,b) => b[1].total - a[1].total);
   if(entradas.length === 0){
-    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state">No hay facturas registradas en ${MESES_NOMBRE[mes-1]} de ${anio}.</div></td></tr>`;
-    return;
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state">No hay facturas en este periodo.</div></td></tr>`;
+  } else {
+    tbody.innerHTML = entradas.map(([grupo,d]) => `
+      <tr>
+        <td><b>${grupo}</b></td>
+        <td><span class="tipo-pill tipo-${d.tipo}">${d.tipo}</span></td>
+        <td>${d.count}</td>
+        <td><b>${euros(d.total)}</b></td>
+      </tr>
+    `).join('');
   }
-  tbody.innerHTML = entradas.map(([grupo, d]) => `
-    <tr>
-      <td class="cell-name">${grupo}</td>
-      <td><span class="tipo-pill tipo-${d.tipo}">${d.tipo}</span></td>
-      <td class="cell-muted">${d.count}</td>
-      <td class="cell-name">${euros(d.total)}</td>
-    </tr>
-  `).join('');
 }
 
 document.getElementById('btn-exportar-csv').addEventListener('click', function(){
-  const mes = parseInt(document.getElementById('informe-mes').value, 10);
-  const anio = parseInt(document.getElementById('informe-anio').value, 10);
-  const delPeriodo = facturas.filter(f => f.mes === mes && f.anio === anio).sort((a,b) => a.fecha.localeCompare(b.fecha));
-
-  if(delPeriodo.length === 0){
-    mostrarToast('No hay facturas en ese periodo para exportar');
-    return;
-  }
+  const mes = parseInt(document.getElementById('informe-mes').value);
+  const anio = parseInt(document.getElementById('informe-anio').value);
+  const delPeriodo = facturas.filter(f => f.mes === mes && f.anio === anio);
+  if(delPeriodo.length === 0){ mostrarToast('No hay facturas para exportar'); return; }
 
   const cabecera = ['Fecha','Emisor','Concepto','Base','IVA %','IVA €','Total','Tipo','Grupo'];
   const filas = delPeriodo.map(f => [f.fecha, f.emisor, f.concepto, f.base.toFixed(2), f.ivaPct, f.ivaAmount.toFixed(2), f.total.toFixed(2), f.tipo, f.grupo]);
-  const csv = [cabecera, ...filas].map(fila => fila.map(v => `"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
+  const csv = [cabecera, ...filas].map(row => row.map(v => `"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
 
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `informe_${MESES_NOMBRE[mes-1].toLowerCase()}_${anio}.csv`;
+  a.download = `informe_${MESES[mes-1].toLowerCase()}_${anio}.csv`;
   a.click();
   URL.revokeObjectURL(url);
-  mostrarToast('Informe exportado a CSV');
+  mostrarToast('Informe exportado');
+});
+
+// ---------- UTILIDADES ----------
+function mostrarToast(texto){
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-text').textContent = texto;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function abrirModal(id){ document.getElementById(id).classList.add('active'); }
+function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
+document.querySelectorAll('[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => cerrarModal(btn.dataset.close));
+});
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); });
 });
 </script>
 </body>
