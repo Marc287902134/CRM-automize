@@ -747,17 +747,160 @@ if(sessionStorage.getItem('automizeai_auth') === '1'){
   renderTodo();
 }
 
-// ---------- NAVEGACIÓN ----------
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutomizeAI · Contabilidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ... (todo el CSS igual que antes) ... */
+</style>
+</head>
+<body>
+<!-- ... (todo el HTML igual que antes) ... -->
+<script>
+/* ================================================================
+   AutomizeAI · Contabilidad — JavaScript CORREGIDO
+   ================================================================ */
+
+const APP_PASSWORD = "automize2025";
+const STORAGE_KEY = "automizeai_facturas";
+
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+const GRUPOS_CONFIG = [
+  { grupo: 'Gastos de personal',       tipo: 'Gasto',   keywords: ['nómina','nomina','salario','sueldo','seguridad social'] },
+  { grupo: 'Suministros',              tipo: 'Gasto',   keywords: ['luz','agua','gas','teléfono','telefono','internet','electricidad'] },
+  { grupo: 'Servicios profesionales',  tipo: 'Gasto',   keywords: ['asesoría','asesoria','gestoría','gestoria','abogado','consultoría','consultoria'] },
+  { grupo: 'Material de oficina',      tipo: 'Gasto',   keywords: ['material','oficina','papel','tinta','impresora'] },
+  { grupo: 'Gastos de software',       tipo: 'Gasto',   keywords: ['software','licencia','suscripción','suscripcion','cloud','hosting'] },
+  { grupo: 'Formación',                tipo: 'Gasto',   keywords: ['curso','formación','formacion','congreso'] },
+  { grupo: 'Viajes y dietas',          tipo: 'Gasto',   keywords: ['viaje','dieta','kilómetro','kilometro','combustible'] },
+  { grupo: 'Ingresos',                 tipo: 'Ingreso', keywords: ['cliente','facturación','facturacion','honorarios','proyecto'] },
+  { grupo: 'Otros',                    tipo: 'Gasto',   keywords: [] }
+];
+
+let facturas = [];
+
+function euros(n){ return (Math.round(n*100)/100).toFixed(2).replace('.',',') + '€'; }
+
+function calcularFactura(base, ivaPct){
+  const ivaAmount = Math.round(base * ivaPct) / 100;
+  const total = Math.round((base + ivaAmount) * 100) / 100;
+  return { ivaAmount, total };
+}
+
+function enriquecerFactura(f){
+  const d = new Date(f.fecha + 'T00:00:00');
+  return { ...f, mes: d.getMonth()+1, anio: d.getFullYear(), ...calcularFactura(f.base, f.ivaPct) };
+}
+
+function cargarDatos(){
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if(saved){ facturas = JSON.parse(saved).map(enriquecerFactura); }
+  else{
+    const semilla = [
+      { id:1, fecha:'2025-01-15', emisor:'Endesa', concepto:'Factura luz enero', base:85.50, ivaPct:21, tipo:'Gasto', grupo:'Suministros' },
+      { id:2, fecha:'2025-01-20', emisor:'Gestoría Ruiz', concepto:'Asesoría mensual', base:200, ivaPct:21, tipo:'Gasto', grupo:'Servicios profesionales' },
+      { id:3, fecha:'2025-01-30', emisor:'Cliente A', concepto:'Proyecto automatización', base:1000, ivaPct:21, tipo:'Ingreso', grupo:'Ingresos' }
+    ];
+    facturas = semilla.map(enriquecerFactura);
+    guardarDatos();
+  }
+}
+
+function guardarDatos(){
+  const paraGuardar = facturas.map(f => ({ id:f.id, fecha:f.fecha, emisor:f.emisor, concepto:f.concepto, base:f.base, ivaPct:f.ivaPct, tipo:f.tipo, grupo:f.grupo }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(paraGuardar));
+}
+
+// ---------- LOGIN ----------
+const loginScreen = document.getElementById('login-screen');
+const loginForm = document.getElementById('login-form');
+const passwordInput = document.getElementById('password-input');
+const loginError = document.getElementById('login-error');
+const appEl = document.getElementById('app');
+
+loginForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(passwordInput.value === APP_PASSWORD){
+    sessionStorage.setItem('automizeai_auth', '1');
+    loginScreen.style.display = 'none';
+    appEl.classList.add('active');
+    cargarDatos();
+    inicializarSelectores();
+    renderTodo();
+    restaurarSeccion();
+  } else {
+    loginError.classList.add('show');
+    passwordInput.value = '';
+    passwordInput.focus();
+  }
+});
+
+document.getElementById('logout-btn').addEventListener('click', function(){
+  sessionStorage.removeItem('automizeai_auth');
+  sessionStorage.removeItem('contabilidad_section');
+  location.reload();
+});
+
+if(sessionStorage.getItem('automizeai_auth') === '1'){
+  loginScreen.style.display = 'none';
+  appEl.classList.add('active');
+  cargarDatos();
+  inicializarSelectores();
+  renderTodo();
+  restaurarSeccion();
+}
+
+// ============================================================
+// NAVEGACIÓN CORREGIDA (EL SIDEBAR FUNCIONA)
+// ============================================================
+
+function cambiarSeccion(target) {
+  // Quitar active de todos los items
+  document.querySelectorAll('.nav-item[data-section]').forEach(i => i.classList.remove('active'));
+  // Activar el item correspondiente
+  const itemActivo = document.querySelector(`.nav-item[data-section="${target}"]`);
+  if (itemActivo) itemActivo.classList.add('active');
+  
+  // Ocultar todas las secciones
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  
+  // Mostrar la sección seleccionada
+  const sectionEl = document.getElementById('section-' + target);
+  if (sectionEl) sectionEl.classList.add('active');
+  
+  // Renderizar informes si es necesario
+  if (target === 'informes') renderInforme();
+  
+  // Guardar en sessionStorage para recordar al recargar
+  sessionStorage.setItem('contabilidad_section', target);
+}
+
+function restaurarSeccion() {
+  const seccionGuardada = sessionStorage.getItem('contabilidad_section') || 'dashboard';
+  cambiarSeccion(seccionGuardada);
+}
+
+// Event listeners para la navegación
 document.querySelectorAll('.nav-item[data-section]').forEach(item => {
   item.addEventListener('click', function(e){
     e.preventDefault();
     const target = this.dataset.section;
-    document.querySelectorAll('.nav-item[data-section]').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById('section-' + target).classList.add('active');
-    if(target === 'informes') renderInforme();
+    cambiarSeccion(target);
   });
+});
+
+// Al cargar la página, restaurar la sección activa
+document.addEventListener('DOMContentLoaded', function() {
+  if (appEl.classList.contains('active')) {
+    restaurarSeccion();
+  }
 });
 
 // ---------- SELECTORES ----------
@@ -1128,6 +1271,13 @@ document.querySelectorAll('[data-close]').forEach(btn => {
 });
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); });
+});
+
+// ============================================================
+// INICIALIZACIÓN (al cargar la página)
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Contabilidad cargada correctamente');
 });
 </script>
 </body>
