@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- FORZAR A QUE SE MUESTRE COMO PÁGINA WEB -->
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>AutomizeAI · CRM Interno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,6 +169,7 @@
   .sidebar:hover .nav-item span.label{ opacity:1; }
   .nav-item:hover{ background:rgba(245,248,252,0.06); color:var(--white); }
   .nav-item.active{ background:var(--accent); color:var(--white); }
+  .nav-divider{ height:1px; background:rgba(245,248,252,0.08); margin:10px 4px; }
 
   .sidebar-footer{
     padding:16px 12px; border-top:1px solid rgba(245,248,252,0.06);
@@ -488,32 +487,31 @@
     </div>
 
     <nav class="sidebar-nav">
-  <a href="#" class="nav-item active" data-section="dashboard">
-    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
-    <span class="label">Dashboard</span>
-  </a>
-  <a href="#" class="nav-item" data-section="clientes">
-    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-    <span class="label">Clientes</span>
-  </a>
-  <a href="#" class="nav-item" data-section="pipeline">
-    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M3 10h12v4H3z"/><path d="M3 17h6v4H3z"/></svg></span>
-    <span class="label">Pipeline</span>
-  </a>
-  <a href="#" class="nav-item" data-section="tareas">
-    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-    <span class="label">Tareas</span>
-  </a>
+      <a href="#" class="nav-item active" data-section="dashboard">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+        <span class="label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-section="clientes">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="label">Clientes</span>
+      </a>
+      <a href="#" class="nav-item" data-section="pipeline">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M3 10h12v4H3z"/><path d="M3 17h6v4H3z"/></svg></span>
+        <span class="label">Pipeline</span>
+      </a>
+      <a href="#" class="nav-item" data-section="tareas">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+        <span class="label">Tareas</span>
+      </a>
 
-  <!-- LÍNEA DIVISORA -->
-  <div style="height:1px;background:rgba(245,248,252,0.08);margin:10px 4px;"></div>
+      <div class="nav-divider"></div>
 
-  <!-- NUEVO: ENLACE A CONTABILIDAD -->
-  <a href="contabilidad.html" class="nav-item" style="color:var(--accent-light);">
-    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
-    <span class="label">📊 Contabilidad</span>
-  </a>
-</nav>
+      <a href="contabilidad.html" class="nav-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
+        <span class="label">Contabilidad</span>
+      </a>
+    </nav>
+
     <div class="sidebar-footer">
       <div class="user-chip">
         <div class="avatar">M</div>
@@ -795,52 +793,83 @@ function guardarLeads(){ localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify
 function guardarTasks(){ localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
 
 /* ---------- 5. LOGIN ---------- */
-const loginScreen = document.getElementById('login-screen');
-const loginForm = document.getElementById('login-form');
-const passwordInput = document.getElementById('password-input');
-const loginError = document.getElementById('login-error');
-const appEl = document.getElementById('app');
+// IMPORTANTE: capturamos las referencias del DOM y enlazamos los eventos
+// dentro de una función de inicialización, no directamente en el nivel
+// superior del script. Esto garantiza que TODO se vuelve a enlazar
+// correctamente cada vez que la página se carga (venga de donde venga:
+// primera visita, recarga, o navegación desde contabilidad.html).
+let loginScreen, loginForm, passwordInput, loginError, appEl;
 
-loginForm.addEventListener('submit', function(e){
-  e.preventDefault();
-  if(passwordInput.value === APP_PASSWORD){
-    sessionStorage.setItem('automizeai_auth', '1');
+function inicializarLogin(){
+  loginScreen = document.getElementById('login-screen');
+  loginForm = document.getElementById('login-form');
+  passwordInput = document.getElementById('password-input');
+  loginError = document.getElementById('login-error');
+  appEl = document.getElementById('app');
+
+  loginForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(passwordInput.value === APP_PASSWORD){
+      sessionStorage.setItem('automizeai_auth', '1');
+      entrarEnApp();
+    } else {
+      loginError.classList.add('show');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', function(){
+    sessionStorage.removeItem('automizeai_auth');
+    localStorage.removeItem('crm_seccion_activa');
+    location.reload();
+  });
+
+  // Si ya se autenticó en esta sesión del navegador, entra directamente
+  if(sessionStorage.getItem('automizeai_auth') === '1'){
     entrarEnApp();
-  } else {
-    loginError.classList.add('show');
-    passwordInput.value = '';
-    passwordInput.focus();
   }
-});
-
-document.getElementById('logout-btn').addEventListener('click', function(){
-  sessionStorage.removeItem('automizeai_auth');
-  location.reload();
-});
+}
 
 function entrarEnApp(){
   loginScreen.style.display = 'none';
   appEl.classList.add('active');
   cargarDatos();
   renderTodo();
+  irASeccion(localStorage.getItem('crm_seccion_activa') || 'dashboard');
+  console.log('[AutomizeAI CRM] Aplicación inicializada correctamente.');
 }
 
-// Si ya se autenticó en esta sesión del navegador, entra directamente
-if(sessionStorage.getItem('automizeai_auth') === '1'){
-  entrarEnApp();
+/* ---------- 6. NAVEGACIÓN ENTRE SECCIONES (delegación de eventos) ---------- */
+// En vez de enlazar un listener a CADA botón del sidebar (lo que puede fallar
+// si algún elemento no está aún en el DOM en ese instante), enlazamos UN
+// ÚNICO listener al contenedor <nav class="sidebar-nav">, que siempre existe.
+// Así la navegación funciona siempre, sin importar cuántas veces se recargue
+// la página o desde qué módulo se vuelva.
+function irASeccion(target){
+  const seccion = document.getElementById('section-' + target);
+  if(!seccion) return; // seguridad: si la sección no existe, no hacemos nada
+  document.querySelectorAll('.nav-item[data-section]').forEach(i => i.classList.remove('active'));
+  const navActivo = document.querySelector(`.nav-item[data-section="${target}"]`);
+  if(navActivo) navActivo.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  seccion.classList.add('active');
+  localStorage.setItem('crm_seccion_activa', target);
 }
 
-/* ---------- 6. NAVEGACIÓN ENTRE SECCIONES ---------- */
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', function(e){
+function inicializarNavegacion(){
+  const nav = document.querySelector('.sidebar-nav');
+  if(!nav){ console.error('[AutomizeAI CRM] No se encontró el contenedor .sidebar-nav'); return; }
+
+  nav.addEventListener('click', function(e){
+    const item = e.target.closest('.nav-item[data-section]');
+    if(!item) return; // el clic no fue sobre un ítem de navegación (p.ej. el enlace a Contabilidad)
     e.preventDefault();
-    const target = this.dataset.section;
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById('section-' + target).classList.add('active');
+    irASeccion(item.dataset.section);
   });
-});
+
+  console.log('[AutomizeAI CRM] Navegación del sidebar enlazada correctamente.');
+}
 
 /* ---------- 7. UTILIDADES ---------- */
 function formatearFecha(fechaStr){
@@ -858,19 +887,25 @@ function iniciales(nombre){
 }
 function abrirModal(id){ document.getElementById(id).classList.add('active'); }
 function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
-document.querySelectorAll('[data-close]').forEach(btn => {
-  btn.addEventListener('click', () => cerrarModal(btn.dataset.close));
-});
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); });
-});
+
+function inicializarModales(){
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => cerrarModal(btn.dataset.close));
+  });
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); });
+  });
+}
 
 /* ---------- 8. RENDER GENERAL ---------- */
+// Cada función de render se ejecuta dentro de su propio try/catch:
+// si una sección falla por cualquier motivo, las demás (incluida la
+// navegación) siguen funcionando con normalidad.
 function renderTodo(){
-  renderDashboard();
-  renderClientes();
-  renderKanban();
-  renderTareas();
+  try{ renderDashboard(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderDashboard:', err); }
+  try{ renderClientes(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderClientes:', err); }
+  try{ renderKanban(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderKanban:', err); }
+  try{ renderTareas(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderTareas:', err); }
 }
 
 /* ---------- 9. DASHBOARD ---------- */
@@ -1185,6 +1220,32 @@ document.getElementById('form-task').addEventListener('submit', function(e){
   this.reset();
   cerrarModal('modal-task');
   mostrarToast('Tarea añadida correctamente');
+});
+
+/* ================================================================
+   13. ARRANQUE MAESTRO DE LA APLICACIÓN
+   ================================================================
+   Usamos 'load' (en vez de DOMContentLoaded) para asegurarnos de que
+   absolutamente todo -incluidas fuentes e imágenes- está listo antes
+   de enlazar los eventos. Además escuchamos 'pageshow' para el caso
+   en el que el navegador restaure esta página desde su caché al
+   pulsar "atrás" (bfcache): en ese caso el 'load' no se vuelve a
+   disparar, así que forzamos una reinicialización igualmente.
+   ================================================================ */
+function inicializarApp(){
+  console.log('[AutomizeAI CRM] Inicializando aplicación...');
+  inicializarLogin();
+  inicializarNavegacion();
+  inicializarModales();
+}
+
+window.addEventListener('load', inicializarApp);
+
+window.addEventListener('pageshow', function(e){
+  if(e.persisted){
+    console.log('[AutomizeAI CRM] Página restaurada desde caché del navegador (bfcache). Re-inicializando...');
+    inicializarApp();
+  }
 });
 </script>
 </body>
