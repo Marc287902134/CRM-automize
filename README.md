@@ -223,6 +223,8 @@
   .btn-primary:hover{ background:var(--accent-dark); transform:translateY(-1px); }
   .btn-secondary{ background:var(--card-bg); color:var(--black); border:1px solid var(--border-strong); }
   .btn-secondary:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-danger{ background:#e05252; color:var(--white); }
+  .btn-danger:hover{ background:#c23a3a; transform:translateY(-1px); }
   .btn-ghost{ color:var(--text-muted); }
   .btn-ghost:hover{ color:var(--accent); }
 
@@ -414,6 +416,17 @@
   .form-group input:focus, .form-group select:focus{ border-color:var(--accent); }
   .modal-actions{ display:flex; gap:10px; margin-top:22px; }
   .modal-actions .btn{ flex:1; justify-content:center; }
+
+  /* Diálogo de confirmación personalizado (sustituye a confirm() del navegador) */
+  .modal-confirmar-card{ max-width:380px; text-align:center; }
+  .confirmar-icon{
+    width:52px; height:52px; border-radius:50%; margin:0 auto 18px;
+    background:rgba(224,82,82,0.1); color:#e05252;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .confirmar-icon svg{ width:24px; height:24px; }
+  .modal-confirmar-card h3{ font-size:18px; margin-bottom:10px; }
+  .modal-confirmar-card p{ font-size:13.5px; color:var(--text-muted); line-height:1.55; }
 
   /* Toast de confirmación */
   #toast{
@@ -653,12 +666,12 @@
         <input type="text" id="lead-empresa" required placeholder="Ej. Gómez Consulting">
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="lead-email" required placeholder="sara@empresa.com">
+        <label>Email <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="email" id="lead-email" placeholder="sara@empresa.com">
       </div>
       <div class="form-group">
-        <label>Teléfono</label>
-        <input type="tel" id="lead-telefono" required placeholder="+34 600 000 000">
+        <label>Teléfono <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="tel" id="lead-telefono" placeholder="+34 600 000 000">
       </div>
       <div class="form-group">
         <label>Estado</label>
@@ -674,6 +687,67 @@
         <button type="submit" class="btn btn-primary">Guardar lead</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: EDITAR LEAD (todos los campos)
+     ============================================================ -->
+<div class="modal-overlay" id="modal-editar-lead">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Editar lead</h3>
+      <button class="modal-close" data-close="modal-editar-lead">✕</button>
+    </div>
+    <form id="form-editar-lead">
+      <input type="hidden" id="editar-lead-id">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" id="editar-lead-nombre" required placeholder="Ej. Sara Gómez">
+      </div>
+      <div class="form-group">
+        <label>Empresa</label>
+        <input type="text" id="editar-lead-empresa" required placeholder="Ej. Gómez Consulting">
+      </div>
+      <div class="form-group">
+        <label>Email <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="email" id="editar-lead-email" placeholder="sara@empresa.com">
+      </div>
+      <div class="form-group">
+        <label>Teléfono <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="tel" id="editar-lead-telefono" placeholder="+34 600 000 000">
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <select id="editar-lead-estado">
+          <option value="Lead">Lead</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Negociación">Negociación</option>
+          <option value="Cerrado">Cerrado</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close="modal-editar-lead">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================================
+     DIÁLOGO DE CONFIRMACIÓN PERSONALIZADO (sustituye a confirm())
+     ============================================================ -->
+<div class="modal-overlay" id="modal-confirmar">
+  <div class="modal modal-confirmar-card">
+    <div class="confirmar-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <h3 id="confirmar-titulo">Eliminar lead</h3>
+    <p id="confirmar-mensaje">¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="confirmar-cancelar">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="confirmar-aceptar">Eliminar</button>
+    </div>
   </div>
 </div>
 
@@ -1002,10 +1076,13 @@ function renderClientes(){
       <td><span class="status-pill status-${l.estado.replace('ó','o')}">${l.estado}</span></td>
       <td>
         <div class="row-actions">
-          <button class="icon-btn" title="Editar estado" onclick="ciclarEstadoLead(${l.id})">
+          <button class="icon-btn" title="Editar datos del lead" onclick="abrirEdicionLead(${l.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </button>
+          <button class="icon-btn" title="Ciclar estado" onclick="ciclarEstadoLead(${l.id})">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </button>
-          <button class="icon-btn danger" title="Eliminar" onclick="eliminarLead(${l.id})">
+          <button class="icon-btn danger" title="Eliminar" onclick="pedirEliminarLead(${l.id})">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
@@ -1029,10 +1106,73 @@ function ciclarEstadoLead(id){
   renderTodo();
   mostrarToast(`${lead.nombre} ahora está en "${lead.estado}"`);
 }
+
+/* ---------- 10b. EDICIÓN COMPLETA DE UN LEAD ---------- */
+function abrirEdicionLead(id){
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  document.getElementById('editar-lead-id').value = lead.id;
+  document.getElementById('editar-lead-nombre').value = lead.nombre;
+  document.getElementById('editar-lead-empresa').value = lead.empresa;
+  document.getElementById('editar-lead-email').value = lead.email === '—' ? '' : lead.email;
+  document.getElementById('editar-lead-telefono').value = lead.telefono === '—' ? '' : lead.telefono;
+  document.getElementById('editar-lead-estado').value = lead.estado;
+  abrirModal('modal-editar-lead');
+}
+
+document.getElementById('form-editar-lead').addEventListener('submit', function(e){
+  e.preventDefault();
+  const id = parseInt(document.getElementById('editar-lead-id').value, 10);
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  lead.nombre = document.getElementById('editar-lead-nombre').value.trim();
+  lead.empresa = document.getElementById('editar-lead-empresa').value.trim();
+  lead.email = document.getElementById('editar-lead-email').value.trim() || '—';
+  lead.telefono = document.getElementById('editar-lead-telefono').value.trim() || '—';
+  lead.estado = document.getElementById('editar-lead-estado').value;
+  guardarLeads();
+  renderTodo();
+  cerrarModal('modal-editar-lead');
+  mostrarToast('Datos del lead actualizados correctamente');
+});
+
+/* ---------- 10c. DIÁLOGO DE CONFIRMACIÓN PERSONALIZADO ---------- */
+// Sustituye a confirm() del navegador por un modal con el estilo de AutomizeAI.
+// callbackConfirmacion guarda qué hacer si el usuario pulsa "Eliminar".
+let callbackConfirmacion = null;
+
+function pedirConfirmacion(titulo, mensaje, onConfirmar){
+  document.getElementById('confirmar-titulo').textContent = titulo;
+  document.getElementById('confirmar-mensaje').textContent = mensaje;
+  callbackConfirmacion = onConfirmar;
+  abrirModal('modal-confirmar');
+}
+
+function inicializarConfirmacion(){
+  document.getElementById('confirmar-cancelar').addEventListener('click', function(){
+    callbackConfirmacion = null;
+    cerrarModal('modal-confirmar');
+  });
+  document.getElementById('confirmar-aceptar').addEventListener('click', function(){
+    if(callbackConfirmacion) callbackConfirmacion();
+    callbackConfirmacion = null;
+    cerrarModal('modal-confirmar');
+  });
+}
+
+function pedirEliminarLead(id){
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  pedirConfirmacion(
+    'Eliminar lead',
+    `¿Estás seguro de que quieres eliminar a ${lead.nombre} de ${lead.empresa}? Esta acción no se puede deshacer.`,
+    () => eliminarLead(id)
+  );
+}
+
 function eliminarLead(id){
   const lead = leads.find(l => l.id === id);
   if(!lead) return;
-  if(!confirm(`¿Eliminar a ${lead.nombre} de la lista de clientes?`)) return;
   leads = leads.filter(l => l.id !== id);
   guardarLeads();
   renderTodo();
@@ -1047,8 +1187,8 @@ document.getElementById('form-lead').addEventListener('submit', function(e){
     id: Date.now(),
     nombre: document.getElementById('lead-nombre').value.trim(),
     empresa: document.getElementById('lead-empresa').value.trim(),
-    email: document.getElementById('lead-email').value.trim(),
-    telefono: document.getElementById('lead-telefono').value.trim(),
+    email: document.getElementById('lead-email').value.trim() || '—',
+    telefono: document.getElementById('lead-telefono').value.trim() || '—',
     estado: document.getElementById('lead-estado').value,
     fecha: new Date().toISOString().split('T')[0]
   };
@@ -1237,6 +1377,7 @@ function inicializarApp(){
   inicializarLogin();
   inicializarNavegacion();
   inicializarModales();
+  inicializarConfirmacion();
 }
 
 window.addEventListener('load', inicializarApp);
