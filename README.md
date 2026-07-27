@@ -223,8 +223,6 @@
   .btn-primary:hover{ background:var(--accent-dark); transform:translateY(-1px); }
   .btn-secondary{ background:var(--card-bg); color:var(--black); border:1px solid var(--border-strong); }
   .btn-secondary:hover{ border-color:var(--accent); color:var(--accent); }
-  .btn-danger{ background:#e05252; color:var(--white); }
-  .btn-danger:hover{ background:#c23a3a; transform:translateY(-1px); }
   .btn-ghost{ color:var(--text-muted); }
   .btn-ghost:hover{ color:var(--accent); }
 
@@ -416,17 +414,6 @@
   .form-group input:focus, .form-group select:focus{ border-color:var(--accent); }
   .modal-actions{ display:flex; gap:10px; margin-top:22px; }
   .modal-actions .btn{ flex:1; justify-content:center; }
-
-  /* Diálogo de confirmación personalizado (sustituye a confirm() del navegador) */
-  .modal-confirmar-card{ max-width:380px; text-align:center; }
-  .confirmar-icon{
-    width:52px; height:52px; border-radius:50%; margin:0 auto 18px;
-    background:rgba(224,82,82,0.1); color:#e05252;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .confirmar-icon svg{ width:24px; height:24px; }
-  .modal-confirmar-card h3{ font-size:18px; margin-bottom:10px; }
-  .modal-confirmar-card p{ font-size:13.5px; color:var(--text-muted); line-height:1.55; }
 
   /* Toast de confirmación */
   #toast{
@@ -691,67 +678,6 @@
 </div>
 
 <!-- ============================================================
-     MODAL: EDITAR LEAD (todos los campos)
-     ============================================================ -->
-<div class="modal-overlay" id="modal-editar-lead">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Editar lead</h3>
-      <button class="modal-close" data-close="modal-editar-lead">✕</button>
-    </div>
-    <form id="form-editar-lead">
-      <input type="hidden" id="editar-lead-id">
-      <div class="form-group">
-        <label>Nombre completo</label>
-        <input type="text" id="editar-lead-nombre" required placeholder="Ej. Sara Gómez">
-      </div>
-      <div class="form-group">
-        <label>Empresa</label>
-        <input type="text" id="editar-lead-empresa" required placeholder="Ej. Gómez Consulting">
-      </div>
-      <div class="form-group">
-        <label>Email <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
-        <input type="email" id="editar-lead-email" placeholder="sara@empresa.com">
-      </div>
-      <div class="form-group">
-        <label>Teléfono <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
-        <input type="tel" id="editar-lead-telefono" placeholder="+34 600 000 000">
-      </div>
-      <div class="form-group">
-        <label>Estado</label>
-        <select id="editar-lead-estado">
-          <option value="Lead">Lead</option>
-          <option value="Contactado">Contactado</option>
-          <option value="Negociación">Negociación</option>
-          <option value="Cerrado">Cerrado</option>
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" data-close="modal-editar-lead">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- ============================================================
-     DIÁLOGO DE CONFIRMACIÓN PERSONALIZADO (sustituye a confirm())
-     ============================================================ -->
-<div class="modal-overlay" id="modal-confirmar">
-  <div class="modal modal-confirmar-card">
-    <div class="confirmar-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-    </div>
-    <h3 id="confirmar-titulo">Eliminar lead</h3>
-    <p id="confirmar-mensaje">¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.</p>
-    <div class="modal-actions">
-      <button type="button" class="btn btn-secondary" id="confirmar-cancelar">Cancelar</button>
-      <button type="button" class="btn btn-danger" id="confirmar-aceptar">Eliminar</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================
      MODAL: NUEVA TARJETA DE PIPELINE (rápida)
      ============================================================ -->
 <div class="modal-overlay" id="modal-kanban">
@@ -823,7 +749,113 @@
 const APP_PASSWORD = "automize2025";
 const STORAGE_KEYS = { leads: "automizeai_leads", tasks: "automizeai_tasks" };
 
-/* ---------- 2. DATOS DE EJEMPLO (semilla inicial) ---------- */
+/* ==================================================================
+   SINCRONIZACIÓN EN LA NUBE (JSONBin.io)
+   ==================================================================
+   Para que Marc y Mario vean los mismos datos desde cualquier dispositivo.
+   ================================================================== */
+const JSONBIN_BIN_ID = '6a679ffaf5f4af5e29c92dbb';
+const JSONBIN_API_KEY = '$2a$10$jQC31H8F/rODWylmlVYt0uo1l.5PdX4kHum2BuR4IwxZVT5m5lmiu';
+const JSONBIN_ACTIVO = JSONBIN_BIN_ID.trim() !== '' && JSONBIN_API_KEY.trim() !== '';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+
+let sincronizando = false;
+let ultimaMarcaAplicada = null;
+
+function horaActual(){ return new Date().toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'}); }
+
+function marcarEstadoSync(estado, mensaje){
+  const dot = document.getElementById('sync-dot');
+  const texto = document.getElementById('sync-text');
+  if(!dot || !texto) return;
+  dot.className = 'sync-dot sync-' + estado;
+  texto.textContent = mensaje;
+}
+
+async function nubeObtener(){
+  const res = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
+  if(!res.ok) throw new Error('No se pudo leer la nube (' + res.status + ')');
+  const data = await res.json();
+  return data.record || {};
+}
+async function nubeGuardar(objetoCompleto){
+  const res = await fetch(JSONBIN_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+    body: JSON.stringify(objetoCompleto)
+  });
+  if(!res.ok) throw new Error('No se pudo guardar en la nube (' + res.status + ')');
+}
+
+async function sincronizarSubida(){
+  if(!JSONBIN_ACTIVO || sincronizando) return;
+  sincronizando = true;
+  marcarEstadoSync('cargando', 'Sincronizando...');
+  try{
+    const remoto = await nubeObtener();
+    remoto.leads = leads;
+    remoto.tasks = tasks;
+    remoto.actualizadoLeadsTasks = new Date().toISOString();
+    await nubeGuardar(remoto);
+    ultimaMarcaAplicada = remoto.actualizadoLeadsTasks;
+    marcarEstadoSync('ok', 'Sincronizado ' + horaActual());
+    console.log('[AutomizeAI CRM] Datos subidos a la nube correctamente.');
+  } catch(err){
+    marcarEstadoSync('error', 'Sin conexión con la nube');
+    console.error('[AutomizeAI CRM] Error al subir a la nube:', err);
+  } finally { sincronizando = false; }
+}
+
+async function sincronizarDescarga(){
+  if(!JSONBIN_ACTIVO || sincronizando) return;
+  sincronizando = true;
+  marcarEstadoSync('cargando', 'Sincronizando...');
+  try{
+    const remoto = await nubeObtener();
+    if(Array.isArray(remoto.leads)){
+      if(remoto.actualizadoLeadsTasks !== ultimaMarcaAplicada){
+        leads = remoto.leads;
+        tasks = remoto.tasks || tasks;
+        localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify(leads));
+        localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+        ultimaMarcaAplicada = remoto.actualizadoLeadsTasks;
+        renderTodo();
+        console.log('[AutomizeAI CRM] Datos descargados de la nube correctamente.');
+      }
+      marcarEstadoSync('ok', 'Sincronizado ' + horaActual());
+    } else {
+      sincronizando = false;
+      await sincronizarSubida();
+      return;
+    }
+  } catch(err){
+    marcarEstadoSync('error', 'Sin conexión con la nube');
+    console.error('[AutomizeAI CRM] Error al descargar de la nube:', err);
+  } finally { sincronizando = false; }
+}
+
+function inicializarSincronizacion(){
+  if(!JSONBIN_ACTIVO){
+    marcarEstadoSync('local', 'Modo local (sin configurar)');
+  }
+  const btn = document.getElementById('btn-sync-manual');
+  if(btn){
+    btn.addEventListener('click', function(){
+      if(!JSONBIN_ACTIVO){
+        mostrarToast('Sincronización no configurada. Revisa las instrucciones en el código.');
+        return;
+      }
+      sincronizarDescarga();
+    });
+  }
+  document.addEventListener('visibilitychange', function(){
+    if(document.visibilityState === 'visible' && appEl && appEl.classList.contains('active')){
+      sincronizarDescarga();
+    }
+  });
+}
+
+/* ---------- 2. DATOS DE EJEMPLO ---------- */
 const SEED_LEADS = [
   { id: 1, nombre: "María González",  empresa: "TechSolutions",         email: "maria.gonzalez@techsolutions.es",   telefono: "+34 611 222 333", estado: "Lead",        fecha: "2025-01-10" },
   { id: 2, nombre: "Carlos Ruiz",     empresa: "Distribuciones Ruiz",   email: "carlos.ruiz@distribru.es",          telefono: "+34 622 333 444", estado: "Contactado",  fecha: "2025-01-12" },
@@ -854,7 +886,7 @@ let leads = [];
 let tasks = [];
 let kanbanDragId = null;
 
-/* ---------- 4. PERSISTENCIA (localStorage) ---------- */
+/* ---------- 4. PERSISTENCIA ---------- */
 function cargarDatos(){
   const savedLeads = localStorage.getItem(STORAGE_KEYS.leads);
   const savedTasks = localStorage.getItem(STORAGE_KEYS.tasks);
@@ -863,15 +895,10 @@ function cargarDatos(){
   if(!savedLeads) guardarLeads();
   if(!savedTasks) guardarTasks();
 }
-function guardarLeads(){ localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify(leads)); }
-function guardarTasks(){ localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); }
+function guardarLeads(){ localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify(leads)); sincronizarSubida(); }
+function guardarTasks(){ localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); sincronizarSubida(); }
 
 /* ---------- 5. LOGIN ---------- */
-// IMPORTANTE: capturamos las referencias del DOM y enlazamos los eventos
-// dentro de una función de inicialización, no directamente en el nivel
-// superior del script. Esto garantiza que TODO se vuelve a enlazar
-// correctamente cada vez que la página se carga (venga de donde venga:
-// primera visita, recarga, o navegación desde contabilidad.html).
 let loginScreen, loginForm, passwordInput, loginError, appEl;
 
 function inicializarLogin(){
@@ -899,7 +926,6 @@ function inicializarLogin(){
     location.reload();
   });
 
-  // Si ya se autenticó en esta sesión del navegador, entra directamente
   if(sessionStorage.getItem('automizeai_auth') === '1'){
     entrarEnApp();
   }
@@ -911,18 +937,14 @@ function entrarEnApp(){
   cargarDatos();
   renderTodo();
   irASeccion(localStorage.getItem('crm_seccion_activa') || 'dashboard');
+  if(JSONBIN_ACTIVO) sincronizarDescarga();
   console.log('[AutomizeAI CRM] Aplicación inicializada correctamente.');
 }
 
-/* ---------- 6. NAVEGACIÓN ENTRE SECCIONES (delegación de eventos) ---------- */
-// En vez de enlazar un listener a CADA botón del sidebar (lo que puede fallar
-// si algún elemento no está aún en el DOM en ese instante), enlazamos UN
-// ÚNICO listener al contenedor <nav class="sidebar-nav">, que siempre existe.
-// Así la navegación funciona siempre, sin importar cuántas veces se recargue
-// la página o desde qué módulo se vuelva.
+/* ---------- 6. NAVEGACIÓN ---------- */
 function irASeccion(target){
   const seccion = document.getElementById('section-' + target);
-  if(!seccion) return; // seguridad: si la sección no existe, no hacemos nada
+  if(!seccion) return;
   document.querySelectorAll('.nav-item[data-section]').forEach(i => i.classList.remove('active'));
   const navActivo = document.querySelector(`.nav-item[data-section="${target}"]`);
   if(navActivo) navActivo.classList.add('active');
@@ -937,7 +959,7 @@ function inicializarNavegacion(){
 
   nav.addEventListener('click', function(e){
     const item = e.target.closest('.nav-item[data-section]');
-    if(!item) return; // el clic no fue sobre un ítem de navegación (p.ej. el enlace a Contabilidad)
+    if(!item) return;
     e.preventDefault();
     irASeccion(item.dataset.section);
   });
@@ -972,9 +994,6 @@ function inicializarModales(){
 }
 
 /* ---------- 8. RENDER GENERAL ---------- */
-// Cada función de render se ejecuta dentro de su propio try/catch:
-// si una sección falla por cualquier motivo, las demás (incluida la
-// navegación) siguen funcionando con normalidad.
 function renderTodo(){
   try{ renderDashboard(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderDashboard:', err); }
   try{ renderClientes(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderClientes:', err); }
@@ -986,7 +1005,7 @@ function renderTodo(){
 function renderDashboard(){
   const totalLeads = leads.length;
   const clientesActivos = leads.filter(l => l.estado === 'Cerrado').length;
-  const ingresosMes = clientesActivos * 4150; // valor medio simulado por cliente cerrado
+  const ingresosMes = clientesActivos * 4150;
   const tareasPendientes = tasks.filter(t => !t.completada).length;
 
   document.getElementById('metrics-grid').innerHTML = `
@@ -1012,7 +1031,6 @@ function renderDashboard(){
     </div>
   `;
 
-  // Gráfico de barras: evolución de leads
   const maxValor = Math.max(...LEADS_POR_MES.map(m => m.valor));
   document.getElementById('chart-wrap').innerHTML = LEADS_POR_MES.map(m => `
     <div class="chart-bar-col">
@@ -1021,7 +1039,6 @@ function renderDashboard(){
     </div>
   `).join('');
 
-  // Actividad reciente
   document.getElementById('activity-list').innerHTML = ACTIVIDAD_RECIENTE.map(a => `
     <div class="activity-item">
       <div class="activity-dot"></div>
@@ -1032,7 +1049,6 @@ function renderDashboard(){
     </div>
   `).join('');
 
-  // Resumen del pipeline
   const estados = ['Lead','Contactado','Negociación','Cerrado'];
   document.getElementById('pipeline-mini').innerHTML = estados.map(e => `
     <div class="pipeline-mini-card">
@@ -1042,7 +1058,7 @@ function renderDashboard(){
   `).join('');
 }
 
-/* ---------- 10. CLIENTES / LEADS (TABLA) ---------- */
+/* ---------- 10. CLIENTES ---------- */
 const searchInput = document.getElementById('search-input');
 const filterStatus = document.getElementById('filter-status');
 searchInput.addEventListener('input', renderClientes);
@@ -1076,13 +1092,10 @@ function renderClientes(){
       <td><span class="status-pill status-${l.estado.replace('ó','o')}">${l.estado}</span></td>
       <td>
         <div class="row-actions">
-          <button class="icon-btn" title="Editar datos del lead" onclick="abrirEdicionLead(${l.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          </button>
           <button class="icon-btn" title="Ciclar estado" onclick="ciclarEstadoLead(${l.id})">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </button>
-          <button class="icon-btn danger" title="Eliminar" onclick="pedirEliminarLead(${l.id})">
+          <button class="icon-btn danger" title="Eliminar" onclick="eliminarLead(${l.id})">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
@@ -1091,7 +1104,6 @@ function renderClientes(){
   `).join('');
 }
 
-// Nota: la clase CSS usa "status-Negociacion" (sin tilde) por seguridad de selectores
 const styleFix = document.createElement('style');
 styleFix.textContent = `.status-Negociacion{ background:rgba(255,171,64,0.15); color:#b3720a; }`;
 document.head.appendChild(styleFix);
@@ -1106,80 +1118,16 @@ function ciclarEstadoLead(id){
   renderTodo();
   mostrarToast(`${lead.nombre} ahora está en "${lead.estado}"`);
 }
-
-/* ---------- 10b. EDICIÓN COMPLETA DE UN LEAD ---------- */
-function abrirEdicionLead(id){
-  const lead = leads.find(l => l.id === id);
-  if(!lead) return;
-  document.getElementById('editar-lead-id').value = lead.id;
-  document.getElementById('editar-lead-nombre').value = lead.nombre;
-  document.getElementById('editar-lead-empresa').value = lead.empresa;
-  document.getElementById('editar-lead-email').value = lead.email === '—' ? '' : lead.email;
-  document.getElementById('editar-lead-telefono').value = lead.telefono === '—' ? '' : lead.telefono;
-  document.getElementById('editar-lead-estado').value = lead.estado;
-  abrirModal('modal-editar-lead');
-}
-
-document.getElementById('form-editar-lead').addEventListener('submit', function(e){
-  e.preventDefault();
-  const id = parseInt(document.getElementById('editar-lead-id').value, 10);
-  const lead = leads.find(l => l.id === id);
-  if(!lead) return;
-  lead.nombre = document.getElementById('editar-lead-nombre').value.trim();
-  lead.empresa = document.getElementById('editar-lead-empresa').value.trim();
-  lead.email = document.getElementById('editar-lead-email').value.trim() || '—';
-  lead.telefono = document.getElementById('editar-lead-telefono').value.trim() || '—';
-  lead.estado = document.getElementById('editar-lead-estado').value;
-  guardarLeads();
-  renderTodo();
-  cerrarModal('modal-editar-lead');
-  mostrarToast('Datos del lead actualizados correctamente');
-});
-
-/* ---------- 10c. DIÁLOGO DE CONFIRMACIÓN PERSONALIZADO ---------- */
-// Sustituye a confirm() del navegador por un modal con el estilo de AutomizeAI.
-// callbackConfirmacion guarda qué hacer si el usuario pulsa "Eliminar".
-let callbackConfirmacion = null;
-
-function pedirConfirmacion(titulo, mensaje, onConfirmar){
-  document.getElementById('confirmar-titulo').textContent = titulo;
-  document.getElementById('confirmar-mensaje').textContent = mensaje;
-  callbackConfirmacion = onConfirmar;
-  abrirModal('modal-confirmar');
-}
-
-function inicializarConfirmacion(){
-  document.getElementById('confirmar-cancelar').addEventListener('click', function(){
-    callbackConfirmacion = null;
-    cerrarModal('modal-confirmar');
-  });
-  document.getElementById('confirmar-aceptar').addEventListener('click', function(){
-    if(callbackConfirmacion) callbackConfirmacion();
-    callbackConfirmacion = null;
-    cerrarModal('modal-confirmar');
-  });
-}
-
-function pedirEliminarLead(id){
-  const lead = leads.find(l => l.id === id);
-  if(!lead) return;
-  pedirConfirmacion(
-    'Eliminar lead',
-    `¿Estás seguro de que quieres eliminar a ${lead.nombre} de ${lead.empresa}? Esta acción no se puede deshacer.`,
-    () => eliminarLead(id)
-  );
-}
-
 function eliminarLead(id){
   const lead = leads.find(l => l.id === id);
   if(!lead) return;
+  if(!confirm(`¿Eliminar a ${lead.nombre} de la lista de clientes?`)) return;
   leads = leads.filter(l => l.id !== id);
   guardarLeads();
   renderTodo();
   mostrarToast('Lead eliminado');
 }
 
-// Formulario: nuevo lead
 document.getElementById('btn-new-lead').addEventListener('click', () => abrirModal('modal-lead'));
 document.getElementById('form-lead').addEventListener('submit', function(e){
   e.preventDefault();
@@ -1200,7 +1148,7 @@ document.getElementById('form-lead').addEventListener('submit', function(e){
   mostrarToast('Lead añadido correctamente');
 });
 
-/* ---------- 11. PIPELINE (KANBAN CON DRAG & DROP) ---------- */
+/* ---------- 11. PIPELINE ---------- */
 const COLUMNAS = ['Lead','Contactado','Negociación','Cerrado'];
 
 function renderKanban(){
@@ -1299,7 +1247,6 @@ function renderTareas(){
     list.innerHTML = `<div class="empty-state">No hay tareas todavía. ¡Añade la primera!</div>`;
     return;
   }
-  // Pendientes primero, luego completadas; dentro de cada grupo, por fecha
   const ordenadas = [...tasks].sort((a,b) => {
     if(a.completada !== b.completada) return a.completada ? 1 : -1;
     return a.fecha.localeCompare(b.fecha);
@@ -1363,21 +1310,14 @@ document.getElementById('form-task').addEventListener('submit', function(e){
 });
 
 /* ================================================================
-   13. ARRANQUE MAESTRO DE LA APLICACIÓN
-   ================================================================
-   Usamos 'load' (en vez de DOMContentLoaded) para asegurarnos de que
-   absolutamente todo -incluidas fuentes e imágenes- está listo antes
-   de enlazar los eventos. Además escuchamos 'pageshow' para el caso
-   en el que el navegador restaure esta página desde su caché al
-   pulsar "atrás" (bfcache): en ese caso el 'load' no se vuelve a
-   disparar, así que forzamos una reinicialización igualmente.
+   13. ARRANQUE MAESTRO
    ================================================================ */
 function inicializarApp(){
   console.log('[AutomizeAI CRM] Inicializando aplicación...');
   inicializarLogin();
   inicializarNavegacion();
   inicializarModales();
-  inicializarConfirmacion();
+  inicializarSincronizacion();
 }
 
 window.addEventListener('load', inicializarApp);
