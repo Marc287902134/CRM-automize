@@ -858,7 +858,7 @@ const STORAGE_KEYS = { leads: "automizeai_leads", tasks: "automizeai_tasks" };
    Si dejas estos valores vacíos, el CRM funciona exactamente igual que
    antes, solo que en modo local (sin compartir entre dispositivos).
    ================================================================== */
-const JSONBIN_BIN_ID = '6a679ffaf5f4af5e29c92dbb';
+const JSONBIN_BIN_ID = '6a68df4eda38895dfe9c59f8';
 const JSONBIN_API_KEY = '$2a$10$jQC31H8F/rODWylmlVYt0uo1l.5PdX4kHum2BuR4IwxZVT5m5lmiu';
 const JSONBIN_ACTIVO = JSONBIN_BIN_ID.trim() !== '' && JSONBIN_API_KEY.trim() !== '';
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
