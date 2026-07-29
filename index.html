@@ -44,14 +44,16 @@
   h1,h2,h3,h4{ font-family:'Syne',sans-serif; letter-spacing:-0.02em; color:var(--black); }
 
   ::selection{ background:var(--accent-light); color:var(--black); }
+
   ::-webkit-scrollbar{ width:8px; height:8px; }
   ::-webkit-scrollbar-thumb{ background:var(--border-strong); border-radius:10px; }
   ::-webkit-scrollbar-track{ background:transparent; }
 
   button{ font-family:'Inter',sans-serif; cursor:pointer; border:none; outline:none; background:none; }
-  input,select,textarea{ font-family:'Inter',sans-serif; outline:none; }
+  input,select{ font-family:'Inter',sans-serif; outline:none; }
   a{ color:inherit; text-decoration:none; }
 
+  /* Animación fade-up reutilizable */
   @keyframes fadeUp{
     from{ opacity:0; transform:translateY(14px); }
     to{ opacity:1; transform:translateY(0); }
@@ -61,9 +63,10 @@
   .fade-up:nth-child(2){ animation-delay:.08s; }
   .fade-up:nth-child(3){ animation-delay:.14s; }
   .fade-up:nth-child(4){ animation-delay:.2s; }
+  .fade-up:nth-child(5){ animation-delay:.26s; }
 
   /* ======================================================
-     2. PANTALLA DE ACCESO
+     2. PANTALLA DE ACCESO (contraseña)
      ====================================================== */
   #login-screen{
     position:fixed; inset:0; z-index:999;
@@ -79,9 +82,12 @@
     border:1px solid rgba(245,248,252,0.1);
     backdrop-filter:blur(6px);
     border-radius:var(--radius);
-    padding:40px 34px; text-align:center;
+    padding:40px 34px;
+    text-align:center;
   }
-  .login-logo{ display:inline-flex; align-items:center; gap:10px; margin-bottom:26px; }
+  .login-logo{
+    display:inline-flex; align-items:center; gap:10px; margin-bottom:26px;
+  }
   .login-logo .mark{
     width:34px; height:34px; border-radius:9px;
     background:linear-gradient(135deg,var(--accent),var(--accent-dark));
@@ -105,7 +111,10 @@
     transition:background var(--transition), transform var(--transition);
   }
   .login-card button:hover{ background:var(--accent-dark); transform:translateY(-1px); }
-  #login-error{ color:#ff8787; font-size:12.5px; margin-top:12px; min-height:16px; opacity:0; transition:opacity var(--transition); }
+  #login-error{
+    color:#ff8787; font-size:12.5px; margin-top:12px; min-height:16px; opacity:0;
+    transition:opacity var(--transition);
+  }
   #login-error.show{ opacity:1; }
 
   /* ======================================================
@@ -114,17 +123,24 @@
   #app{ display:none; min-height:100vh; }
   #app.active{ display:flex; }
 
+  /* --- SIDEBAR --- */
   .sidebar{
-    width:var(--sidebar-w-collapsed); background:var(--black); height:100vh;
+    width:var(--sidebar-w-collapsed);
+    background:var(--black);
+    height:100vh;
     position:fixed; left:0; top:0; z-index:100;
-    display:flex; flex-direction:column; transition:width var(--transition); overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:width var(--transition);
+    overflow:hidden;
     border-right:1px solid rgba(245,248,252,0.06);
   }
   .sidebar:hover{ width:var(--sidebar-w-expanded); }
 
   .sidebar-logo{
-    display:flex; align-items:center; gap:12px; padding:24px 22px; white-space:nowrap;
-    border-bottom:1px solid rgba(245,248,252,0.06); min-height:76px;
+    display:flex; align-items:center; gap:12px;
+    padding:24px 22px; white-space:nowrap;
+    border-bottom:1px solid rgba(245,248,252,0.06);
+    min-height:76px;
   }
   .sidebar-logo .mark{
     flex-shrink:0; width:32px; height:32px; border-radius:9px;
@@ -132,24 +148,36 @@
     display:flex; align-items:center; justify-content:center;
     font-family:'Syne',sans-serif; font-weight:800; color:var(--white); font-size:15px;
   }
-  .sidebar-logo span{ font-family:'Syne',sans-serif; font-weight:700; font-size:16.5px; color:var(--white); opacity:0; transition:opacity var(--transition); }
+  .sidebar-logo span{
+    font-family:'Syne',sans-serif; font-weight:700; font-size:16.5px; color:var(--white);
+    opacity:0; transition:opacity var(--transition);
+  }
   .sidebar:hover .sidebar-logo span{ opacity:1; }
 
   .sidebar-nav{ flex:1; padding:16px 12px; display:flex; flex-direction:column; gap:4px; }
   .nav-item{
-    display:flex; align-items:center; gap:14px; padding:12px; border-radius:var(--radius-sm);
-    color:var(--text-light); white-space:nowrap; transition:background var(--transition), color var(--transition);
+    display:flex; align-items:center; gap:14px;
+    padding:12px; border-radius:var(--radius-sm);
+    color:var(--text-light); white-space:nowrap;
+    transition:background var(--transition), color var(--transition);
   }
   .nav-item .icon{ flex-shrink:0; width:20px; height:20px; display:flex; align-items:center; justify-content:center; }
   .nav-item svg{ width:19px; height:19px; }
-  .nav-item span.label{ font-size:14px; font-weight:500; opacity:0; transition:opacity var(--transition); }
+  .nav-item span.label{
+    font-size:14px; font-weight:500; opacity:0; transition:opacity var(--transition);
+  }
   .sidebar:hover .nav-item span.label{ opacity:1; }
   .nav-item:hover{ background:rgba(245,248,252,0.06); color:var(--white); }
   .nav-item.active{ background:var(--accent); color:var(--white); }
   .nav-divider{ height:1px; background:rgba(245,248,252,0.08); margin:10px 4px; }
 
-  .sidebar-footer{ padding:16px 12px; border-top:1px solid rgba(245,248,252,0.06); }
-  .user-chip{ display:flex; align-items:center; gap:12px; padding:10px; border-radius:var(--radius-sm); white-space:nowrap; }
+  .sidebar-footer{
+    padding:16px 12px; border-top:1px solid rgba(245,248,252,0.06);
+  }
+  .user-chip{
+    display:flex; align-items:center; gap:12px; padding:10px; border-radius:var(--radius-sm);
+    white-space:nowrap;
+  }
   .user-chip .avatar{
     flex-shrink:0; width:30px; height:30px; border-radius:50%;
     background:var(--accent-light); color:var(--black); font-weight:700; font-size:12px;
@@ -181,9 +209,18 @@
   .sidebar:hover .sync-text{ opacity:1; }
   .sync-action:hover{ background:rgba(30,143,225,0.08); color:var(--accent); }
 
-  .main{ margin-left:var(--sidebar-w-collapsed); flex:1; min-height:100vh; padding:32px 40px 60px; transition:margin-left var(--transition); }
+  /* --- MAIN --- */
+  .main{
+    margin-left:var(--sidebar-w-collapsed);
+    flex:1; min-height:100vh;
+    padding:32px 40px 60px;
+    transition:margin-left var(--transition);
+  }
 
-  .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:32px; flex-wrap:wrap; gap:16px; }
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:32px; flex-wrap:wrap; gap:16px;
+  }
   .topbar h1{ font-size:26px; }
   .topbar p{ color:var(--text-muted); font-size:13.5px; margin-top:4px; }
   .topbar-actions{ display:flex; gap:12px; align-items:center; }
@@ -198,6 +235,10 @@
   .btn-primary:hover{ background:var(--accent-dark); transform:translateY(-1px); }
   .btn-secondary{ background:var(--card-bg); color:var(--black); border:1px solid var(--border-strong); }
   .btn-secondary:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-danger{ background:#e05252; color:var(--white); }
+  .btn-danger:hover{ background:#c23a3a; transform:translateY(-1px); }
+  .btn-ghost{ color:var(--text-muted); }
+  .btn-ghost:hover{ color:var(--accent); }
 
   .section{ display:none; }
   .section.active{ display:block; }
@@ -205,7 +246,9 @@
   /* ======================================================
      4. DASHBOARD
      ====================================================== */
-  .metrics-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:28px; }
+  .metrics-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:28px;
+  }
   .metric-card{
     background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
     padding:22px; position:relative; overflow:hidden;
@@ -215,70 +258,76 @@
     background:linear-gradient(90deg,var(--accent),var(--accent-light));
   }
   .metric-card .label{ font-size:12.5px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
-  .metric-card .value{ font-family:'Syne',sans-serif; font-size:30px; font-weight:700; margin-top:10px; }
+  .metric-card .value{ font-family:'Syne',sans-serif; font-size:32px; font-weight:700; margin-top:10px; }
   .metric-card .delta{ font-size:12px; color:var(--accent-dark); margin-top:6px; font-weight:600; }
 
-  .dash-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:20px; margin-bottom:20px; }
-  .panel{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
+  .dash-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-bottom:20px; }
+
+  .panel{
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px;
+  }
   .panel h3{ font-size:16px; margin-bottom:20px; }
 
-  .chart-wrap{ display:flex; align-items:flex-end; gap:14px; height:190px; padding-top:10px; }
+  .chart-wrap{ display:flex; align-items:flex-end; gap:14px; height:180px; padding-top:10px; }
   .chart-bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:8px; }
-  .chart-bars-pair{ display:flex; align-items:flex-end; gap:4px; height:100%; width:100%; justify-content:center; }
-  .chart-bar{ width:16px; border-radius:5px 5px 0 0; transition:transform var(--transition); }
-  .chart-bar.ingreso{ background:linear-gradient(180deg,var(--accent-light),var(--accent)); }
-  .chart-bar.gasto{ background:linear-gradient(180deg,#ffb199,#e05252); }
+  .chart-bar{
+    width:100%; max-width:38px; border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg,var(--accent-light),var(--accent));
+    transition:transform var(--transition);
+  }
   .chart-bar:hover{ transform:scaleY(1.03); filter:brightness(1.05); }
   .chart-bar-col .month-label{ font-size:11.5px; color:var(--text-light); font-weight:600; }
-  .chart-legend{ display:flex; gap:18px; margin-top:16px; justify-content:center; }
-  .chart-legend span{ font-size:12px; color:var(--text-muted); display:flex; align-items:center; gap:6px; font-weight:600; }
-  .legend-dot{ width:9px; height:9px; border-radius:50%; }
-  .legend-dot.ingreso{ background:var(--accent); }
-  .legend-dot.gasto{ background:#e05252; }
 
-  .donut-wrap{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center; }
-  .donut-legend{ display:flex; flex-direction:column; gap:9px; flex:1; min-width:160px; }
-  .donut-legend-item{ display:flex; align-items:center; gap:9px; font-size:12px; color:var(--text-muted); }
-  .donut-legend-item .sw{ width:10px; height:10px; border-radius:3px; flex-shrink:0; }
-  .donut-legend-item b{ color:var(--black); }
+  .activity-list{ display:flex; flex-direction:column; gap:16px; }
+  .activity-item{ display:flex; gap:12px; align-items:flex-start; }
+  .activity-dot{
+    flex-shrink:0; width:8px; height:8px; border-radius:50%; background:var(--accent); margin-top:6px;
+  }
+  .activity-item .txt{ font-size:13.5px; color:var(--black); line-height:1.4; }
+  .activity-item .time{ font-size:11.5px; color:var(--text-light); margin-top:2px; }
 
-  .recent-list{ display:flex; flex-direction:column; gap:14px; }
-  .recent-item{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:14px; border-bottom:1px solid var(--border); }
-  .recent-item:last-child{ border-bottom:none; padding-bottom:0; }
-  .recent-item .info b{ font-size:13.5px; display:block; }
-  .recent-item .info span{ font-size:11.5px; color:var(--text-light); }
-  .recent-item .amount{ font-family:'Syne',sans-serif; font-weight:700; font-size:14px; }
-  .recent-item .amount.ingreso{ color:#1a8f5e; }
-  .recent-item .amount.gasto{ color:#e05252; }
+  .pipeline-mini{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .pipeline-mini-card{
+    background:var(--off-white); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:16px; text-align:center;
+  }
+  .pipeline-mini-card .num{ font-family:'Syne',sans-serif; font-size:24px; font-weight:700; color:var(--accent-dark); }
+  .pipeline-mini-card .name{ font-size:12px; color:var(--text-muted); margin-top:4px; font-weight:600; }
 
   /* ======================================================
-     5. CLIENTES / LEADS (TABLA)
+     5. CLIENTES / LEADS
      ====================================================== */
   .filters-row{ display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
   .search-input{
-    flex:1; min-width:200px; padding:11px 16px; border-radius:var(--radius-sm);
+    flex:1; min-width:220px; padding:11px 16px; border-radius:var(--radius-sm);
     border:1px solid var(--border-strong); background:var(--card-bg); font-size:13.5px;
   }
   .search-input:focus{ border-color:var(--accent); }
   .filter-select{
-    padding:11px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
+    padding:11px 16px; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
     background:var(--card-bg); font-size:13.5px; color:var(--black);
   }
 
-  .table-wrap{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); overflow-x:auto; }
-  table{ width:100%; border-collapse:collapse; min-width:900px; }
-  thead th{
-    text-align:left; padding:14px 16px; font-size:11px; text-transform:uppercase; letter-spacing:.05em;
-    color:var(--text-muted); font-weight:700; background:var(--off-white); border-bottom:1px solid var(--border);
-    white-space:nowrap;
+  .table-wrap{
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden;
   }
-  tbody td{ padding:14px 16px; font-size:13px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  table{ width:100%; border-collapse:collapse; }
+  thead th{
+    text-align:left; padding:15px 20px; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:.05em; color:var(--text-muted); font-weight:700; background:var(--off-white);
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{ padding:15px 20px; font-size:13.5px; border-bottom:1px solid var(--border); }
   tbody tr:last-child td{ border-bottom:none; }
+  tbody tr{ transition:background var(--transition); }
   tbody tr:hover{ background:var(--off-white); }
   .cell-name{ font-weight:600; }
   .cell-muted{ color:var(--text-muted); }
 
-  .status-pill{ display:inline-block; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; }
+  .status-pill{
+    display:inline-block; padding:5px 12px; border-radius:20px; font-size:11.5px; font-weight:700;
+  }
   .status-Lead{ background:rgba(138,150,166,0.15); color:var(--text-muted); }
   .status-Contactado{ background:rgba(30,143,225,0.12); color:var(--accent-dark); }
   .status-Negociación{ background:rgba(255,171,64,0.15); color:#b3720a; }
@@ -292,6 +341,7 @@
   .icon-btn svg{ width:15px; height:15px; }
   .icon-btn:hover{ background:var(--off-white); color:var(--accent); }
   .icon-btn.danger:hover{ color:#e05252; }
+
   .empty-state{ text-align:center; padding:50px 20px; color:var(--text-light); font-size:13.5px; }
 
   /* ======================================================
@@ -361,14 +411,14 @@
   }
   .modal-overlay.active{ display:flex; }
   .modal{
-    background:var(--card-bg); border-radius:var(--radius); width:100%; max-width:480px;
-    padding:28px; animation:fadeUp 0.3s ease both; max-height:90vh; overflow-y:auto;
+    background:var(--card-bg); border-radius:var(--radius); width:100%; max-width:440px;
+    padding:28px; animation:fadeUp 0.3s ease both;
+    max-height:90vh; overflow-y:auto;
   }
   .modal-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
   .modal-header h3{ font-size:18px; }
   .modal-close{ width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--text-muted); }
   .modal-close:hover{ background:var(--off-white); color:var(--black); }
-  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .form-group{ margin-bottom:16px; }
   .form-group label{ display:block; font-size:12.5px; font-weight:600; margin-bottom:7px; color:var(--text-muted); }
   .form-group input, .form-group select{
@@ -379,11 +429,24 @@
   .modal-actions{ display:flex; gap:10px; margin-top:22px; }
   .modal-actions .btn{ flex:1; justify-content:center; }
 
+  /* Diálogo de confirmación personalizado (sustituye a confirm() del navegador) */
+  .modal-confirmar-card{ max-width:380px; text-align:center; }
+  .confirmar-icon{
+    width:52px; height:52px; border-radius:50%; margin:0 auto 18px;
+    background:rgba(224,82,82,0.1); color:#e05252;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .confirmar-icon svg{ width:24px; height:24px; }
+  .modal-confirmar-card h3{ font-size:18px; margin-bottom:10px; }
+  .modal-confirmar-card p{ font-size:13.5px; color:var(--text-muted); line-height:1.55; }
+
+  /* Toast de confirmación */
   #toast{
     position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
     background:var(--black); color:var(--white); padding:13px 22px; border-radius:var(--radius-sm);
     font-size:13px; font-weight:600; z-index:1000; opacity:0; pointer-events:none;
-    transition:opacity var(--transition), transform var(--transition); display:flex; align-items:center; gap:10px;
+    transition:opacity var(--transition), transform var(--transition);
+    display:flex; align-items:center; gap:10px;
   }
   #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
   #toast .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent-light); }
@@ -391,23 +454,26 @@
   /* ======================================================
      9. RESPONSIVE
      ====================================================== */
-  @media (max-width: 1100px){
+  @media (max-width: 1024px){
     .metrics-grid{ grid-template-columns:repeat(2,1fr); }
     .dash-grid{ grid-template-columns:1fr; }
     .kanban-board{ grid-template-columns:repeat(2,1fr); }
   }
+
   @media (max-width: 720px){
     .sidebar{ width:100%; height:64px; top:auto; bottom:0; flex-direction:row; }
     .sidebar:hover{ width:100%; }
     .sidebar-logo{ display:none; }
     .sidebar-nav{ flex-direction:row; padding:8px; width:100%; justify-content:space-around; }
-    .nav-divider{ display:none; }
     .nav-item{ flex-direction:column; gap:4px; padding:8px 6px; }
-    .nav-item span.label{ opacity:1; font-size:9.5px; }
+    .nav-item span.label{ opacity:1; font-size:10px; }
     .sidebar-footer{ display:none; }
     .main{ margin-left:0; padding:24px 18px 90px; }
     .metrics-grid{ grid-template-columns:1fr 1fr; gap:12px; }
-    .form-row{ grid-template-columns:1fr; }
+    .pipeline-mini{ grid-template-columns:1fr 1fr; }
+    .kanban-board{ grid-template-columns:1fr; }
+    .table-wrap{ overflow-x:auto; }
+    table{ min-width:640px; }
     .topbar{ flex-direction:column; align-items:flex-start; }
   }
 </style>
@@ -415,7 +481,7 @@
 <body>
 
 <!-- ============================================================
-     PANTALLA DE LOGIN
+     PANTALLA DE LOGIN (protección con contraseña simple)
      ============================================================ -->
 <div id="login-screen">
   <div class="login-card">
@@ -467,7 +533,7 @@
 
       <a href="contabilidad.html" class="nav-item">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
-        <span class="label">📊 Contabilidad</span>
+        <span class="label">Contabilidad</span>
       </a>
     </nav>
 
@@ -506,22 +572,22 @@
         </div>
       </div>
 
-      <div class="metrics-grid" id="metrics-grid"></div>
+      <div class="metrics-grid" id="metrics-grid"><!-- generado por JS --></div>
 
       <div class="dash-grid">
         <div class="panel fade-up">
           <h3>Evolución de leads (últimos 6 meses)</h3>
-          <div class="chart-wrap" id="chart-wrap"></div>
+          <div class="chart-wrap" id="chart-wrap"><!-- generado por JS --></div>
         </div>
         <div class="panel fade-up">
           <h3>Actividad reciente</h3>
-          <div class="activity-list" id="activity-list"></div>
+          <div class="activity-list" id="activity-list"><!-- generado por JS --></div>
         </div>
       </div>
 
       <div class="panel fade-up">
         <h3>Resumen del pipeline</h3>
-        <div class="pipeline-mini" id="pipeline-mini"></div>
+        <div class="pipeline-mini" id="pipeline-mini"><!-- generado por JS --></div>
       </div>
     </section>
 
@@ -563,12 +629,12 @@
               <th></th>
             </tr>
           </thead>
-          <tbody id="clientes-tbody"></tbody>
+          <tbody id="clientes-tbody"><!-- generado por JS --></tbody>
         </table>
       </div>
     </section>
 
-    <!-- ============ PIPELINE ============ -->
+    <!-- ============ PIPELINE (KANBAN) ============ -->
     <section class="section" id="section-pipeline">
       <div class="topbar">
         <div>
@@ -577,7 +643,7 @@
         </div>
       </div>
 
-      <div class="kanban-board" id="kanban-board"></div>
+      <div class="kanban-board" id="kanban-board"><!-- generado por JS --></div>
     </section>
 
     <!-- ============ TAREAS ============ -->
@@ -595,17 +661,15 @@
         </div>
       </div>
 
-      <div class="task-list" id="task-list"></div>
+      <div class="task-list" id="task-list"><!-- generado por JS --></div>
     </section>
 
   </main>
 </div>
 
 <!-- ============================================================
-     MODALES
+     MODAL: NUEVO LEAD
      ============================================================ -->
-
-<!-- MODAL: NUEVO LEAD -->
 <div class="modal-overlay" id="modal-lead">
   <div class="modal">
     <div class="modal-header">
@@ -646,7 +710,70 @@
   </div>
 </div>
 
-<!-- MODAL: NUEVA TARJETA PIPELINE -->
+<!-- ============================================================
+     MODAL: EDITAR LEAD (todos los campos)
+     ============================================================ -->
+<div class="modal-overlay" id="modal-editar-lead">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Editar lead</h3>
+      <button class="modal-close" data-close="modal-editar-lead">✕</button>
+    </div>
+    <form id="form-editar-lead">
+      <input type="hidden" id="editar-lead-id">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" id="editar-lead-nombre" required placeholder="Ej. Sara Gómez">
+      </div>
+      <div class="form-group">
+        <label>Empresa</label>
+        <input type="text" id="editar-lead-empresa" required placeholder="Ej. Gómez Consulting">
+      </div>
+      <div class="form-group">
+        <label>Email <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="email" id="editar-lead-email" placeholder="sara@empresa.com">
+      </div>
+      <div class="form-group">
+        <label>Teléfono <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="tel" id="editar-lead-telefono" placeholder="+34 600 000 000">
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <select id="editar-lead-estado">
+          <option value="Lead">Lead</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Negociación">Negociación</option>
+          <option value="Cerrado">Cerrado</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close="modal-editar-lead">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================================
+     DIÁLOGO DE CONFIRMACIÓN PERSONALIZADO (sustituye a confirm())
+     ============================================================ -->
+<div class="modal-overlay" id="modal-confirmar">
+  <div class="modal modal-confirmar-card">
+    <div class="confirmar-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <h3 id="confirmar-titulo">Eliminar lead</h3>
+    <p id="confirmar-mensaje">¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="confirmar-cancelar">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="confirmar-aceptar">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: NUEVA TARJETA DE PIPELINE (rápida)
+     ============================================================ -->
 <div class="modal-overlay" id="modal-kanban">
   <div class="modal">
     <div class="modal-header">
@@ -671,7 +798,9 @@
   </div>
 </div>
 
-<!-- MODAL: NUEVA TAREA -->
+<!-- ============================================================
+     MODAL: NUEVA TAREA
+     ============================================================ -->
 <div class="modal-overlay" id="modal-task">
   <div class="modal">
     <div class="modal-header">
@@ -702,23 +831,35 @@
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- Toast de confirmación -->
 <div id="toast"><span class="dot"></span><span id="toast-text">Guardado correctamente</span></div>
 
 <script>
 /* ================================================================
-   AutomizeAI CRM — JavaScript
+   AutomizeAI CRM — Lógica de la aplicación (JavaScript vanilla)
    ================================================================ */
 
-/* ---------- 1. CONFIGURACIÓN ---------- */
+/* ---------- 1. CONFIGURACIÓN Y CONTRASEÑA ---------- */
 const APP_PASSWORD = "automize2025";
 const STORAGE_KEYS = { leads: "automizeai_leads", tasks: "automizeai_tasks" };
 
 /* ==================================================================
-   SINCRONIZACIÓN EN LA NUBE (JSONBin.io)
+   SINCRONIZACIÓN EN LA NUBE (JSONBin.io) — comparte datos entre dispositivos
+   ==================================================================
+   Para que Marc y Mario vean los mismos datos desde cualquier dispositivo:
+
+   1. Crea una cuenta gratuita en https://jsonbin.io (con Google/GitHub)
+   2. Ve a "API Keys" en el menú y copia tu "X-MASTER-KEY"
+   3. En el Dashboard pulsa "Create Bin", pega { } como contenido y guarda
+   4. Copia el "Bin ID" (aparece en la URL del bin, ej: 65f2a1b3...)
+   5. Pega ambos valores aquí abajo — Y LOS MISMOS en contabilidad.html,
+      porque los dos módulos comparten el mismo bin en la nube.
+
+   Si dejas estos valores vacíos, el CRM funciona exactamente igual que
+   antes, solo que en modo local (sin compartir entre dispositivos).
    ================================================================== */
 const JSONBIN_BIN_ID = '6a68df4eda38895dfe9c59f8';
-const JSONBIN_API_KEY = '$2a$10$3mJHpcCJM6amDkCd1OI0wuKoHkRTSQPNBCW5huoi3fZFq.rCPZREy';
+const JSONBIN_API_KEY = '$2a$10$R7n8ZcJZhDjBv.Ho.fryf.BpAqVAX56cjo3YCo8lZte0nO0.g1qcO';
 const JSONBIN_ACTIVO = JSONBIN_BIN_ID.trim() !== '' && JSONBIN_API_KEY.trim() !== '';
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
@@ -750,20 +891,19 @@ async function nubeGuardar(objetoCompleto){
   if(!res.ok) throw new Error('No se pudo guardar en la nube (' + res.status + ')');
 }
 
-function datosBaseLeads(){ return leads.map(l => ({ id:l.id, nombre:l.nombre, empresa:l.empresa, email:l.email, telefono:l.telefono, estado:l.estado, fecha:l.fecha })); }
-function datosBaseTasks(){ return tasks.map(t => ({ id:t.id, titulo:t.titulo, asignado:t.asignado, fecha:t.fecha, completada:t.completada })); }
-
+// Sube los leads y tareas actuales a la nube. Primero lee lo que ya hay
+// (por si contabilidad.html ha guardado facturas) para no pisarlo.
 async function sincronizarSubida(){
   if(!JSONBIN_ACTIVO || sincronizando) return;
   sincronizando = true;
   marcarEstadoSync('cargando', 'Sincronizando...');
   try{
     const remoto = await nubeObtener();
-    remoto.leads = datosBaseLeads();
-    remoto.tasks = datosBaseTasks();
-    remoto.actualizadoCRM = new Date().toISOString();
+    remoto.leads = leads;
+    remoto.tasks = tasks;
+    remoto.actualizadoLeadsTasks = new Date().toISOString();
     await nubeGuardar(remoto);
-    ultimaMarcaAplicada = remoto.actualizadoCRM;
+    ultimaMarcaAplicada = remoto.actualizadoLeadsTasks;
     marcarEstadoSync('ok', 'Sincronizado ' + horaActual());
     console.log('[AutomizeAI CRM] Datos subidos a la nube correctamente.');
   } catch(err){
@@ -772,6 +912,9 @@ async function sincronizarSubida(){
   } finally { sincronizando = false; }
 }
 
+// Descarga los datos más recientes por si el otro compañero ha añadido
+// o editado algo desde su dispositivo. Si la nube está vacía (primera
+// vez), sube los datos locales para inicializarla.
 async function sincronizarDescarga(){
   if(!JSONBIN_ACTIVO || sincronizando) return;
   sincronizando = true;
@@ -779,19 +922,19 @@ async function sincronizarDescarga(){
   try{
     const remoto = await nubeObtener();
     if(Array.isArray(remoto.leads)){
-      if(remoto.actualizadoCRM !== ultimaMarcaAplicada){
+      if(remoto.actualizadoLeadsTasks !== ultimaMarcaAplicada){
         leads = remoto.leads;
         tasks = remoto.tasks || tasks;
         localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify(leads));
         localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
-        ultimaMarcaAplicada = remoto.actualizadoCRM;
+        ultimaMarcaAplicada = remoto.actualizadoLeadsTasks;
         renderTodo();
         console.log('[AutomizeAI CRM] Datos descargados de la nube correctamente.');
       }
       marcarEstadoSync('ok', 'Sincronizado ' + horaActual());
     } else {
       sincronizando = false;
-      await sincronizarSubida();
+      await sincronizarSubida(); // la nube está vacía: la inicializamos con los datos locales
       return;
     }
   } catch(err){
@@ -808,12 +951,13 @@ function inicializarSincronizacion(){
   if(btn){
     btn.addEventListener('click', function(){
       if(!JSONBIN_ACTIVO){
-        mostrarToast('Sincronización no configurada.');
+        mostrarToast('Sincronización no configurada. Revisa las instrucciones en el código.');
         return;
       }
       sincronizarDescarga();
     });
   }
+  // Al volver a esta pestaña (p. ej. tras estar en contabilidad.html), sincroniza
   document.addEventListener('visibilitychange', function(){
     if(document.visibilityState === 'visible' && appEl && appEl.classList.contains('active')){
       sincronizarDescarga();
@@ -821,7 +965,7 @@ function inicializarSincronizacion(){
   });
 }
 
-/* ---------- 2. DATOS DE EJEMPLO ---------- */
+/* ---------- 2. DATOS DE EJEMPLO (semilla inicial) ---------- */
 const SEED_LEADS = [
   { id: 1, nombre: "María González",  empresa: "TechSolutions",         email: "maria.gonzalez@techsolutions.es",   telefono: "+34 611 222 333", estado: "Lead",        fecha: "2025-01-10" },
   { id: 2, nombre: "Carlos Ruiz",     empresa: "Distribuciones Ruiz",   email: "carlos.ruiz@distribru.es",          telefono: "+34 622 333 444", estado: "Contactado",  fecha: "2025-01-12" },
@@ -847,12 +991,12 @@ const ACTIVIDAD_RECIENTE = [
 
 const LEADS_POR_MES = [ { mes:"Ago", valor:8 }, { mes:"Sep", valor:14 }, { mes:"Oct", valor:11 }, { mes:"Nov", valor:19 }, { mes:"Dic", valor:16 }, { mes:"Ene", valor:23 } ];
 
-/* ---------- 3. ESTADO ---------- */
+/* ---------- 3. ESTADO DE LA APLICACIÓN ---------- */
 let leads = [];
 let tasks = [];
 let kanbanDragId = null;
 
-/* ---------- 4. PERSISTENCIA ---------- */
+/* ---------- 4. PERSISTENCIA (localStorage) ---------- */
 function cargarDatos(){
   const savedLeads = localStorage.getItem(STORAGE_KEYS.leads);
   const savedTasks = localStorage.getItem(STORAGE_KEYS.tasks);
@@ -865,6 +1009,11 @@ function guardarLeads(){ localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify
 function guardarTasks(){ localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); sincronizarSubida(); }
 
 /* ---------- 5. LOGIN ---------- */
+// IMPORTANTE: capturamos las referencias del DOM y enlazamos los eventos
+// dentro de una función de inicialización, no directamente en el nivel
+// superior del script. Esto garantiza que TODO se vuelve a enlazar
+// correctamente cada vez que la página se carga (venga de donde venga:
+// primera visita, recarga, o navegación desde contabilidad.html).
 let loginScreen, loginForm, passwordInput, loginError, appEl;
 
 function inicializarLogin(){
@@ -892,7 +1041,10 @@ function inicializarLogin(){
     location.reload();
   });
 
-  if(sessionStorage.getItem('automizeai_auth') === '1'){ entrarEnApp(); }
+  // Si ya se autenticó en esta sesión del navegador, entra directamente
+  if(sessionStorage.getItem('automizeai_auth') === '1'){
+    entrarEnApp();
+  }
 }
 
 function entrarEnApp(){
@@ -901,14 +1053,19 @@ function entrarEnApp(){
   cargarDatos();
   renderTodo();
   irASeccion(localStorage.getItem('crm_seccion_activa') || 'dashboard');
-  if(JSONBIN_ACTIVO) sincronizarDescarga();
+  if(JSONBIN_ACTIVO) sincronizarDescarga(); // trae los últimos cambios del compañero, si los hay
   console.log('[AutomizeAI CRM] Aplicación inicializada correctamente.');
 }
 
-/* ---------- 6. NAVEGACIÓN ---------- */
+/* ---------- 6. NAVEGACIÓN ENTRE SECCIONES (delegación de eventos) ---------- */
+// En vez de enlazar un listener a CADA botón del sidebar (lo que puede fallar
+// si algún elemento no está aún en el DOM en ese instante), enlazamos UN
+// ÚNICO listener al contenedor <nav class="sidebar-nav">, que siempre existe.
+// Así la navegación funciona siempre, sin importar cuántas veces se recargue
+// la página o desde qué módulo se vuelva.
 function irASeccion(target){
   const seccion = document.getElementById('section-' + target);
-  if(!seccion) return;
+  if(!seccion) return; // seguridad: si la sección no existe, no hacemos nada
   document.querySelectorAll('.nav-item[data-section]').forEach(i => i.classList.remove('active'));
   const navActivo = document.querySelector(`.nav-item[data-section="${target}"]`);
   if(navActivo) navActivo.classList.add('active');
@@ -923,7 +1080,7 @@ function inicializarNavegacion(){
 
   nav.addEventListener('click', function(e){
     const item = e.target.closest('.nav-item[data-section]');
-    if(!item) return;
+    if(!item) return; // el clic no fue sobre un ítem de navegación (p.ej. el enlace a Contabilidad)
     e.preventDefault();
     irASeccion(item.dataset.section);
   });
@@ -942,15 +1099,25 @@ function mostrarToast(texto){
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2400);
 }
+function iniciales(nombre){
+  return nombre.split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase();
+}
 function abrirModal(id){ document.getElementById(id).classList.add('active'); }
 function cerrarModal(id){ document.getElementById(id).classList.remove('active'); }
 
 function inicializarModales(){
-  document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => cerrarModal(btn.dataset.close)));
-  document.querySelectorAll('.modal-overlay').forEach(overlay => overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); }));
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => cerrarModal(btn.dataset.close));
+  });
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); });
+  });
 }
 
-/* ---------- 8. RENDER ---------- */
+/* ---------- 8. RENDER GENERAL ---------- */
+// Cada función de render se ejecuta dentro de su propio try/catch:
+// si una sección falla por cualquier motivo, las demás (incluida la
+// navegación) siguen funcionando con normalidad.
 function renderTodo(){
   try{ renderDashboard(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderDashboard:', err); }
   try{ renderClientes(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderClientes:', err); }
@@ -962,31 +1129,53 @@ function renderTodo(){
 function renderDashboard(){
   const totalLeads = leads.length;
   const clientesActivos = leads.filter(l => l.estado === 'Cerrado').length;
-  const ingresosMes = clientesActivos * 4150;
+  const ingresosMes = clientesActivos * 4150; // valor medio simulado por cliente cerrado
   const tareasPendientes = tasks.filter(t => !t.completada).length;
 
   document.getElementById('metrics-grid').innerHTML = `
-    <div class="metric-card"><div class="label">Total leads</div><div class="value">${totalLeads}</div></div>
-    <div class="metric-card"><div class="label">Clientes activos</div><div class="value">${clientesActivos}</div></div>
-    <div class="metric-card"><div class="label">Ingresos del mes</div><div class="value">${ingresosMes.toLocaleString('es-ES')}€</div></div>
-    <div class="metric-card"><div class="label">Tareas pendientes</div><div class="value">${tareasPendientes}</div></div>
+    <div class="metric-card fade-up">
+      <div class="label">Total leads</div>
+      <div class="value">${totalLeads}</div>
+      <div class="delta">↑ Pipeline activo</div>
+    </div>
+    <div class="metric-card fade-up">
+      <div class="label">Clientes activos</div>
+      <div class="value">${clientesActivos}</div>
+      <div class="delta">↑ Contratos cerrados</div>
+    </div>
+    <div class="metric-card fade-up">
+      <div class="label">Ingresos del mes</div>
+      <div class="value">${ingresosMes.toLocaleString('es-ES')}€</div>
+      <div class="delta">↑ Estimado enero</div>
+    </div>
+    <div class="metric-card fade-up">
+      <div class="label">Tareas pendientes</div>
+      <div class="value">${tareasPendientes}</div>
+      <div class="delta">${tareasPendientes > 0 ? 'Requieren atención' : 'Todo al día'}</div>
+    </div>
   `;
 
+  // Gráfico de barras: evolución de leads
   const maxValor = Math.max(...LEADS_POR_MES.map(m => m.valor));
   document.getElementById('chart-wrap').innerHTML = LEADS_POR_MES.map(m => `
     <div class="chart-bar-col">
-      <div class="chart-bar" style="height:${(m.valor / maxValor * 100)}%"></div>
+      <div class="chart-bar" style="height:${(m.valor / maxValor * 100)}%" title="${m.valor} leads"></div>
       <div class="month-label">${m.mes}</div>
     </div>
   `).join('');
 
+  // Actividad reciente
   document.getElementById('activity-list').innerHTML = ACTIVIDAD_RECIENTE.map(a => `
     <div class="activity-item">
       <div class="activity-dot"></div>
-      <div><div class="txt">${a.txt}</div><div class="time">${a.time}</div></div>
+      <div>
+        <div class="txt">${a.txt}</div>
+        <div class="time">${a.time}</div>
+      </div>
     </div>
   `).join('');
 
+  // Resumen del pipeline
   const estados = ['Lead','Contactado','Negociación','Cerrado'];
   document.getElementById('pipeline-mini').innerHTML = estados.map(e => `
     <div class="pipeline-mini-card">
@@ -996,7 +1185,7 @@ function renderDashboard(){
   `).join('');
 }
 
-/* ---------- 10. CLIENTES ---------- */
+/* ---------- 10. CLIENTES / LEADS (TABLA) ---------- */
 const searchInput = document.getElementById('search-input');
 const filterStatus = document.getElementById('filter-status');
 searchInput.addEventListener('input', renderClientes);
@@ -1007,14 +1196,17 @@ function renderClientes(){
   const estadoFiltro = filterStatus.value;
 
   let filtrados = leads.filter(l => {
-    const coincideTexto = l.nombre.toLowerCase().includes(query) || l.empresa.toLowerCase().includes(query) || l.email.toLowerCase().includes(query);
+    const coincideTexto = l.nombre.toLowerCase().includes(query) ||
+                           l.empresa.toLowerCase().includes(query) ||
+                           l.email.toLowerCase().includes(query);
     const coincideEstado = estadoFiltro === 'todos' || l.estado === estadoFiltro;
     return coincideTexto && coincideEstado;
   });
 
   const tbody = document.getElementById('clientes-tbody');
+
   if(filtrados.length === 0){
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No se han encontrado clientes.</div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No se han encontrado clientes con esos criterios.</div></td></tr>`;
     return;
   }
 
@@ -1027,17 +1219,25 @@ function renderClientes(){
       <td><span class="status-pill status-${l.estado.replace('ó','o')}">${l.estado}</span></td>
       <td>
         <div class="row-actions">
-          <button class="icon-btn" title="Ciclar estado" onclick="ciclarEstadoLead(${l.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <button class="icon-btn" title="Editar datos del lead" onclick="abrirEdicionLead(${l.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </button>
-          <button class="icon-btn danger" title="Eliminar" onclick="eliminarLead(${l.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          <button class="icon-btn" title="Ciclar estado" onclick="ciclarEstadoLead(${l.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="icon-btn danger" title="Eliminar" onclick="pedirEliminarLead(${l.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
       </td>
     </tr>
   `).join('');
 }
+
+// Nota: la clase CSS usa "status-Negociacion" (sin tilde) por seguridad de selectores
+const styleFix = document.createElement('style');
+styleFix.textContent = `.status-Negociacion{ background:rgba(255,171,64,0.15); color:#b3720a; }`;
+document.head.appendChild(styleFix);
 
 const estadosCiclo = ['Lead','Contactado','Negociación','Cerrado'];
 function ciclarEstadoLead(id){
@@ -1049,16 +1249,80 @@ function ciclarEstadoLead(id){
   renderTodo();
   mostrarToast(`${lead.nombre} ahora está en "${lead.estado}"`);
 }
+
+/* ---------- 10b. EDICIÓN COMPLETA DE UN LEAD ---------- */
+function abrirEdicionLead(id){
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  document.getElementById('editar-lead-id').value = lead.id;
+  document.getElementById('editar-lead-nombre').value = lead.nombre;
+  document.getElementById('editar-lead-empresa').value = lead.empresa;
+  document.getElementById('editar-lead-email').value = lead.email === '—' ? '' : lead.email;
+  document.getElementById('editar-lead-telefono').value = lead.telefono === '—' ? '' : lead.telefono;
+  document.getElementById('editar-lead-estado').value = lead.estado;
+  abrirModal('modal-editar-lead');
+}
+
+document.getElementById('form-editar-lead').addEventListener('submit', function(e){
+  e.preventDefault();
+  const id = parseInt(document.getElementById('editar-lead-id').value, 10);
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  lead.nombre = document.getElementById('editar-lead-nombre').value.trim();
+  lead.empresa = document.getElementById('editar-lead-empresa').value.trim();
+  lead.email = document.getElementById('editar-lead-email').value.trim() || '—';
+  lead.telefono = document.getElementById('editar-lead-telefono').value.trim() || '—';
+  lead.estado = document.getElementById('editar-lead-estado').value;
+  guardarLeads();
+  renderTodo();
+  cerrarModal('modal-editar-lead');
+  mostrarToast('Datos del lead actualizados correctamente');
+});
+
+/* ---------- 10c. DIÁLOGO DE CONFIRMACIÓN PERSONALIZADO ---------- */
+// Sustituye a confirm() del navegador por un modal con el estilo de AutomizeAI.
+// callbackConfirmacion guarda qué hacer si el usuario pulsa "Eliminar".
+let callbackConfirmacion = null;
+
+function pedirConfirmacion(titulo, mensaje, onConfirmar){
+  document.getElementById('confirmar-titulo').textContent = titulo;
+  document.getElementById('confirmar-mensaje').textContent = mensaje;
+  callbackConfirmacion = onConfirmar;
+  abrirModal('modal-confirmar');
+}
+
+function inicializarConfirmacion(){
+  document.getElementById('confirmar-cancelar').addEventListener('click', function(){
+    callbackConfirmacion = null;
+    cerrarModal('modal-confirmar');
+  });
+  document.getElementById('confirmar-aceptar').addEventListener('click', function(){
+    if(callbackConfirmacion) callbackConfirmacion();
+    callbackConfirmacion = null;
+    cerrarModal('modal-confirmar');
+  });
+}
+
+function pedirEliminarLead(id){
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  pedirConfirmacion(
+    'Eliminar lead',
+    `¿Estás seguro de que quieres eliminar a ${lead.nombre} de ${lead.empresa}? Esta acción no se puede deshacer.`,
+    () => eliminarLead(id)
+  );
+}
+
 function eliminarLead(id){
   const lead = leads.find(l => l.id === id);
   if(!lead) return;
-  if(!confirm(`¿Eliminar a ${lead.nombre}?`)) return;
   leads = leads.filter(l => l.id !== id);
   guardarLeads();
   renderTodo();
   mostrarToast('Lead eliminado');
 }
 
+// Formulario: nuevo lead
 document.getElementById('btn-new-lead').addEventListener('click', () => abrirModal('modal-lead'));
 document.getElementById('form-lead').addEventListener('submit', function(e){
   e.preventDefault();
@@ -1079,7 +1343,7 @@ document.getElementById('form-lead').addEventListener('submit', function(e){
   mostrarToast('Lead añadido correctamente');
 });
 
-/* ---------- 11. PIPELINE ---------- */
+/* ---------- 11. PIPELINE (KANBAN CON DRAG & DROP) ---------- */
 const COLUMNAS = ['Lead','Contactado','Negociación','Cerrado'];
 
 function renderKanban(){
@@ -1097,7 +1361,10 @@ function renderKanban(){
             <div class="kanban-card" draggable="true" data-id="${l.id}">
               <div class="name">${l.nombre}</div>
               <div class="company">${l.empresa}</div>
-              <div class="date">${formatearFecha(l.fecha)}</div>
+              <div class="date">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                ${formatearFecha(l.fecha)}
+              </div>
             </div>
           `).join('')}
         </div>
@@ -1121,8 +1388,13 @@ function activarDragAndDrop(){
   });
 
   document.querySelectorAll('.kanban-col').forEach(col => {
-    col.addEventListener('dragover', function(e){ e.preventDefault(); this.classList.add('drag-over'); });
-    col.addEventListener('dragleave', function(){ this.classList.remove('drag-over'); });
+    col.addEventListener('dragover', function(e){
+      e.preventDefault();
+      this.classList.add('drag-over');
+    });
+    col.addEventListener('dragleave', function(){
+      this.classList.remove('drag-over');
+    });
     col.addEventListener('drop', function(e){
       e.preventDefault();
       this.classList.remove('drag-over');
@@ -1167,9 +1439,10 @@ document.getElementById('form-kanban').addEventListener('submit', function(e){
 function renderTareas(){
   const list = document.getElementById('task-list');
   if(tasks.length === 0){
-    list.innerHTML = `<div class="empty-state">No hay tareas todavía.</div>`;
+    list.innerHTML = `<div class="empty-state">No hay tareas todavía. ¡Añade la primera!</div>`;
     return;
   }
+  // Pendientes primero, luego completadas; dentro de cada grupo, por fecha
   const ordenadas = [...tasks].sort((a,b) => {
     if(a.completada !== b.completada) return a.completada ? 1 : -1;
     return a.fecha.localeCompare(b.fecha);
@@ -1178,18 +1451,18 @@ function renderTareas(){
   list.innerHTML = ordenadas.map(t => `
     <div class="task-item ${t.completada ? 'completed' : ''}" data-id="${t.id}">
       <div class="task-checkbox ${t.completada ? 'checked' : ''}" onclick="toggleTarea(${t.id})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
       <div class="task-main">
         <div class="task-title">${t.titulo}</div>
         <div class="task-meta">
-          <span>${t.asignado}</span>
-          <span>${formatearFecha(t.fecha)}</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>${t.asignado}</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${formatearFecha(t.fecha)}</span>
           <span>${t.completada ? '✅ Completada' : '⏳ Pendiente'}</span>
         </div>
       </div>
       <button class="icon-btn danger" title="Eliminar tarea" onclick="eliminarTarea(${t.id})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
       </button>
     </div>
   `).join('');
@@ -1201,7 +1474,7 @@ function toggleTarea(id){
   tarea.completada = !tarea.completada;
   guardarTasks();
   renderTodo();
-  mostrarToast(tarea.completada ? 'Tarea completada' : 'Tarea pendiente');
+  mostrarToast(tarea.completada ? 'Tarea marcada como completada' : 'Tarea marcada como pendiente');
 }
 function eliminarTarea(id){
   if(!confirm('¿Eliminar esta tarea?')) return;
@@ -1233,13 +1506,21 @@ document.getElementById('form-task').addEventListener('submit', function(e){
 });
 
 /* ================================================================
-   13. ARRANQUE
+   13. ARRANQUE MAESTRO DE LA APLICACIÓN
+   ================================================================
+   Usamos 'load' (en vez de DOMContentLoaded) para asegurarnos de que
+   absolutamente todo -incluidas fuentes e imágenes- está listo antes
+   de enlazar los eventos. Además escuchamos 'pageshow' para el caso
+   en el que el navegador restaure esta página desde su caché al
+   pulsar "atrás" (bfcache): en ese caso el 'load' no se vuelve a
+   disparar, así que forzamos una reinicialización igualmente.
    ================================================================ */
 function inicializarApp(){
   console.log('[AutomizeAI CRM] Inicializando aplicación...');
   inicializarLogin();
   inicializarNavegacion();
   inicializarModales();
+  inicializarConfirmacion();
   inicializarSincronizacion();
 }
 
@@ -1247,7 +1528,7 @@ window.addEventListener('load', inicializarApp);
 
 window.addEventListener('pageshow', function(e){
   if(e.persisted){
-    console.log('[AutomizeAI CRM] Página restaurada desde caché (bfcache). Re-inicializando...');
+    console.log('[AutomizeAI CRM] Página restaurada desde caché del navegador (bfcache). Re-inicializando...');
     inicializarApp();
   }
 });
