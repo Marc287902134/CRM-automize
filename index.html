@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AutomizeAI · Contabilidad</title>
+<title>AutomizeAI · CRM Interno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   /* ======================================================
-     1. VARIABLES DE MARCA — AutomizeAI (idénticas al CRM)
+     1. VARIABLES DE MARCA — AutomizeAI
      ====================================================== */
   :root{
     --black: #080c12;
@@ -63,7 +63,7 @@
   .fade-up:nth-child(4){ animation-delay:.2s; }
 
   /* ======================================================
-     2. PANTALLA DE ACCESO (misma contraseña que el CRM)
+     2. PANTALLA DE ACCESO
      ====================================================== */
   #login-screen{
     position:fixed; inset:0; z-index:999;
@@ -109,7 +109,7 @@
   #login-error.show{ opacity:1; }
 
   /* ======================================================
-     3. LAYOUT PRINCIPAL (idéntico al CRM)
+     3. LAYOUT PRINCIPAL
      ====================================================== */
   #app{ display:none; min-height:100vh; }
   #app.active{ display:flex; }
@@ -214,7 +214,6 @@
     content:''; position:absolute; top:0; left:0; width:100%; height:3px;
     background:linear-gradient(90deg,var(--accent),var(--accent-light));
   }
-  .metric-card.negativo::before{ background:linear-gradient(90deg,#e05252,#ff8787); }
   .metric-card .label{ font-size:12.5px; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
   .metric-card .value{ font-family:'Syne',sans-serif; font-size:30px; font-weight:700; margin-top:10px; }
   .metric-card .delta{ font-size:12px; color:var(--accent-dark); margin-top:6px; font-weight:600; }
@@ -223,7 +222,6 @@
   .panel{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px; }
   .panel h3{ font-size:16px; margin-bottom:20px; }
 
-  /* Gráfico de barras dobles (ingresos vs gastos) */
   .chart-wrap{ display:flex; align-items:flex-end; gap:14px; height:190px; padding-top:10px; }
   .chart-bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; gap:8px; }
   .chart-bars-pair{ display:flex; align-items:flex-end; gap:4px; height:100%; width:100%; justify-content:center; }
@@ -238,7 +236,6 @@
   .legend-dot.ingreso{ background:var(--accent); }
   .legend-dot.gasto{ background:#e05252; }
 
-  /* Donut chart */
   .donut-wrap{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; justify-content:center; }
   .donut-legend{ display:flex; flex-direction:column; gap:9px; flex:1; min-width:160px; }
   .donut-legend-item{ display:flex; align-items:center; gap:9px; font-size:12px; color:var(--text-muted); }
@@ -255,42 +252,7 @@
   .recent-item .amount.gasto{ color:#e05252; }
 
   /* ======================================================
-     5. CLASIFICACIÓN AUTOMÁTICA
-     ====================================================== */
-  .classify-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
-  .classify-textarea{
-    width:100%; min-height:280px; padding:16px; border-radius:var(--radius-sm);
-    border:1px solid var(--border-strong); background:var(--card-bg); font-size:13.5px;
-    resize:vertical; line-height:1.6; font-family:'Inter',sans-serif;
-  }
-  .classify-textarea:focus{ border-color:var(--accent); }
-  .hint-box{
-    margin-top:14px; padding:14px 16px; background:var(--off-white); border-radius:var(--radius-sm);
-    font-size:12px; color:var(--text-muted); line-height:1.6; border:1px solid var(--border);
-  }
-  .hint-box b{ color:var(--black); }
-
-  .result-panel{
-    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); padding:24px;
-    display:none;
-  }
-  .result-panel.show{ display:block; animation:fadeUp .4s ease both; }
-  .result-badge{
-    display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:20px;
-    background:rgba(30,143,225,0.1); color:var(--accent-dark); font-weight:700; font-size:13px; margin-bottom:18px;
-  }
-  .result-badge svg{ width:15px; height:15px; }
-
-  .totales-preview{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0 20px;
-    background:var(--off-white); border-radius:var(--radius-sm); padding:14px; border:1px solid var(--border);
-  }
-  .totales-preview div{ text-align:center; }
-  .totales-preview .tp-label{ font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase; }
-  .totales-preview .tp-value{ font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-top:4px; }
-
-  /* ======================================================
-     6. FACTURAS (TABLA)
+     5. CLIENTES / LEADS (TABLA)
      ====================================================== */
   .filters-row{ display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
   .search-input{
@@ -302,19 +264,6 @@
     padding:11px 14px; border-radius:var(--radius-sm); border:1px solid var(--border-strong);
     background:var(--card-bg); font-size:13.5px; color:var(--black);
   }
-
-  .totales-bar{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;
-  }
-  .totales-bar .tb-card{
-    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-sm);
-    padding:16px; text-align:center;
-  }
-  .totales-bar .tb-card .num{ font-family:'Syne',sans-serif; font-size:20px; font-weight:700; }
-  .totales-bar .tb-card .num.ingreso{ color:#1a8f5e; }
-  .totales-bar .tb-card .num.gasto{ color:#e05252; }
-  .totales-bar .tb-card .num.beneficio{ color:var(--accent-dark); }
-  .totales-bar .tb-card .lbl{ font-size:11.5px; color:var(--text-muted); font-weight:600; margin-top:4px; }
 
   .table-wrap{ background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius); overflow-x:auto; }
   table{ width:100%; border-collapse:collapse; min-width:900px; }
@@ -329,14 +278,11 @@
   .cell-name{ font-weight:600; }
   .cell-muted{ color:var(--text-muted); }
 
-  .tipo-pill{ display:inline-block; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; }
-  .tipo-Ingreso{ background:rgba(46,196,131,0.15); color:#1a8f5e; }
-  .tipo-Gasto{ background:rgba(224,82,82,0.12); color:#c23a3a; }
-
-  .grupo-pill{
-    display:inline-block; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:600;
-    background:rgba(30,143,225,0.08); color:var(--accent-dark);
-  }
+  .status-pill{ display:inline-block; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:700; }
+  .status-Lead{ background:rgba(138,150,166,0.15); color:var(--text-muted); }
+  .status-Contactado{ background:rgba(30,143,225,0.12); color:var(--accent-dark); }
+  .status-Negociación{ background:rgba(255,171,64,0.15); color:#b3720a; }
+  .status-Cerrado{ background:rgba(46,196,131,0.15); color:#1a8f5e; }
 
   .row-actions{ display:flex; gap:8px; }
   .icon-btn{
@@ -349,11 +295,62 @@
   .empty-state{ text-align:center; padding:50px 20px; color:var(--text-light); font-size:13.5px; }
 
   /* ======================================================
-     7. INFORMES
+     6. PIPELINE (KANBAN)
      ====================================================== */
-  .informe-selectores{ display:flex; gap:12px; align-items:flex-end; margin-bottom:24px; flex-wrap:wrap; }
-  .informe-selectores .form-group{ margin-bottom:0; }
-  .informe-resumen{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+  .kanban-board{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:start; }
+  .kanban-col{
+    background:var(--off-white); border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px; min-height:120px;
+  }
+  .kanban-col-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; padding:0 4px; }
+  .kanban-col-header .title{ font-size:13px; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .kanban-col-header .count{
+    background:rgba(30,143,225,0.12); color:var(--accent-dark); font-size:11px; font-weight:700;
+    padding:2px 8px; border-radius:10px;
+  }
+  .kanban-cards{ display:flex; flex-direction:column; gap:10px; min-height:40px; }
+  .kanban-card{
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:14px; cursor:grab; transition:box-shadow var(--transition), transform var(--transition), opacity var(--transition);
+  }
+  .kanban-card:hover{ box-shadow:0 6px 18px rgba(8,12,18,0.08); transform:translateY(-2px); }
+  .kanban-card.dragging{ opacity:0.4; }
+  .kanban-card .name{ font-weight:700; font-size:13.5px; }
+  .kanban-card .company{ font-size:12px; color:var(--text-muted); margin-top:3px; }
+  .kanban-card .date{ font-size:11px; color:var(--text-light); margin-top:8px; display:flex; align-items:center; gap:5px; }
+  .kanban-col.drag-over{ background:rgba(30,143,225,0.08); border-color:var(--accent); }
+
+  .add-card-btn{
+    width:100%; margin-top:10px; padding:10px; border-radius:var(--radius-sm);
+    border:1.5px dashed var(--border-strong); color:var(--text-muted); font-size:12.5px; font-weight:600;
+    transition:border-color var(--transition), color var(--transition), background var(--transition);
+  }
+  .add-card-btn:hover{ border-color:var(--accent); color:var(--accent); background:rgba(30,143,225,0.05); }
+
+  /* ======================================================
+     7. TAREAS
+     ====================================================== */
+  .task-list{ display:flex; flex-direction:column; gap:10px; }
+  .task-item{
+    display:flex; align-items:center; gap:16px;
+    background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:15px 18px;
+    transition:opacity var(--transition), background var(--transition);
+  }
+  .task-item.completed{ opacity:0.55; }
+  .task-checkbox{
+    flex-shrink:0; width:20px; height:20px; border-radius:6px; border:2px solid var(--border-strong);
+    display:flex; align-items:center; justify-content:center; transition:all var(--transition);
+  }
+  .task-checkbox.checked{ background:var(--accent); border-color:var(--accent); }
+  .task-checkbox svg{ width:12px; height:12px; color:var(--white); opacity:0; transition:opacity var(--transition); }
+  .task-checkbox.checked svg{ opacity:1; }
+  .task-main{ flex:1; min-width:0; }
+  .task-title{ font-size:14px; font-weight:600; }
+  .task-item.completed .task-title{ text-decoration:line-through; }
+  .task-meta{ font-size:12px; color:var(--text-muted); margin-top:3px; display:flex; gap:14px; flex-wrap:wrap; }
+  .task-meta span{ display:flex; align-items:center; gap:5px; }
+  .task-meta svg{ width:12px; height:12px; }
 
   /* ======================================================
      8. MODAL
@@ -397,9 +394,7 @@
   @media (max-width: 1100px){
     .metrics-grid{ grid-template-columns:repeat(2,1fr); }
     .dash-grid{ grid-template-columns:1fr; }
-    .classify-grid{ grid-template-columns:1fr; }
-    .informe-resumen{ grid-template-columns:1fr; }
-    .totales-bar{ grid-template-columns:1fr; }
+    .kanban-board{ grid-template-columns:repeat(2,1fr); }
   }
   @media (max-width: 720px){
     .sidebar{ width:100%; height:64px; top:auto; bottom:0; flex-direction:row; }
@@ -413,7 +408,6 @@
     .main{ margin-left:0; padding:24px 18px 90px; }
     .metrics-grid{ grid-template-columns:1fr 1fr; gap:12px; }
     .form-row{ grid-template-columns:1fr; }
-    .informe-selectores{ flex-direction:column; align-items:stretch; }
     .topbar{ flex-direction:column; align-items:flex-start; }
   }
 </style>
@@ -421,7 +415,7 @@
 <body>
 
 <!-- ============================================================
-     PANTALLA DE LOGIN (misma contraseña que el CRM)
+     PANTALLA DE LOGIN
      ============================================================ -->
 <div id="login-screen">
   <div class="login-card">
@@ -429,7 +423,7 @@
       <div class="mark">A</div>
       <span>AutomizeAI</span>
     </div>
-    <h1>Contabilidad</h1>
+    <h1>Acceso al CRM</h1>
     <p>Introduce la contraseña del equipo para continuar</p>
     <form id="login-form" autocomplete="off">
       <input type="password" id="password-input" placeholder="Contraseña" autofocus>
@@ -456,24 +450,24 @@
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
         <span class="label">Dashboard</span>
       </a>
-      <a href="#" class="nav-item" data-section="clasificar">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></span>
-        <span class="label">Clasificar factura</span>
+      <a href="#" class="nav-item" data-section="clientes">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        <span class="label">Clientes</span>
       </a>
-      <a href="#" class="nav-item" data-section="facturas">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
-        <span class="label">Facturas</span>
+      <a href="#" class="nav-item" data-section="pipeline">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M3 10h12v4H3z"/><path d="M3 17h6v4H3z"/></svg></span>
+        <span class="label">Pipeline</span>
       </a>
-      <a href="#" class="nav-item" data-section="informes">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
-        <span class="label">Informes</span>
+      <a href="#" class="nav-item" data-section="tareas">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+        <span class="label">Tareas</span>
       </a>
 
       <div class="nav-divider"></div>
 
-      <a href="index.html" class="nav-item">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/></svg></span>
-        <span class="label">Volver al CRM</span>
+      <a href="contabilidad.html" class="nav-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
+        <span class="label">📊 Contabilidad</span>
       </a>
     </nav>
 
@@ -507,8 +501,8 @@
     <section class="section active" id="section-dashboard">
       <div class="topbar">
         <div>
-          <h1>Dashboard contable</h1>
-          <p>Resumen financiero del mes en curso</p>
+          <h1>Dashboard</h1>
+          <p>Resumen general de la actividad comercial de AutomizeAI</p>
         </div>
       </div>
 
@@ -516,297 +510,212 @@
 
       <div class="dash-grid">
         <div class="panel fade-up">
-          <h3>Ingresos vs Gastos (últimos 6 meses)</h3>
+          <h3>Evolución de leads (últimos 6 meses)</h3>
           <div class="chart-wrap" id="chart-wrap"></div>
-          <div class="chart-legend">
-            <span><span class="legend-dot ingreso"></span>Ingresos</span>
-            <span><span class="legend-dot gasto"></span>Gastos</span>
-          </div>
         </div>
         <div class="panel fade-up">
-          <h3>Distribución de gastos por grupo</h3>
-          <div class="donut-wrap" id="donut-wrap"></div>
+          <h3>Actividad reciente</h3>
+          <div class="activity-list" id="activity-list"></div>
         </div>
       </div>
 
       <div class="panel fade-up">
-        <h3>Últimas facturas registradas</h3>
-        <div class="recent-list" id="recent-list"></div>
+        <h3>Resumen del pipeline</h3>
+        <div class="pipeline-mini" id="pipeline-mini"></div>
       </div>
     </section>
 
-    <!-- ============ CLASIFICACIÓN AUTOMÁTICA ============ -->
-    <section class="section" id="section-clasificar">
+    <!-- ============ CLIENTES ============ -->
+    <section class="section" id="section-clientes">
       <div class="topbar">
         <div>
-          <h1>Clasificación automática</h1>
-          <p>Pega el texto de una factura y deja que el sistema la clasifique por ti</p>
-        </div>
-      </div>
-
-      <div class="classify-grid">
-        <div class="panel fade-up">
-          <h3>Texto de la factura</h3>
-          <textarea class="classify-textarea" id="factura-texto" placeholder="Pega aquí el texto completo de la factura...
-
-Ejemplo:
-Factura número: 2025-001
-Fecha: 15/03/2025
-Emisor: Endesa Energía
-Concepto: Suministro eléctrico periodo febrero-marzo
-Base imponible: 95,00€
-IVA 21%: 19,95€
-Total: 114,95€"></textarea>
-          <div class="hint-box">
-            <b>Cómo funciona:</b> el sistema busca palabras clave (luz, nómina, asesoría, software, cliente...) para asignar el grupo contable, detecta el porcentaje de IVA indicado (o aplica 21% por defecto) y extrae fecha, emisor, base imponible y total si están presentes en el texto.
-          </div>
-          <div class="modal-actions" style="margin-top:16px;">
-            <button class="btn btn-secondary" id="btn-limpiar-texto">Limpiar</button>
-            <button class="btn btn-primary" id="btn-clasificar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-              Clasificar automáticamente
-            </button>
-          </div>
-        </div>
-
-        <div class="result-panel" id="result-panel">
-          <div class="result-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Resultado de la clasificación
-          </div>
-
-          <form id="form-resultado">
-            <div class="form-row">
-              <div class="form-group">
-                <label>Fecha</label>
-                <input type="date" id="res-fecha">
-              </div>
-              <div class="form-group">
-                <label>Tipo</label>
-                <select id="res-tipo">
-                  <option value="Gasto">Gasto</option>
-                  <option value="Ingreso">Ingreso</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Emisor</label>
-              <input type="text" id="res-emisor" placeholder="Ej. Endesa Energía">
-            </div>
-            <div class="form-group">
-              <label>Concepto</label>
-              <input type="text" id="res-concepto" placeholder="Ej. Suministro eléctrico">
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label>Grupo contable</label>
-                <select id="res-grupo"></select>
-              </div>
-              <div class="form-group">
-                <label>IVA aplicado</label>
-                <select id="res-iva-pct">
-                  <option value="21">21%</option>
-                  <option value="10">10%</option>
-                  <option value="4">4%</option>
-                  <option value="0">Exento</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Base imponible (€)</label>
-              <input type="number" step="0.01" id="res-base" placeholder="0,00">
-            </div>
-
-            <div class="totales-preview" id="totales-preview">
-              <div><div class="tp-label">Base</div><div class="tp-value" id="tp-base">0,00€</div></div>
-              <div><div class="tp-label">IVA</div><div class="tp-value" id="tp-iva">0,00€</div></div>
-              <div><div class="tp-label">Total</div><div class="tp-value" id="tp-total">0,00€</div></div>
-            </div>
-
-            <div class="modal-actions">
-              <button type="button" class="btn btn-secondary" id="btn-corregir">Corregir y guardar</button>
-              <button type="submit" class="btn btn-primary">Guardar factura</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ FACTURAS (TABLA) ============ -->
-    <section class="section" id="section-facturas">
-      <div class="topbar">
-        <div>
-          <h1>Listado de facturas</h1>
-          <p>Todas las facturas registradas, gastos e ingresos</p>
+          <h1>Clientes &amp; Leads</h1>
+          <p>Gestiona todos tus contactos comerciales en un solo lugar</p>
         </div>
         <div class="topbar-actions">
-          <button class="btn btn-primary" id="btn-nueva-manual">
+          <button class="btn btn-primary" id="btn-new-lead">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Añadir manualmente
+            Nuevo lead
           </button>
         </div>
       </div>
 
       <div class="filters-row">
-        <input type="text" class="search-input" id="search-input" placeholder="Buscar por emisor o concepto...">
-        <select class="filter-select" id="filter-tipo">
-          <option value="todos">Todos los tipos</option>
-          <option value="Ingreso">Ingreso</option>
-          <option value="Gasto">Gasto</option>
+        <input type="text" class="search-input" id="search-input" placeholder="Buscar por nombre, empresa o email...">
+        <select class="filter-select" id="filter-status">
+          <option value="todos">Todos los estados</option>
+          <option value="Lead">Lead</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Negociación">Negociación</option>
+          <option value="Cerrado">Cerrado</option>
         </select>
-        <select class="filter-select" id="filter-grupo">
-          <option value="todos">Todos los grupos</option>
-        </select>
-        <select class="filter-select" id="filter-mes">
-          <option value="todos">Todos los meses</option>
-        </select>
-        <select class="filter-select" id="filter-anio">
-          <option value="todos">Todos los años</option>
-        </select>
-      </div>
-
-      <div class="totales-bar">
-        <div class="tb-card"><div class="num ingreso" id="tb-ingresos">0€</div><div class="lbl">Total ingresos</div></div>
-        <div class="tb-card"><div class="num gasto" id="tb-gastos">0€</div><div class="lbl">Total gastos</div></div>
-        <div class="tb-card"><div class="num beneficio" id="tb-beneficio">0€</div><div class="lbl">Beneficio</div></div>
       </div>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Fecha</th><th>Emisor</th><th>Concepto</th><th>Base</th><th>IVA</th><th>Total</th>
-              <th>Tipo</th><th>Grupo</th><th>Mes</th><th>Año</th><th></th>
+              <th>Nombre</th>
+              <th>Empresa</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody id="facturas-tbody"></tbody>
+          <tbody id="clientes-tbody"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- ============ INFORMES ============ -->
-    <section class="section" id="section-informes">
+    <!-- ============ PIPELINE ============ -->
+    <section class="section" id="section-pipeline">
       <div class="topbar">
         <div>
-          <h1>Informes</h1>
-          <p>Consulta el resumen financiero de cualquier periodo</p>
+          <h1>Pipeline de ventas</h1>
+          <p>Arrastra las tarjetas para actualizar el estado de cada lead</p>
+        </div>
+      </div>
+
+      <div class="kanban-board" id="kanban-board"></div>
+    </section>
+
+    <!-- ============ TAREAS ============ -->
+    <section class="section" id="section-tareas">
+      <div class="topbar">
+        <div>
+          <h1>Tareas</h1>
+          <p>El día a día del equipo, siempre bajo control</p>
         </div>
         <div class="topbar-actions">
-          <button class="btn btn-secondary" id="btn-exportar-csv">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Exportar a CSV
+          <button class="btn btn-primary" id="btn-new-task">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nueva tarea
           </button>
         </div>
       </div>
 
-      <div class="panel fade-up">
-        <div class="informe-selectores">
-          <div class="form-group">
-            <label>Mes</label>
-            <select class="filter-select" id="informe-mes"></select>
-          </div>
-          <div class="form-group">
-            <label>Año</label>
-            <select class="filter-select" id="informe-anio"></select>
-          </div>
-        </div>
-
-        <div class="informe-resumen">
-          <div class="tb-card"><div class="num ingreso" id="inf-ingresos">0€</div><div class="lbl">Total ingresos</div></div>
-          <div class="tb-card"><div class="num gasto" id="inf-gastos">0€</div><div class="lbl">Total gastos</div></div>
-          <div class="tb-card"><div class="num beneficio" id="inf-beneficio">0€</div><div class="lbl">Beneficio</div></div>
-        </div>
-
-        <h3 style="margin-bottom:14px;">Detalle por grupo contable</h3>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Grupo contable</th><th>Tipo</th><th>Nº facturas</th><th>Total</th></tr></thead>
-            <tbody id="informe-tbody"></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="task-list" id="task-list"></div>
     </section>
 
   </main>
 </div>
 
 <!-- ============================================================
-     MODAL: AÑADIR / EDITAR FACTURA MANUALMENTE
+     MODALES
      ============================================================ -->
-<div class="modal-overlay" id="modal-manual">
+
+<!-- MODAL: NUEVO LEAD -->
+<div class="modal-overlay" id="modal-lead">
   <div class="modal">
     <div class="modal-header">
-      <h3 id="modal-manual-title">Añadir factura manualmente</h3>
-      <button class="modal-close" data-close="modal-manual">✕</button>
+      <h3>Nuevo lead</h3>
+      <button class="modal-close" data-close="modal-lead">✕</button>
     </div>
-    <form id="form-manual">
-      <input type="hidden" id="manual-id">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Fecha</label>
-          <input type="date" id="manual-fecha" required>
-        </div>
-        <div class="form-group">
-          <label>Tipo</label>
-          <select id="manual-tipo">
-            <option value="Gasto">Gasto</option>
-            <option value="Ingreso">Ingreso</option>
-          </select>
-        </div>
+    <form id="form-lead">
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" id="lead-nombre" required placeholder="Ej. Sara Gómez">
       </div>
       <div class="form-group">
-        <label>Emisor</label>
-        <input type="text" id="manual-emisor" required placeholder="Ej. Endesa Energía">
+        <label>Empresa</label>
+        <input type="text" id="lead-empresa" required placeholder="Ej. Gómez Consulting">
       </div>
       <div class="form-group">
-        <label>Concepto</label>
-        <input type="text" id="manual-concepto" required placeholder="Ej. Factura luz enero">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Grupo contable</label>
-          <select id="manual-grupo"></select>
-        </div>
-        <div class="form-group">
-          <label>IVA aplicado</label>
-          <select id="manual-iva-pct">
-            <option value="21">21%</option>
-            <option value="10">10%</option>
-            <option value="4">4%</option>
-            <option value="0">Exento</option>
-          </select>
-        </div>
+        <label>Email <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="email" id="lead-email" placeholder="sara@empresa.com">
       </div>
       <div class="form-group">
-        <label>Base imponible (€)</label>
-        <input type="number" step="0.01" id="manual-base" required placeholder="0,00">
+        <label>Teléfono <span style="font-weight:400; text-transform:none; letter-spacing:0;">(opcional)</span></label>
+        <input type="tel" id="lead-telefono" placeholder="+34 600 000 000">
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <select id="lead-estado">
+          <option value="Lead">Lead</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Negociación">Negociación</option>
+          <option value="Cerrado">Cerrado</option>
+        </select>
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn btn-secondary" data-close="modal-manual">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar factura</button>
+        <button type="button" class="btn btn-secondary" data-close="modal-lead">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar lead</button>
       </div>
     </form>
   </div>
 </div>
 
+<!-- MODAL: NUEVA TARJETA PIPELINE -->
+<div class="modal-overlay" id="modal-kanban">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Añadir tarjeta</h3>
+      <button class="modal-close" data-close="modal-kanban">✕</button>
+    </div>
+    <form id="form-kanban">
+      <div class="form-group">
+        <label>Nombre del contacto</label>
+        <input type="text" id="kanban-nombre" required placeholder="Ej. Sara Gómez">
+      </div>
+      <div class="form-group">
+        <label>Empresa</label>
+        <input type="text" id="kanban-empresa" required placeholder="Ej. Gómez Consulting">
+      </div>
+      <input type="hidden" id="kanban-estado" value="Lead">
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close="modal-kanban">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Añadir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: NUEVA TAREA -->
+<div class="modal-overlay" id="modal-task">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nueva tarea</h3>
+      <button class="modal-close" data-close="modal-task">✕</button>
+    </div>
+    <form id="form-task">
+      <div class="form-group">
+        <label>Título</label>
+        <input type="text" id="task-titulo" required placeholder="Ej. Llamar a nuevo lead">
+      </div>
+      <div class="form-group">
+        <label>Asignado a</label>
+        <select id="task-asignado">
+          <option value="Marc">Marc</option>
+          <option value="Mario">Mario</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Fecha límite</label>
+        <input type="date" id="task-fecha" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" data-close="modal-task">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar tarea</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST -->
 <div id="toast"><span class="dot"></span><span id="toast-text">Guardado correctamente</span></div>
 
 <script>
 /* ================================================================
-   AutomizeAI · Contabilidad automatizada — JavaScript vanilla
+   AutomizeAI CRM — JavaScript
    ================================================================ */
 
 /* ---------- 1. CONFIGURACIÓN ---------- */
 const APP_PASSWORD = "automize2025";
-const STORAGE_KEY = "automizeai_facturas";
+const STORAGE_KEYS = { leads: "automizeai_leads", tasks: "automizeai_tasks" };
 
 /* ==================================================================
-   SINCRONIZACIÓN EN LA NUBE (JSONBin.io) — comparte datos entre dispositivos
-   ==================================================================
-   IMPORTANTE: pega aquí EXACTAMENTE los mismos dos valores que hayas
-   puesto en index.html (Bin ID y X-MASTER-KEY) — ambos módulos
-   comparten el mismo bin en la nube. Instrucciones completas en el
-   comentario equivalente de index.html.
+   SINCRONIZACIÓN EN LA NUBE (JSONBin.io)
    ================================================================== */
 const JSONBIN_BIN_ID = '6a68df4eda38895dfe9c59f8';
 const JSONBIN_API_KEY = '$2a$10$3mJHpcCJM6amDkCd1OI0wuKoHkRTSQPNBCW5huoi3fZFq.rCPZREy';
@@ -841,57 +750,53 @@ async function nubeGuardar(objetoCompleto){
   if(!res.ok) throw new Error('No se pudo guardar en la nube (' + res.status + ')');
 }
 
-// Convierte las facturas al formato base (sin los campos calculados) para guardarlas
-function datosBaseFacturas(){
-  return facturas.map(f => ({ id:f.id, fecha:f.fecha, emisor:f.emisor, concepto:f.concepto, base:f.base, ivaPct:f.ivaPct, tipo:f.tipo, grupo:f.grupo }));
-}
+function datosBaseLeads(){ return leads.map(l => ({ id:l.id, nombre:l.nombre, empresa:l.empresa, email:l.email, telefono:l.telefono, estado:l.estado, fecha:l.fecha })); }
+function datosBaseTasks(){ return tasks.map(t => ({ id:t.id, titulo:t.titulo, asignado:t.asignado, fecha:t.fecha, completada:t.completada })); }
 
-// Sube las facturas actuales a la nube. Primero lee lo que ya hay (por si
-// index.html ha guardado leads/tareas) para no pisarlo.
 async function sincronizarSubida(){
   if(!JSONBIN_ACTIVO || sincronizando) return;
   sincronizando = true;
   marcarEstadoSync('cargando', 'Sincronizando...');
   try{
     const remoto = await nubeObtener();
-    remoto.facturas = datosBaseFacturas();
-    remoto.actualizadoFacturas = new Date().toISOString();
+    remoto.leads = datosBaseLeads();
+    remoto.tasks = datosBaseTasks();
+    remoto.actualizadoCRM = new Date().toISOString();
     await nubeGuardar(remoto);
-    ultimaMarcaAplicada = remoto.actualizadoFacturas;
+    ultimaMarcaAplicada = remoto.actualizadoCRM;
     marcarEstadoSync('ok', 'Sincronizado ' + horaActual());
-    console.log('[AutomizeAI Contabilidad] Datos subidos a la nube correctamente.');
+    console.log('[AutomizeAI CRM] Datos subidos a la nube correctamente.');
   } catch(err){
     marcarEstadoSync('error', 'Sin conexión con la nube');
-    console.error('[AutomizeAI Contabilidad] Error al subir a la nube:', err);
+    console.error('[AutomizeAI CRM] Error al subir a la nube:', err);
   } finally { sincronizando = false; }
 }
 
-// Descarga las facturas más recientes por si el compañero ha añadido algo
-// desde su dispositivo. Si la nube está vacía, la inicializa con lo local.
 async function sincronizarDescarga(){
   if(!JSONBIN_ACTIVO || sincronizando) return;
   sincronizando = true;
   marcarEstadoSync('cargando', 'Sincronizando...');
   try{
     const remoto = await nubeObtener();
-    if(Array.isArray(remoto.facturas)){
-      if(remoto.actualizadoFacturas !== ultimaMarcaAplicada){
-        facturas = remoto.facturas.map(enriquecerFactura);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(remoto.facturas));
-        ultimaMarcaAplicada = remoto.actualizadoFacturas;
-        actualizarSelectorAnios();
+    if(Array.isArray(remoto.leads)){
+      if(remoto.actualizadoCRM !== ultimaMarcaAplicada){
+        leads = remoto.leads;
+        tasks = remoto.tasks || tasks;
+        localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify(leads));
+        localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks));
+        ultimaMarcaAplicada = remoto.actualizadoCRM;
         renderTodo();
-        console.log('[AutomizeAI Contabilidad] Datos descargados de la nube correctamente.');
+        console.log('[AutomizeAI CRM] Datos descargados de la nube correctamente.');
       }
       marcarEstadoSync('ok', 'Sincronizado ' + horaActual());
     } else {
       sincronizando = false;
-      await sincronizarSubida(); // la nube está vacía: la inicializamos con los datos locales
+      await sincronizarSubida();
       return;
     }
   } catch(err){
     marcarEstadoSync('error', 'Sin conexión con la nube');
-    console.error('[AutomizeAI Contabilidad] Error al descargar de la nube:', err);
+    console.error('[AutomizeAI CRM] Error al descargar de la nube:', err);
   } finally { sincronizando = false; }
 }
 
@@ -903,7 +808,7 @@ function inicializarSincronizacion(){
   if(btn){
     btn.addEventListener('click', function(){
       if(!JSONBIN_ACTIVO){
-        mostrarToast('Sincronización no configurada. Revisa las instrucciones en el código.');
+        mostrarToast('Sincronización no configurada.');
         return;
       }
       sincronizarDescarga();
@@ -916,68 +821,50 @@ function inicializarSincronizacion(){
   });
 }
 
-const MESES_NOMBRE = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-
-/* ---------- 2. GRUPOS CONTABLES Y REGLAS DE CLASIFICACIÓN ---------- */
-// El orden importa: se evalúan de arriba a abajo y gana la primera coincidencia
-const GRUPOS_CONFIG = [
-  { grupo: 'Gastos de personal',       tipo: 'Gasto',   keywords: ['nómina','nomina','salario','sueldo','seguridad social','nominas'] },
-  { grupo: 'Suministros',              tipo: 'Gasto',   keywords: ['luz','agua','gas','teléfono','telefono','internet','electricidad'] },
-  { grupo: 'Servicios profesionales',  tipo: 'Gasto',   keywords: ['asesoría','asesoria','gestoría','gestoria','abogado','consultoría','consultoria','auditoría','auditoria'] },
-  { grupo: 'Material de oficina',      tipo: 'Gasto',   keywords: ['material','oficina','papel','tinta','impresora'] },
-  { grupo: 'Gastos de software',       tipo: 'Gasto',   keywords: ['software','licencia','suscripción','suscripcion','cloud','hosting'] },
-  { grupo: 'Formación',                tipo: 'Gasto',   keywords: ['curso','formación','formacion','congreso'] },
-  { grupo: 'Viajes y dietas',          tipo: 'Gasto',   keywords: ['viaje','dieta','kilómetro','kilometro','combustible'] },
-  { grupo: 'Ingresos',                 tipo: 'Ingreso', keywords: ['cliente','facturación','facturacion','honorarios','proyecto'] },
-  { grupo: 'Otros',                    tipo: 'Gasto',   keywords: [] } // Grupo por defecto si no hay coincidencias
+/* ---------- 2. DATOS DE EJEMPLO ---------- */
+const SEED_LEADS = [
+  { id: 1, nombre: "María González",  empresa: "TechSolutions",         email: "maria.gonzalez@techsolutions.es",   telefono: "+34 611 222 333", estado: "Lead",        fecha: "2025-01-10" },
+  { id: 2, nombre: "Carlos Ruiz",     empresa: "Distribuciones Ruiz",   email: "carlos.ruiz@distribru.es",          telefono: "+34 622 333 444", estado: "Contactado",  fecha: "2025-01-12" },
+  { id: 3, nombre: "Laura Martínez",  empresa: "InnovaDigital",         email: "laura.martinez@innovadigital.es",   telefono: "+34 633 444 555", estado: "Negociación", fecha: "2025-01-14" },
+  { id: 4, nombre: "Pedro Sánchez",   empresa: "Grupo Sánchez S.A.",    email: "pedro.sanchez@gruposanchez.es",     telefono: "+34 644 555 666", estado: "Cerrado",     fecha: "2025-01-15" },
+  { id: 5, nombre: "Ana López",       empresa: "Consultoría López",     email: "ana.lopez@consultorialopez.es",     telefono: "+34 655 666 777", estado: "Lead",        fecha: "2025-01-16" }
 ];
 
-function listaGrupos(){ return GRUPOS_CONFIG.map(g => g.grupo); }
-function tipoDeGrupo(grupo){
-  const cfg = GRUPOS_CONFIG.find(g => g.grupo === grupo);
-  return cfg ? cfg.tipo : 'Gasto';
-}
-
-/* ---------- 3. DATOS DE EJEMPLO ---------- */
-const SEED_FACTURAS = [
-  { id:1, fecha:'2025-01-15', emisor:'Endesa',         concepto:'Factura luz enero',            base:85.50,  ivaPct:21, tipo:'Gasto',   grupo:'Suministros' },
-  { id:2, fecha:'2025-01-20', emisor:'Gestoría Ruiz',  concepto:'Asesoría mensual',              base:200.00, ivaPct:21, tipo:'Gasto',   grupo:'Servicios profesionales' },
-  { id:3, fecha:'2025-01-25', emisor:'Microsoft',      concepto:'Licencia Office 365',           base:60.00,  ivaPct:21, tipo:'Gasto',   grupo:'Gastos de software' },
-  { id:4, fecha:'2025-01-30', emisor:'Cliente A',      concepto:'Proyecto automatización',       base:1000.00,ivaPct:21, tipo:'Ingreso', grupo:'Ingresos' }
+const SEED_TASKS = [
+  { id: 1, titulo: "Llamar a María González",        asignado: "Marc",  fecha: "2025-01-20", completada: false },
+  { id: 2, titulo: "Enviar propuesta a Carlos Ruiz",  asignado: "Mario", fecha: "2025-01-22", completada: false },
+  { id: 3, titulo: "Reunión con Laura Martínez",      asignado: "Marc",  fecha: "2025-01-25", completada: false },
+  { id: 4, titulo: "Seguimiento a Pedro Sánchez",     asignado: "Mario", fecha: "2025-01-18", completada: true  }
 ];
 
-/* ---------- 4. ESTADO Y PERSISTENCIA ---------- */
-let facturas = [];
+const ACTIVIDAD_RECIENTE = [
+  { txt: "Nuevo lead añadido: <strong>Ana López</strong>",                     time: "Hace 2 horas" },
+  { txt: "<strong>Pedro Sánchez</strong> movido a Cerrado",                    time: "Hace 5 horas" },
+  { txt: "Tarea completada: Seguimiento a Pedro Sánchez",                      time: "Ayer" },
+  { txt: "<strong>Laura Martínez</strong> pasó a Negociación",                 time: "Hace 2 días" },
+  { txt: "Propuesta enviada a <strong>Carlos Ruiz</strong>",                   time: "Hace 3 días" }
+];
 
-function calcularFactura(base, ivaPct){
-  const ivaAmount = Math.round(base * ivaPct) / 100;
-  const total = Math.round((base + ivaAmount) * 100) / 100;
-  return { ivaAmount: Math.round(ivaAmount*100)/100, total };
-}
+const LEADS_POR_MES = [ { mes:"Ago", valor:8 }, { mes:"Sep", valor:14 }, { mes:"Oct", valor:11 }, { mes:"Nov", valor:19 }, { mes:"Dic", valor:16 }, { mes:"Ene", valor:23 } ];
 
-function enriquecerFactura(f){
-  const { ivaAmount, total } = calcularFactura(f.base, f.ivaPct);
-  const d = new Date(f.fecha + 'T00:00:00');
-  return { ...f, ivaAmount, total, mes: d.getMonth()+1, anio: d.getFullYear() };
-}
+/* ---------- 3. ESTADO ---------- */
+let leads = [];
+let tasks = [];
+let kanbanDragId = null;
 
+/* ---------- 4. PERSISTENCIA ---------- */
 function cargarDatos(){
-  const saved = localStorage.getItem(STORAGE_KEY);
-  const base = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(SEED_FACTURAS));
-  facturas = base.map(enriquecerFactura);
-  if(!saved) guardarDatos();
+  const savedLeads = localStorage.getItem(STORAGE_KEYS.leads);
+  const savedTasks = localStorage.getItem(STORAGE_KEYS.tasks);
+  leads = savedLeads ? JSON.parse(savedLeads) : JSON.parse(JSON.stringify(SEED_LEADS));
+  tasks = savedTasks ? JSON.parse(savedTasks) : JSON.parse(JSON.stringify(SEED_TASKS));
+  if(!savedLeads) guardarLeads();
+  if(!savedTasks) guardarTasks();
 }
-function guardarDatos(){
-  // Guardamos solo los campos base; mes/año/iva/total se recalculan al cargar
-  const paraGuardar = facturas.map(f => ({ id:f.id, fecha:f.fecha, emisor:f.emisor, concepto:f.concepto, base:f.base, ivaPct:f.ivaPct, tipo:f.tipo, grupo:f.grupo }));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(paraGuardar));
-  sincronizarSubida();
-}
+function guardarLeads(){ localStorage.setItem(STORAGE_KEYS.leads, JSON.stringify(leads)); sincronizarSubida(); }
+function guardarTasks(){ localStorage.setItem(STORAGE_KEYS.tasks, JSON.stringify(tasks)); sincronizarSubida(); }
 
 /* ---------- 5. LOGIN ---------- */
-// Igual que en el CRM: las referencias y los listeners se enlazan dentro
-// de funciones de inicialización, para que TODO se reconecte correctamente
-// cada vez que se carga esta página (incluida la vuelta desde el CRM).
 let loginScreen, loginForm, passwordInput, loginError, appEl;
 
 function inicializarLogin(){
@@ -1001,7 +888,7 @@ function inicializarLogin(){
 
   document.getElementById('logout-btn').addEventListener('click', function(){
     sessionStorage.removeItem('automizeai_auth');
-    localStorage.removeItem('contabilidad_seccion_activa');
+    localStorage.removeItem('crm_seccion_activa');
     location.reload();
   });
 
@@ -1012,17 +899,13 @@ function entrarEnApp(){
   loginScreen.style.display = 'none';
   appEl.classList.add('active');
   cargarDatos();
-  inicializarSelectores();
   renderTodo();
-  irASeccion(localStorage.getItem('contabilidad_seccion_activa') || 'dashboard');
-  if(JSONBIN_ACTIVO) sincronizarDescarga(); // trae los últimos cambios del compañero, si los hay
-  console.log('[AutomizeAI Contabilidad] Aplicación inicializada correctamente.');
+  irASeccion(localStorage.getItem('crm_seccion_activa') || 'dashboard');
+  if(JSONBIN_ACTIVO) sincronizarDescarga();
+  console.log('[AutomizeAI CRM] Aplicación inicializada correctamente.');
 }
 
-/* ---------- 6. NAVEGACIÓN (delegación de eventos) ---------- */
-// Un único listener en el contenedor .sidebar-nav en lugar de uno por botón:
-// así la navegación funciona siempre, sin importar cuántas veces se recargue
-// la página o desde qué módulo se vuelva.
+/* ---------- 6. NAVEGACIÓN ---------- */
 function irASeccion(target){
   const seccion = document.getElementById('section-' + target);
   if(!seccion) return;
@@ -1031,26 +914,24 @@ function irASeccion(target){
   if(navActivo) navActivo.classList.add('active');
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   seccion.classList.add('active');
-  localStorage.setItem('contabilidad_seccion_activa', target);
-  if(target === 'informes') renderInforme();
+  localStorage.setItem('crm_seccion_activa', target);
 }
 
 function inicializarNavegacion(){
   const nav = document.querySelector('.sidebar-nav');
-  if(!nav){ console.error('[AutomizeAI Contabilidad] No se encontró el contenedor .sidebar-nav'); return; }
+  if(!nav){ console.error('[AutomizeAI CRM] No se encontró el contenedor .sidebar-nav'); return; }
 
   nav.addEventListener('click', function(e){
     const item = e.target.closest('.nav-item[data-section]');
-    if(!item) return; // el clic no fue sobre un ítem de navegación (p.ej. el enlace "Volver al CRM")
+    if(!item) return;
     e.preventDefault();
     irASeccion(item.dataset.section);
   });
 
-  console.log('[AutomizeAI Contabilidad] Navegación del sidebar enlazada correctamente.');
+  console.log('[AutomizeAI CRM] Navegación del sidebar enlazada correctamente.');
 }
 
 /* ---------- 7. UTILIDADES ---------- */
-function euros(n){ return (Math.round(n*100)/100).toLocaleString('es-ES',{minimumFractionDigits:2, maximumFractionDigits:2}) + '€'; }
 function formatearFecha(fechaStr){
   const d = new Date(fechaStr + 'T00:00:00');
   return d.toLocaleDateString('es-ES', { day:'2-digit', month:'short', year:'numeric' });
@@ -1069,369 +950,88 @@ function inicializarModales(){
   document.querySelectorAll('.modal-overlay').forEach(overlay => overlay.addEventListener('click', (e) => { if(e.target === overlay) overlay.classList.remove('active'); }));
 }
 
-/* Rellena los <select> de grupo contable, mes y año dinámicamente */
-function inicializarSelectores(){
-  ['res-grupo','manual-grupo'].forEach(id => {
-    const sel = document.getElementById(id);
-    sel.innerHTML = listaGrupos().map(g => `<option value="${g}">${g}</option>`).join('');
-  });
-
-  const filtroGrupo = document.getElementById('filter-grupo');
-  filtroGrupo.innerHTML = '<option value="todos">Todos los grupos</option>' + listaGrupos().map(g => `<option value="${g}">${g}</option>`).join('');
-
-  const filtroMes = document.getElementById('filter-mes');
-  filtroMes.innerHTML = '<option value="todos">Todos los meses</option>' + MESES_NOMBRE.map((m,i) => `<option value="${i+1}">${m}</option>`).join('');
-
-  // Selectores de informe y filtro de año se recalculan según los años presentes en los datos
-  actualizarSelectorAnios();
-
-  const informeMes = document.getElementById('informe-mes');
-  informeMes.innerHTML = MESES_NOMBRE.map((m,i) => `<option value="${i+1}">${m}</option>`).join('');
-  const hoy = new Date();
-  informeMes.value = hoy.getMonth()+1;
-
-  document.getElementById('informe-mes').addEventListener('change', renderInforme);
-  document.getElementById('informe-anio').addEventListener('change', renderInforme);
-}
-
-function actualizarSelectorAnios(){
-  const anios = [...new Set(facturas.map(f => f.anio))].sort((a,b) => b-a);
-  const hoy = new Date().getFullYear();
-  if(!anios.includes(hoy)) anios.unshift(hoy);
-
-  const filtroAnio = document.getElementById('filter-anio');
-  const valorPrevio = filtroAnio.value;
-  filtroAnio.innerHTML = '<option value="todos">Todos los años</option>' + anios.map(a => `<option value="${a}">${a}</option>`).join('');
-  if([...filtroAnio.options].some(o => o.value === valorPrevio)) filtroAnio.value = valorPrevio;
-
-  const informeAnio = document.getElementById('informe-anio');
-  const valorPrevioInf = informeAnio.value;
-  informeAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
-  if([...informeAnio.options].some(o => o.value === valorPrevioInf)) informeAnio.value = valorPrevioInf;
-}
-
-/* ---------- 8. MOTOR DE CLASIFICACIÓN AUTOMÁTICA ---------- */
-// Convierte un importe en formato español ("1.234,56" o "95,00" o "95.00") a número JS
-function parseImporteEsp(str){
-  let s = str.trim();
-  if(s.includes(',')){
-    // Coma decimal: elimina los puntos de miles y sustituye la coma por punto
-    s = s.replace(/\./g,'').replace(',', '.');
-  }
-  const n = parseFloat(s);
-  return isNaN(n) ? 0 : n;
-}
-
-function clasificarTexto(texto){
-  const textoLower = texto.toLowerCase();
-
-  // 1. Grupo contable: primera coincidencia de palabra clave
-  let grupoDetectado = 'Otros';
-  for(const cfg of GRUPOS_CONFIG){
-    if(cfg.keywords.some(k => textoLower.includes(k))){
-      grupoDetectado = cfg.grupo;
-      break;
-    }
-  }
-  const tipoDetectado = tipoDeGrupo(grupoDetectado);
-
-  // 2. IVA: busca "IVA 10%", "IVA 4%", "exento"; por defecto 21%
-  let ivaPct = 21;
-  if(/exento/.test(textoLower)){
-    ivaPct = 0;
-  } else {
-    const matchIva = textoLower.match(/iva\s*(?:del)?\s*(\d{1,2})\s*%/);
-    if(matchIva) ivaPct = parseInt(matchIva[1], 10);
-  }
-
-  // 3. Fecha (formato dd/mm/yyyy)
-  let fecha = new Date().toISOString().split('T')[0];
-  const matchFecha = texto.match(/fecha[:\s]*([0-3]?\d)[\/\-]([01]?\d)[\/\-](\d{4})/i);
-  if(matchFecha){
-    const dd = matchFecha[1].padStart(2,'0');
-    const mm = matchFecha[2].padStart(2,'0');
-    fecha = `${matchFecha[3]}-${mm}-${dd}`;
-  }
-
-  // 4. Emisor
-  let emisor = '';
-  const matchEmisor = texto.match(/emisor[:\s]*([^\n\r]+)/i);
-  if(matchEmisor) emisor = matchEmisor[1].trim();
-
-  // 5. Concepto
-  let concepto = '';
-  const matchConcepto = texto.match(/concepto[:\s]*([^\n\r]+)/i);
-  if(matchConcepto) concepto = matchConcepto[1].trim();
-
-  // 6. Base imponible (acepta formato español: coma decimal y punto de miles)
-  let base = 0;
-  const matchBase = texto.match(/base\s*imponible[:\s]*([\d.,]+)\s*€?/i);
-  if(matchBase){
-    base = parseImporteEsp(matchBase[1]);
-  } else {
-    // Si no hay "base imponible" pero sí un "total", estimamos la base a partir del IVA detectado
-    const matchTotal = texto.match(/total[:\s]*([\d.,]+)\s*€?/i);
-    if(matchTotal){
-      const totalDetectado = parseImporteEsp(matchTotal[1]);
-      if(!isNaN(totalDetectado)) base = Math.round((totalDetectado / (1 + ivaPct/100)) * 100) / 100;
-    }
-  }
-  if(isNaN(base)) base = 0;
-
-  return { fecha, emisor, concepto, grupo: grupoDetectado, tipo: tipoDetectado, ivaPct, base };
-}
-
-document.getElementById('btn-clasificar').addEventListener('click', function(){
-  const texto = document.getElementById('factura-texto').value.trim();
-  if(!texto){
-    mostrarToast('Pega primero el texto de una factura');
-    return;
-  }
-  const r = clasificarTexto(texto);
-  document.getElementById('res-fecha').value = r.fecha;
-  document.getElementById('res-tipo').value = r.tipo;
-  document.getElementById('res-emisor').value = r.emisor;
-  document.getElementById('res-concepto').value = r.concepto;
-  document.getElementById('res-grupo').value = r.grupo;
-  document.getElementById('res-iva-pct').value = r.ivaPct;
-  document.getElementById('res-base').value = r.base.toFixed(2);
-  actualizarPreviewTotales();
-  document.getElementById('result-panel').classList.add('show');
-  mostrarToast('Factura clasificada — revisa los datos antes de guardar');
-});
-
-document.getElementById('btn-limpiar-texto').addEventListener('click', function(){
-  document.getElementById('factura-texto').value = '';
-  document.getElementById('result-panel').classList.remove('show');
-});
-
-// El grupo contable determina automáticamente el tipo (gasto/ingreso) al cambiarlo
-document.getElementById('res-grupo').addEventListener('change', function(){
-  document.getElementById('res-tipo').value = tipoDeGrupo(this.value);
-});
-['res-base','res-iva-pct'].forEach(id => document.getElementById(id).addEventListener('input', actualizarPreviewTotales));
-
-function actualizarPreviewTotales(){
-  const base = parseFloat(document.getElementById('res-base').value) || 0;
-  const ivaPct = parseFloat(document.getElementById('res-iva-pct').value) || 0;
-  const { ivaAmount, total } = calcularFactura(base, ivaPct);
-  document.getElementById('tp-base').textContent = euros(base);
-  document.getElementById('tp-iva').textContent = euros(ivaAmount);
-  document.getElementById('tp-total').textContent = euros(total);
-}
-
-// "Corregir y guardar" simplemente enfoca el primer campo para editar antes de guardar
-document.getElementById('btn-corregir').addEventListener('click', function(){
-  document.getElementById('res-emisor').focus();
-  mostrarToast('Corrige los campos necesarios y pulsa "Guardar factura"');
-});
-
-document.getElementById('form-resultado').addEventListener('submit', function(e){
-  e.preventDefault();
-  const nueva = {
-    id: Date.now(),
-    fecha: document.getElementById('res-fecha').value || new Date().toISOString().split('T')[0],
-    emisor: document.getElementById('res-emisor').value.trim() || 'Sin especificar',
-    concepto: document.getElementById('res-concepto').value.trim() || 'Sin especificar',
-    base: parseFloat(document.getElementById('res-base').value) || 0,
-    ivaPct: parseFloat(document.getElementById('res-iva-pct').value) || 0,
-    tipo: document.getElementById('res-tipo').value,
-    grupo: document.getElementById('res-grupo').value
-  };
-  facturas.unshift(enriquecerFactura(nueva));
-  guardarDatos();
-  actualizarSelectorAnios();
-  renderTodo();
-  document.getElementById('factura-texto').value = '';
-  document.getElementById('result-panel').classList.remove('show');
-  mostrarToast('Factura guardada correctamente');
-});
-
-/* ---------- 9. RENDER GENERAL ---------- */
+/* ---------- 8. RENDER ---------- */
 function renderTodo(){
-  try{ renderDashboard(); } catch(err){ console.error('[AutomizeAI Contabilidad] Error en renderDashboard:', err); }
-  try{ renderFacturas(); } catch(err){ console.error('[AutomizeAI Contabilidad] Error en renderFacturas:', err); }
+  try{ renderDashboard(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderDashboard:', err); }
+  try{ renderClientes(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderClientes:', err); }
+  try{ renderKanban(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderKanban:', err); }
+  try{ renderTareas(); } catch(err){ console.error('[AutomizeAI CRM] Error en renderTareas:', err); }
 }
 
-/* ---------- 10. DASHBOARD ---------- */
+/* ---------- 9. DASHBOARD ---------- */
 function renderDashboard(){
-  const hoy = new Date();
-  const mesActual = hoy.getMonth()+1, anioActual = hoy.getFullYear();
-  const delMes = facturas.filter(f => f.mes === mesActual && f.anio === anioActual);
-
-  const ingresosMes = delMes.filter(f => f.tipo === 'Ingreso').reduce((s,f) => s+f.total, 0);
-  const gastosMes = delMes.filter(f => f.tipo === 'Gasto').reduce((s,f) => s+f.total, 0);
-  const beneficioMes = ingresosMes - gastosMes;
+  const totalLeads = leads.length;
+  const clientesActivos = leads.filter(l => l.estado === 'Cerrado').length;
+  const ingresosMes = clientesActivos * 4150;
+  const tareasPendientes = tasks.filter(t => !t.completada).length;
 
   document.getElementById('metrics-grid').innerHTML = `
-    <div class="metric-card fade-up">
-      <div class="label">Ingresos del mes</div>
-      <div class="value">${euros(ingresosMes)}</div>
-      <div class="delta">${MESES_NOMBRE[mesActual-1]} ${anioActual}</div>
-    </div>
-    <div class="metric-card fade-up">
-      <div class="label">Gastos del mes</div>
-      <div class="value">${euros(gastosMes)}</div>
-      <div class="delta">${MESES_NOMBRE[mesActual-1]} ${anioActual}</div>
-    </div>
-    <div class="metric-card fade-up ${beneficioMes < 0 ? 'negativo' : ''}">
-      <div class="label">Beneficio del mes</div>
-      <div class="value">${euros(beneficioMes)}</div>
-      <div class="delta">${beneficioMes >= 0 ? 'Resultado positivo' : 'Resultado negativo'}</div>
-    </div>
-    <div class="metric-card fade-up">
-      <div class="label">Nº de facturas</div>
-      <div class="value">${facturas.length}</div>
-      <div class="delta">Total histórico</div>
-    </div>
+    <div class="metric-card"><div class="label">Total leads</div><div class="value">${totalLeads}</div></div>
+    <div class="metric-card"><div class="label">Clientes activos</div><div class="value">${clientesActivos}</div></div>
+    <div class="metric-card"><div class="label">Ingresos del mes</div><div class="value">${ingresosMes.toLocaleString('es-ES')}€</div></div>
+    <div class="metric-card"><div class="label">Tareas pendientes</div><div class="value">${tareasPendientes}</div></div>
   `;
 
-  renderGraficoBarras();
-  renderDonut();
-  renderUltimasFacturas();
-}
-
-function ultimos6Meses(){
-  const hoy = new Date();
-  const arr = [];
-  for(let i=5; i>=0; i--){
-    const d = new Date(hoy.getFullYear(), hoy.getMonth()-i, 1);
-    arr.push({ mes: d.getMonth()+1, anio: d.getFullYear(), label: MESES_NOMBRE[d.getMonth()].slice(0,3) });
-  }
-  return arr;
-}
-
-function renderGraficoBarras(){
-  const meses = ultimos6Meses();
-  const datos = meses.map(m => {
-    const del = facturas.filter(f => f.mes === m.mes && f.anio === m.anio);
-    return {
-      label: m.label,
-      ingresos: del.filter(f => f.tipo === 'Ingreso').reduce((s,f) => s+f.total, 0),
-      gastos: del.filter(f => f.tipo === 'Gasto').reduce((s,f) => s+f.total, 0)
-    };
-  });
-  const maxValor = Math.max(1, ...datos.map(d => Math.max(d.ingresos, d.gastos)));
-
-  document.getElementById('chart-wrap').innerHTML = datos.map(d => `
+  const maxValor = Math.max(...LEADS_POR_MES.map(m => m.valor));
+  document.getElementById('chart-wrap').innerHTML = LEADS_POR_MES.map(m => `
     <div class="chart-bar-col">
-      <div class="chart-bars-pair">
-        <div class="chart-bar ingreso" style="height:${(d.ingresos/maxValor*100)}%" title="Ingresos: ${euros(d.ingresos)}"></div>
-        <div class="chart-bar gasto" style="height:${(d.gastos/maxValor*100)}%" title="Gastos: ${euros(d.gastos)}"></div>
-      </div>
-      <div class="month-label">${d.label}</div>
+      <div class="chart-bar" style="height:${(m.valor / maxValor * 100)}%"></div>
+      <div class="month-label">${m.mes}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('activity-list').innerHTML = ACTIVIDAD_RECIENTE.map(a => `
+    <div class="activity-item">
+      <div class="activity-dot"></div>
+      <div><div class="txt">${a.txt}</div><div class="time">${a.time}</div></div>
+    </div>
+  `).join('');
+
+  const estados = ['Lead','Contactado','Negociación','Cerrado'];
+  document.getElementById('pipeline-mini').innerHTML = estados.map(e => `
+    <div class="pipeline-mini-card">
+      <div class="num">${leads.filter(l => l.estado === e).length}</div>
+      <div class="name">${e}</div>
     </div>
   `).join('');
 }
 
-const DONUT_COLORES = ['#1E8FE1','#5ab4f0','#e05252','#ffb199','#f0a500','#8a96a6','#1a8f5e','#7b61ff','#5a6474'];
+/* ---------- 10. CLIENTES ---------- */
+const searchInput = document.getElementById('search-input');
+const filterStatus = document.getElementById('filter-status');
+searchInput.addEventListener('input', renderClientes);
+filterStatus.addEventListener('change', renderClientes);
 
-function renderDonut(){
-  const gastos = facturas.filter(f => f.tipo === 'Gasto');
-  const totalGastos = gastos.reduce((s,f) => s+f.total, 0);
-  const porGrupo = {};
-  gastos.forEach(f => { porGrupo[f.grupo] = (porGrupo[f.grupo]||0) + f.total; });
-  const entradas = Object.entries(porGrupo).sort((a,b) => b[1]-a[1]);
+function renderClientes(){
+  const query = searchInput.value.trim().toLowerCase();
+  const estadoFiltro = filterStatus.value;
 
-  const wrap = document.getElementById('donut-wrap');
-  if(entradas.length === 0 || totalGastos === 0){
-    wrap.innerHTML = `<div class="empty-state">Todavía no hay gastos registrados para mostrar la distribución.</div>`;
-    return;
-  }
-
-  const radio = 60, circunferencia = 2 * Math.PI * radio;
-  let acumulado = 0;
-  let segmentos = '';
-  entradas.forEach(([grupo, total], i) => {
-    const frac = total / totalGastos;
-    const largo = frac * circunferencia;
-    const color = DONUT_COLORES[i % DONUT_COLORES.length];
-    segmentos += `<circle cx="80" cy="80" r="${radio}" fill="none" stroke="${color}" stroke-width="22"
-      stroke-dasharray="${largo} ${circunferencia-largo}" stroke-dashoffset="${-acumulado}" transform="rotate(-90 80 80)"/>`;
-    acumulado += largo;
+  let filtrados = leads.filter(l => {
+    const coincideTexto = l.nombre.toLowerCase().includes(query) || l.empresa.toLowerCase().includes(query) || l.email.toLowerCase().includes(query);
+    const coincideEstado = estadoFiltro === 'todos' || l.estado === estadoFiltro;
+    return coincideTexto && coincideEstado;
   });
 
-  const svg = `<svg width="160" height="160" viewBox="0 0 160 160">${segmentos}<circle cx="80" cy="80" r="40" fill="var(--card-bg)"/></svg>`;
-  const leyenda = entradas.map(([grupo,total],i) => `
-    <div class="donut-legend-item">
-      <span class="sw" style="background:${DONUT_COLORES[i % DONUT_COLORES.length]}"></span>
-      ${grupo}: <b>${euros(total)}</b>
-    </div>
-  `).join('');
-
-  wrap.innerHTML = `${svg}<div class="donut-legend">${leyenda}</div>`;
-}
-
-function renderUltimasFacturas(){
-  const ultimas = [...facturas].sort((a,b) => b.id - a.id).slice(0,5);
-  const list = document.getElementById('recent-list');
-  if(ultimas.length === 0){
-    list.innerHTML = `<div class="empty-state">Todavía no hay facturas registradas.</div>`;
-    return;
-  }
-  list.innerHTML = ultimas.map(f => `
-    <div class="recent-item">
-      <div class="info">
-        <b>${f.emisor}</b>
-        <span>${f.concepto} · ${f.grupo} · ${formatearFecha(f.fecha)}</span>
-      </div>
-      <div class="amount ${f.tipo === 'Ingreso' ? 'ingreso' : 'gasto'}">${f.tipo === 'Ingreso' ? '+' : '-'}${euros(f.total)}</div>
-    </div>
-  `).join('');
-}
-
-/* ---------- 11. FACTURAS (TABLA + FILTROS) ---------- */
-const searchInput = document.getElementById('search-input');
-[searchInput, document.getElementById('filter-tipo'), document.getElementById('filter-grupo'), document.getElementById('filter-mes'), document.getElementById('filter-anio')]
-  .forEach(el => el.addEventListener('input', renderFacturas) & el.addEventListener('change', renderFacturas));
-
-function renderFacturas(){
-  const query = searchInput.value.trim().toLowerCase();
-  const fTipo = document.getElementById('filter-tipo').value;
-  const fGrupo = document.getElementById('filter-grupo').value;
-  const fMes = document.getElementById('filter-mes').value;
-  const fAnio = document.getElementById('filter-anio').value;
-
-  const filtradas = facturas.filter(f => {
-    const okTexto = f.emisor.toLowerCase().includes(query) || f.concepto.toLowerCase().includes(query);
-    const okTipo = fTipo === 'todos' || f.tipo === fTipo;
-    const okGrupo = fGrupo === 'todos' || f.grupo === fGrupo;
-    const okMes = fMes === 'todos' || f.mes === parseInt(fMes,10);
-    const okAnio = fAnio === 'todos' || f.anio === parseInt(fAnio,10);
-    return okTexto && okTipo && okGrupo && okMes && okAnio;
-  }).sort((a,b) => b.fecha.localeCompare(a.fecha));
-
-  const totalIngresos = filtradas.filter(f => f.tipo==='Ingreso').reduce((s,f)=>s+f.total,0);
-  const totalGastos = filtradas.filter(f => f.tipo==='Gasto').reduce((s,f)=>s+f.total,0);
-  document.getElementById('tb-ingresos').textContent = euros(totalIngresos);
-  document.getElementById('tb-gastos').textContent = euros(totalGastos);
-  document.getElementById('tb-beneficio').textContent = euros(totalIngresos-totalGastos);
-
-  const tbody = document.getElementById('facturas-tbody');
-  if(filtradas.length === 0){
-    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state">No se han encontrado facturas con esos criterios.</div></td></tr>`;
+  const tbody = document.getElementById('clientes-tbody');
+  if(filtrados.length === 0){
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">No se han encontrado clientes.</div></td></tr>`;
     return;
   }
 
-  tbody.innerHTML = filtradas.map(f => `
-    <tr>
-      <td class="cell-muted">${formatearFecha(f.fecha)}</td>
-      <td class="cell-name">${f.emisor}</td>
-      <td class="cell-muted">${f.concepto}</td>
-      <td>${euros(f.base)}</td>
-      <td class="cell-muted">${euros(f.ivaAmount)} (${f.ivaPct}%)</td>
-      <td class="cell-name">${euros(f.total)}</td>
-      <td><span class="tipo-pill tipo-${f.tipo}">${f.tipo}</span></td>
-      <td><span class="grupo-pill">${f.grupo}</span></td>
-      <td class="cell-muted">${MESES_NOMBRE[f.mes-1]}</td>
-      <td class="cell-muted">${f.anio}</td>
+  tbody.innerHTML = filtrados.map(l => `
+    <tr data-id="${l.id}">
+      <td class="cell-name">${l.nombre}</td>
+      <td>${l.empresa}</td>
+      <td class="cell-muted">${l.email}</td>
+      <td class="cell-muted">${l.telefono}</td>
+      <td><span class="status-pill status-${l.estado.replace('ó','o')}">${l.estado}</span></td>
       <td>
         <div class="row-actions">
-          <button class="icon-btn" title="Editar" onclick="editarFactura(${f.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          <button class="icon-btn" title="Ciclar estado" onclick="ciclarEstadoLead(${l.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </button>
-          <button class="icon-btn danger" title="Eliminar" onclick="eliminarFactura(${f.id})">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          <button class="icon-btn danger" title="Eliminar" onclick="eliminarLead(${l.id})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
           </button>
         </div>
       </td>
@@ -1439,137 +1039,204 @@ function renderFacturas(){
   `).join('');
 }
 
-function eliminarFactura(id){
-  if(!confirm('¿Eliminar esta factura?')) return;
-  facturas = facturas.filter(f => f.id !== id);
-  guardarDatos();
-  actualizarSelectorAnios();
+const estadosCiclo = ['Lead','Contactado','Negociación','Cerrado'];
+function ciclarEstadoLead(id){
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  const idx = estadosCiclo.indexOf(lead.estado);
+  lead.estado = estadosCiclo[(idx + 1) % estadosCiclo.length];
+  guardarLeads();
   renderTodo();
-  mostrarToast('Factura eliminada');
+  mostrarToast(`${lead.nombre} ahora está en "${lead.estado}"`);
+}
+function eliminarLead(id){
+  const lead = leads.find(l => l.id === id);
+  if(!lead) return;
+  if(!confirm(`¿Eliminar a ${lead.nombre}?`)) return;
+  leads = leads.filter(l => l.id !== id);
+  guardarLeads();
+  renderTodo();
+  mostrarToast('Lead eliminado');
 }
 
-function editarFactura(id){
-  const f = facturas.find(x => x.id === id);
-  if(!f) return;
-  document.getElementById('modal-manual-title').textContent = 'Editar factura';
-  document.getElementById('manual-id').value = f.id;
-  document.getElementById('manual-fecha').value = f.fecha;
-  document.getElementById('manual-tipo').value = f.tipo;
-  document.getElementById('manual-emisor').value = f.emisor;
-  document.getElementById('manual-concepto').value = f.concepto;
-  document.getElementById('manual-grupo').value = f.grupo;
-  document.getElementById('manual-iva-pct').value = f.ivaPct;
-  document.getElementById('manual-base').value = f.base;
-  abrirModal('modal-manual');
-}
-
-document.getElementById('btn-nueva-manual').addEventListener('click', function(){
-  document.getElementById('modal-manual-title').textContent = 'Añadir factura manualmente';
-  document.getElementById('form-manual').reset();
-  document.getElementById('manual-id').value = '';
-  document.getElementById('manual-fecha').valueAsDate = new Date();
-  abrirModal('modal-manual');
-});
-
-document.getElementById('manual-grupo').addEventListener('change', function(){
-  document.getElementById('manual-tipo').value = tipoDeGrupo(this.value);
-});
-
-document.getElementById('form-manual').addEventListener('submit', function(e){
+document.getElementById('btn-new-lead').addEventListener('click', () => abrirModal('modal-lead'));
+document.getElementById('form-lead').addEventListener('submit', function(e){
   e.preventDefault();
-  const idExistente = document.getElementById('manual-id').value;
-  const datos = {
-    id: idExistente ? parseInt(idExistente,10) : Date.now(),
-    fecha: document.getElementById('manual-fecha').value,
-    emisor: document.getElementById('manual-emisor').value.trim(),
-    concepto: document.getElementById('manual-concepto').value.trim(),
-    grupo: document.getElementById('manual-grupo').value,
-    ivaPct: parseFloat(document.getElementById('manual-iva-pct').value),
-    tipo: document.getElementById('manual-tipo').value,
-    base: parseFloat(document.getElementById('manual-base').value) || 0
+  const nuevo = {
+    id: Date.now(),
+    nombre: document.getElementById('lead-nombre').value.trim(),
+    empresa: document.getElementById('lead-empresa').value.trim(),
+    email: document.getElementById('lead-email').value.trim() || '—',
+    telefono: document.getElementById('lead-telefono').value.trim() || '—',
+    estado: document.getElementById('lead-estado').value,
+    fecha: new Date().toISOString().split('T')[0]
   };
-
-  if(idExistente){
-    facturas = facturas.map(f => f.id === datos.id ? enriquecerFactura(datos) : f);
-    mostrarToast('Factura actualizada');
-  } else {
-    facturas.unshift(enriquecerFactura(datos));
-    mostrarToast('Factura añadida correctamente');
-  }
-  guardarDatos();
-  actualizarSelectorAnios();
+  leads.unshift(nuevo);
+  guardarLeads();
   renderTodo();
-  cerrarModal('modal-manual');
+  this.reset();
+  cerrarModal('modal-lead');
+  mostrarToast('Lead añadido correctamente');
 });
 
-/* ---------- 12. INFORMES ---------- */
-function renderInforme(){
-  const mes = parseInt(document.getElementById('informe-mes').value, 10);
-  const anio = parseInt(document.getElementById('informe-anio').value, 10);
-  const delPeriodo = facturas.filter(f => f.mes === mes && f.anio === anio);
+/* ---------- 11. PIPELINE ---------- */
+const COLUMNAS = ['Lead','Contactado','Negociación','Cerrado'];
 
-  const totalIngresos = delPeriodo.filter(f => f.tipo==='Ingreso').reduce((s,f)=>s+f.total,0);
-  const totalGastos = delPeriodo.filter(f => f.tipo==='Gasto').reduce((s,f)=>s+f.total,0);
-  document.getElementById('inf-ingresos').textContent = euros(totalIngresos);
-  document.getElementById('inf-gastos').textContent = euros(totalGastos);
-  document.getElementById('inf-beneficio').textContent = euros(totalIngresos-totalGastos);
+function renderKanban(){
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = COLUMNAS.map(col => {
+    const leadsCol = leads.filter(l => l.estado === col);
+    return `
+      <div class="kanban-col" data-estado="${col}">
+        <div class="kanban-col-header">
+          <div class="title">${col}</div>
+          <div class="count">${leadsCol.length}</div>
+        </div>
+        <div class="kanban-cards" data-estado="${col}">
+          ${leadsCol.map(l => `
+            <div class="kanban-card" draggable="true" data-id="${l.id}">
+              <div class="name">${l.nombre}</div>
+              <div class="company">${l.empresa}</div>
+              <div class="date">${formatearFecha(l.fecha)}</div>
+            </div>
+          `).join('')}
+        </div>
+        <button class="add-card-btn" onclick="abrirModalKanban('${col}')">+ Añadir tarjeta</button>
+      </div>
+    `;
+  }).join('');
 
-  const porGrupo = {};
-  delPeriodo.forEach(f => {
-    if(!porGrupo[f.grupo]) porGrupo[f.grupo] = { tipo: f.tipo, count:0, total:0 };
-    porGrupo[f.grupo].count++;
-    porGrupo[f.grupo].total += f.total;
+  activarDragAndDrop();
+}
+
+function activarDragAndDrop(){
+  document.querySelectorAll('.kanban-card').forEach(card => {
+    card.addEventListener('dragstart', function(){
+      kanbanDragId = Number(this.dataset.id);
+      this.classList.add('dragging');
+    });
+    card.addEventListener('dragend', function(){
+      this.classList.remove('dragging');
+    });
   });
 
-  const tbody = document.getElementById('informe-tbody');
-  const entradas = Object.entries(porGrupo).sort((a,b) => b[1].total - a[1].total);
-  if(entradas.length === 0){
-    tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state">No hay facturas registradas en ${MESES_NOMBRE[mes-1]} de ${anio}.</div></td></tr>`;
+  document.querySelectorAll('.kanban-col').forEach(col => {
+    col.addEventListener('dragover', function(e){ e.preventDefault(); this.classList.add('drag-over'); });
+    col.addEventListener('dragleave', function(){ this.classList.remove('drag-over'); });
+    col.addEventListener('drop', function(e){
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      const nuevoEstado = this.dataset.estado;
+      const lead = leads.find(l => l.id === kanbanDragId);
+      if(lead && lead.estado !== nuevoEstado){
+        lead.estado = nuevoEstado;
+        guardarLeads();
+        renderTodo();
+        mostrarToast(`${lead.nombre} movido a "${nuevoEstado}"`);
+      }
+    });
+  });
+}
+
+let kanbanColumnaActual = 'Lead';
+function abrirModalKanban(col){
+  kanbanColumnaActual = col;
+  document.getElementById('kanban-estado').value = col;
+  abrirModal('modal-kanban');
+}
+document.getElementById('form-kanban').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nuevo = {
+    id: Date.now(),
+    nombre: document.getElementById('kanban-nombre').value.trim(),
+    empresa: document.getElementById('kanban-empresa').value.trim(),
+    email: '—',
+    telefono: '—',
+    estado: kanbanColumnaActual,
+    fecha: new Date().toISOString().split('T')[0]
+  };
+  leads.unshift(nuevo);
+  guardarLeads();
+  renderTodo();
+  this.reset();
+  cerrarModal('modal-kanban');
+  mostrarToast('Tarjeta añadida al pipeline');
+});
+
+/* ---------- 12. TAREAS ---------- */
+function renderTareas(){
+  const list = document.getElementById('task-list');
+  if(tasks.length === 0){
+    list.innerHTML = `<div class="empty-state">No hay tareas todavía.</div>`;
     return;
   }
-  tbody.innerHTML = entradas.map(([grupo, d]) => `
-    <tr>
-      <td class="cell-name">${grupo}</td>
-      <td><span class="tipo-pill tipo-${d.tipo}">${d.tipo}</span></td>
-      <td class="cell-muted">${d.count}</td>
-      <td class="cell-name">${euros(d.total)}</td>
-    </tr>
+  const ordenadas = [...tasks].sort((a,b) => {
+    if(a.completada !== b.completada) return a.completada ? 1 : -1;
+    return a.fecha.localeCompare(b.fecha);
+  });
+
+  list.innerHTML = ordenadas.map(t => `
+    <div class="task-item ${t.completada ? 'completed' : ''}" data-id="${t.id}">
+      <div class="task-checkbox ${t.completada ? 'checked' : ''}" onclick="toggleTarea(${t.id})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="task-main">
+        <div class="task-title">${t.titulo}</div>
+        <div class="task-meta">
+          <span>${t.asignado}</span>
+          <span>${formatearFecha(t.fecha)}</span>
+          <span>${t.completada ? '✅ Completada' : '⏳ Pendiente'}</span>
+        </div>
+      </div>
+      <button class="icon-btn danger" title="Eliminar tarea" onclick="eliminarTarea(${t.id})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      </button>
+    </div>
   `).join('');
 }
 
-document.getElementById('btn-exportar-csv').addEventListener('click', function(){
-  const mes = parseInt(document.getElementById('informe-mes').value, 10);
-  const anio = parseInt(document.getElementById('informe-anio').value, 10);
-  const delPeriodo = facturas.filter(f => f.mes === mes && f.anio === anio).sort((a,b) => a.fecha.localeCompare(b.fecha));
+function toggleTarea(id){
+  const tarea = tasks.find(t => t.id === id);
+  if(!tarea) return;
+  tarea.completada = !tarea.completada;
+  guardarTasks();
+  renderTodo();
+  mostrarToast(tarea.completada ? 'Tarea completada' : 'Tarea pendiente');
+}
+function eliminarTarea(id){
+  if(!confirm('¿Eliminar esta tarea?')) return;
+  tasks = tasks.filter(t => t.id !== id);
+  guardarTasks();
+  renderTodo();
+  mostrarToast('Tarea eliminada');
+}
 
-  if(delPeriodo.length === 0){
-    mostrarToast('No hay facturas en ese periodo para exportar');
-    return;
-  }
-
-  const cabecera = ['Fecha','Emisor','Concepto','Base','IVA %','IVA €','Total','Tipo','Grupo'];
-  const filas = delPeriodo.map(f => [f.fecha, f.emisor, f.concepto, f.base.toFixed(2), f.ivaPct, f.ivaAmount.toFixed(2), f.total.toFixed(2), f.tipo, f.grupo]);
-  const csv = [cabecera, ...filas].map(fila => fila.map(v => `"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
-
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `informe_${MESES_NOMBRE[mes-1].toLowerCase()}_${anio}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-  mostrarToast('Informe exportado a CSV');
+document.getElementById('btn-new-task').addEventListener('click', () => {
+  document.getElementById('task-fecha').valueAsDate = new Date();
+  abrirModal('modal-task');
+});
+document.getElementById('form-task').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nueva = {
+    id: Date.now(),
+    titulo: document.getElementById('task-titulo').value.trim(),
+    asignado: document.getElementById('task-asignado').value,
+    fecha: document.getElementById('task-fecha').value,
+    completada: false
+  };
+  tasks.unshift(nueva);
+  guardarTasks();
+  renderTodo();
+  this.reset();
+  cerrarModal('modal-task');
+  mostrarToast('Tarea añadida correctamente');
 });
 
 /* ================================================================
-   13. ARRANQUE MAESTRO DE LA APLICACIÓN
-   ================================================================
-   Igual que en el CRM: usamos 'load' para enlazar los eventos cuando
-   todo está listo, y 'pageshow' para reinicializar si el navegador
-   restaura esta página desde su caché (bfcache) al navegar "atrás".
+   13. ARRANQUE
    ================================================================ */
 function inicializarApp(){
-  console.log('[AutomizeAI Contabilidad] Inicializando aplicación...');
+  console.log('[AutomizeAI CRM] Inicializando aplicación...');
   inicializarLogin();
   inicializarNavegacion();
   inicializarModales();
@@ -1580,7 +1247,7 @@ window.addEventListener('load', inicializarApp);
 
 window.addEventListener('pageshow', function(e){
   if(e.persisted){
-    console.log('[AutomizeAI Contabilidad] Página restaurada desde caché del navegador (bfcache). Re-inicializando...');
+    console.log('[AutomizeAI CRM] Página restaurada desde caché (bfcache). Re-inicializando...');
     inicializarApp();
   }
 });
