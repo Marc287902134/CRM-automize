@@ -827,7 +827,7 @@ function marcarEstadoSync(estado, mensaje){
 }
 
 async function nubeObtener(){
-  const res = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_API_KEY } });
+  const res = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Access-Key': JSONBIN_API_KEY } });
   if(!res.ok) throw new Error('No se pudo leer la nube (' + res.status + ')');
   const data = await res.json();
   return data.record || {};
@@ -835,7 +835,7 @@ async function nubeObtener(){
 async function nubeGuardar(objetoCompleto){
   const res = await fetch(JSONBIN_URL, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+    headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_API_KEY },
     body: JSON.stringify(objetoCompleto)
   });
   if(!res.ok) throw new Error('No se pudo guardar en la nube (' + res.status + ')');
